@@ -15,11 +15,12 @@
 
 | ส่วน | ใช้อะไร |
 |---|---|
-| Server-side | PHP 8.4 ล้วน — ไม่มี framework, ไม่มี Composer, ไม่มี database |
+| Server-side | PHP ล้วน (พัฒนาบน 8.4, **ต้องรันได้บน 8.2** ของ production) — ไม่มี framework, ไม่มี Composer, ยังไม่มี database (มี `connectgrp.php` เตรียมไว้สำหรับหลังบ้าน) |
 | Front-end | HTML + CSS + vanilla JS (ไม่มี build step, ไม่มี npm) |
 | ฟอนต์ | Anuphan (body), Kanit (heading), JetBrains Mono (mono) — หน้าแรก self-host ใน `assets/fonts/`; หน้าย่อยโหลดจาก Google Fonts |
 | Web server (local) | XAMPP Apache + PHP 8.4 (mod_fcgid) → ใช้ `.htaccess` |
-| Web server (dev) | IIS 8.5 บน 192.168.0.70 → ใช้ `web.config` |
+| Web server (company server) | IIS 8.5 บน 192.168.0.70 → ใช้ `web.config` |
+| Web server (production) | LiteSpeed + PHP 8.2 บน z.com → ใช้ `.htaccess` |
 | Schema | JSON-LD ในแต่ละหน้าย่อย (AboutPage/Organization, CollectionPage/ItemList/Product, ContactPage/ContactPoint/OpeningHours) |
 
 ## Architecture
@@ -100,22 +101,31 @@ request → index.php / about.php / catalog.php / contact.php
 
 ## Development environment
 
-- โฟลเดอร์งาน: `C:\xampp\htdocs\lyindustries-new-dev`
+- โฟลเดอร์งาน: `C:\xampp\htdocs\lyindustries-new-dev` บนเครื่อง `COM-CPU-055` (192.168.0.125)
 - เปิดดู: http://localhost/lyindustries-new-dev/ (Apache ของ XAMPP รัน **PHP 8.4.12** ผ่าน fcgid)
-- PHP CLI: `php` ใน PATH = 8.4 (Laragon) — **อย่าใช้** `C:\xampp\php\php.exe` (เป็น 8.2)
+- PHP CLI: `php` ใน PATH = 8.4 (Laragon) ใช้เป็นหลัก · `C:\xampp\php\php.exe` = **8.2** ใช้เช็กความเข้ากันได้กับ production
 - ไม่มี automated test — วิธีตรวจหลังแก้:
   1. `php -l <file>` ทุกไฟล์ที่แก้
   2. render `php index.php > out.html` แล้วดูว่าไม่มี warning/notice
   3. ถ้าเป็นการ refactor ที่ไม่ควรเปลี่ยนผลลัพธ์ ให้ diff HTML ก่อน/หลัง
-  4. ตรวจหน้าตาด้วย headless Chrome (`chrome.exe --headless=new --screenshot=...`) — ข้อจำกัด: ความกว้างขั้นต่ำ 500px และ rAF/scroll animation ทดสอบใน headless ได้ไม่ครบ ต้องให้คนเช็กในเบราว์เซอร์จริง
+  4. **เช็ก PHP 8.2:** render ทุกหน้าด้วย `C:\xampp\php\php.exe` แล้ว `cmp` กับผลของ 8.4 ต้องตรงกัน
+  5. ตรวจหน้าตาด้วย headless Chrome (`chrome.exe --headless=new --screenshot=...`) — ข้อจำกัด: ความกว้างขั้นต่ำ 500px และ rAF/scroll animation ทดสอบใน headless ได้ไม่ครบ ต้องให้คนเช็กในเบราว์เซอร์จริง
 
-## Dev server (public test) / Production
+## Environments
 
-| | Dev (ทดสอบ) | Production |
-|---|---|---|
-| URL | http://192.168.0.70/lyindustries-dev/ (LAN; URL สาธารณะยังไม่ทราบ) | ยังไม่ได้ขึ้น — เว็บจริงปัจจุบัน www.lyindustries.com เป็นระบบเดิม |
-| Path | `N:\lyindustries-dev` = `\\192.168.0.70\wwwroot\lyindustries-dev` | — |
-| Server | IIS 8.5 + URL Rewrite, PHP default ของ IIS = **7.1** | — |
+| | 1. Local dev (เครื่องผู้พัฒนา) | 2. Company server (dev/test สาธารณะ) | 3. Production |
+|---|---|---|---|
+| เครื่อง | `COM-CPU-055` · 192.168.0.125 | 192.168.0.70 (ในบริษัท) | Web hosting **z.com** |
+| URL | http://localhost/lyindustries-new-dev/ · http://192.168.0.125/lyindustries-new-dev/ | ภายใน: http://192.168.0.70/lyindustries-dev/ · **ภายนอก: https://lysystems.sytes.net/lyindustries-dev/** (รูปแบบ `https://lysystems.sytes.net/<ชื่อโฟลเดอร์>/`) | https://www.lyindustries.com/ — ตอนนี้ยังเป็นเว็บเดิม เว็บนี้ยังไม่ได้ขึ้น |
+| Path | `C:\xampp\htdocs\lyindustries-new-dev` | `N:\lyindustries-dev` = `\\192.168.0.70\wwwroot\lyindustries-dev` | — (ยังไม่ทราบวิธี upload) |
+| Web server | XAMPP Apache + PHP 8.4.12 (fcgid) → `.htaccess` | IIS 8.5 + URL Rewrite → `web.config`; PHP default ของ IIS = **7.1** ต้องสลับเป็น `C:\PHP84` | **LiteSpeed + PHP 8.2** (เช็ก 5 ต.ค. 2026) → อ่าน `.htaccess` |
+| DB (เมื่อมีหลังบ้าน) | SQL Server 192.168.0.22 · `test_LYI` | ควรใช้ `test_LYI` (192.168.0.22) — ดูข้อควรระวังด้านล่าง | SQL Server ในบริษัทผ่าน IP สาธารณะ **183.89.245.21** · `LYI` |
+
+**ผลต่อโค้ด**
+- **โค้ดต้องรันได้บน PHP 8.2** เพราะ production เป็น 8.2 ห้ามใช้ฟีเจอร์ที่มีเฉพาะ 8.3/8.4 (เช่น typed class constants, `#[\Override]`, `json_validate()`, property hooks, asymmetric visibility, `new` แบบไม่ใส่วงเล็บแล้ว chain) — ตรวจด้วยการรันกับ PHP 8.2 ก่อน deploy production
+- ต้องมีกฎทั้ง `.htaccess` (local + production LiteSpeed) และ `web.config` (company server IIS) ให้ตรงกันเสมอ
+- `connectgrp.php` เลือก environment จากชื่อเครื่อง (`gethostname()`): `COM-CPU-055` = dev, เครื่องอื่นทั้งหมด = production → **เครื่อง 192.168.0.70 จะถูกนับเป็น production และต่อ DB `LYI` ตัวจริง** ต้องแก้ก่อนเริ่มใช้ DB บน company server (ยังไม่แก้ — ดู PROJECT_STATUS)
+- Production (z.com) ต้องมี extension `sqlsrv`/`pdo_sqlsrv` และออกพอร์ต SQL Server ไป 183.89.245.21 ได้ — ยังไม่ได้ยืนยันกับ hosting
 
 ### Deploy & versioning
 

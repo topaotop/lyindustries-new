@@ -17,7 +17,7 @@
 ## v1.0.1 — 2026-10-05 14:56 · dev
 
 - **Commit:** `c2db765` · **Tag:** `v1.0.1`
-- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
 - **Changes:**
   - กู้ `web.config` ของเว็บนี้กลับมา — ไฟล์บน server ถูกแทนด้วย `web.config` ของ lyi-dashboard (rewrite ไป `public/`) ทำให้ทุกหน้า 404
   - เปลี่ยน handler เป็น `PHP84_lyi`, verb `GET,HEAD,POST,DELETE`

@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — L.Y. Industries website
 
-อัปเดตล่าสุด: 5 ต.ค. 2026 · branch `main` · dev: http://192.168.0.70/lyindustries-dev/ · **version บน dev: v1.0.1** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
+อัปเดตล่าสุด: 5 ต.ค. 2026 · branch `main` · dev: https://lysystems.sytes.net/lyindustries-dev/ (ภายใน http://192.168.0.70/lyindustries-dev/) · **version บน dev: v1.0.1** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
 
 ## ✅ งานที่ทำเสร็จแล้ว
 
@@ -43,7 +43,10 @@
 4. ภาพจริงแต่ละหมวด/Facilities + ภาพตัวอย่างสินค้า 6 รายการ (gallery หน้าแรกตอนนี้เป็นกรอบเส้นประ — ใส่ path ที่ `img` ใน `$galleryItems`)
 5. Optimize ภาพ PNG ใหญ่ใน `assets/img/`
 6. หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
-7. หา/ตั้ง URL สาธารณะสำหรับ dev และวางแผนขึ้น production
+7. ~~หา URL สาธารณะสำหรับ dev~~ ✅ https://lysystems.sytes.net/lyindustries-dev/ — เหลือ: วางแผนขึ้น production บน z.com (วิธี upload, ทดสอบบน PHP 8.2)
+11. **แก้ `connectgrp.php`** ให้ company server (192.168.0.70) ใช้ DB `test_LYI` — ตอนนี้ถูกนับเป็น production และจะต่อ DB `LYI` ตัวจริง (ต้องทำก่อนเริ่มงานหลังบ้าน)
+12. ยืนยันกับ z.com ว่ามี extension `sqlsrv`/`pdo_sqlsrv` และต่อออกไป SQL Server 183.89.245.21 ได้ — ถ้าไม่ได้ ต้องเปลี่ยนแผนหลังบ้าน
+13. ยืนยันว่า `C:\PHP84` บน 192.168.0.70 เปิด extension `sqlsrv` แล้ว (คอมเมนต์ของ bkkkids ระบุว่ามีแค่ `pdo_sqlsrv`)
 8. ~~เพิ่ม `.gitignore`~~ ✅ ทำแล้ว
 9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
 10. Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) — ตามกฎใหม่เอกสารไม่ขึ้น server
@@ -65,4 +68,5 @@
 | 5 ต.ค. 2026 | ลบไฟล์ `.html` และ redirect 301 → `.php` (ทั้ง Apache และ IIS) | ลิงก์/บุ๊กมาร์กเดิมไม่พัง |
 | 5 ต.ค. 2026 | dev server ใช้ `web.config` สลับเป็น PHP 8.4 (`C:\PHP84`) แบบเดียวกับ lyi-dashboard | IIS default เป็น PHP 7.1 รันโค้ด PHP 8 ไม่ได้ |
 | 5 ต.ค. 2026 | ทุก deploy มี version SemVer + git tag + entry ใน `DEPLOY_LOG.md`, deploy เฉพาะ commit ที่สะอาด, ไม่ deploy `*.md` | ย้อนดูได้ว่าบน server เป็นโค้ดชุดไหน และ rollback ได้ |
+| 5 ต.ค. 2026 | 3 environment: local (COM-CPU-055) → company server .70 (IIS, public ผ่าน lysystems.sytes.net) → production z.com (LiteSpeed PHP 8.2) ซึ่งหลังบ้านจะต่อ DB ในบริษัทผ่าน 183.89.245.21 | ตามโครงสร้างที่มีอยู่ของบริษัท; ผลคือโค้ดต้องรองรับ PHP 8.2 และต้องมีทั้ง `.htaccess` + `web.config` |
 | 5 ต.ค. 2026 | gallery ตัวอย่างสินค้าแสดงกรอบ placeholder เมื่อยังไม่มีรูป | เดิมเป็นช่องลากวางรูปของเครื่องมือออกแบบ ซึ่งใช้บนเว็บจริงไม่ได้ |
