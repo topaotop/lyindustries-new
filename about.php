@@ -1,9 +1,18 @@
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/includes/bootstrap.php';
+
+$activeNav = 'about';
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>เกี่ยวกับ L.Y. Industries — ผู้ผลิต Narrow Fabrics & Trims ตั้งแต่ปี 1978</title>
+<link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta name="description" content="L.Y. Industries Co., Ltd. ผู้ผลิต Narrow Fabrics และ Trims ครบวงจรในกรุงเทพฯ ตั้งแต่ปี 1978 — ยางยืด เทปทอ เทปถัก เชือก ขอบเอว และงาน finishing สำหรับแบรนด์กีฬาและแฟชั่นระดับโลก">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +33,7 @@ h1,h2,h3{font-family:var(--font-heading);line-height:1.2}
 .nav{position:sticky;top:0;z-index:50;background:rgba(8,8,10,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--border-light)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand .mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));display:grid;place-items:center;font:700 14px var(--font-mono);color:#fff}
+.brand .mark{width:40px;height:40px;display:block;flex-shrink:0}
 .brand b{font:700 15px var(--font-heading);letter-spacing:.02em;display:block}
 .brand small{font:500 9px var(--font-mono);letter-spacing:.12em;color:var(--text-secondary)}
 .nav nav{display:flex;gap:26px;font-size:15px;color:var(--text-secondary)}
@@ -127,20 +136,7 @@ section.video{padding-bottom:96px}
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap">
-    <a class="brand" href="index.html"><span class="mark">LY</span><span><b>L.Y. INDUSTRIES</b><small>BANGKOK · EST. 1978</small></span></a>
-    <nav>
-      <a href="index.html">หน้าแรก</a>
-      <a href="index.html#process">กระบวนการผลิต</a>
-      <a href="catalog.html">แคตาล็อกสินค้า</a>
-      <a href="https://www.trimrite.com/" target="_blank" rel="noopener">TRIMRITE®</a>
-      <a class="on" href="about.html">เกี่ยวกับเรา</a>
-      <a href="contact.html">ติดต่อเรา</a>
-    </nav>
-    <a class="btn btn-o" href="contact.html#form">ขอใบเสนอราคา →</a>
-  </div>
-</header>
+<?php require __DIR__ . '/includes/site-header.php'; ?>
 
 <section class="hero">
   <div class="wrap">
@@ -217,7 +213,7 @@ section.video{padding-bottom:96px}
     <h2>มีแบบ ตัวอย่าง หรือแค่โจทย์การใช้งาน — ส่งมาคุยกันได้เลย</h2>
     <p>ทีม R&amp;D และฝ่ายขายพร้อมประเมินวัสดุ สี และตัวอย่างให้ตามการใช้งานจริงของคุณ</p>
     <div class="row">
-      <a class="btn btn-o" href="contact.html#form">ขอใบเสนอราคา →</a>
+      <a class="btn btn-o" href="contact.php#form">ขอใบเสนอราคา →</a>
       <a class="btn btn-g" href="mailto:sales@lyindustries.com">sales@lyindustries.com</a>
       <a class="btn btn-g" href="tel:+6625170768">02-517-0768 ต่อ 120, 121</a>
     </div>

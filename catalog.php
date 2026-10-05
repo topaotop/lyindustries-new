@@ -1,9 +1,18 @@
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/includes/bootstrap.php';
+
+$activeNav = 'catalog';
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>แคตตาล็อกสินค้า Narrow Fabric &amp; Trims — ยางยืด เทปทอ เทปถัก เชือก | L.Y. Industries</title>
+<link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta name="description" content="แคตตาล็อกสินค้า L.Y. Industries ผู้ผลิต Narrow Fabric &amp; Trims ครบวงจรในกรุงเทพฯ — ยางยืด เทปทอ เทปถัก Raschel/Crochet เชือกรูด เชือกยางยืด ขอบเอว และงานพิมพ์โลโก้ สำหรับเสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น พร้อมรับพัฒนาตามสเปก">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +31,7 @@ h1,h2,h3{font-family:var(--font-heading);line-height:1.2}
 .nav{position:sticky;top:0;z-index:50;background:rgba(8,8,10,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--border-light)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand .mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));display:grid;place-items:center;font:700 14px var(--font-mono);color:#fff}
+.brand .mark{width:40px;height:40px;display:block;flex-shrink:0}
 .brand b{font:700 15px var(--font-heading);letter-spacing:.02em;display:block}
 .brand small{font:500 9px var(--font-mono);letter-spacing:.12em;color:var(--text-secondary)}
 .nav nav{display:flex;gap:26px;font-size:15px;color:var(--text-secondary)}
@@ -215,20 +224,7 @@ body{background:var(--bg-primary);color:var(--text-primary)}
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap">
-    <a class="brand" href="index.html"><span class="mark">LY</span><span><b>L.Y. INDUSTRIES</b><small>BANGKOK · EST. 1978</small></span></a>
-    <nav>
-      <a href="index.html">หน้าแรก</a>
-      <a href="index.html#process">กระบวนการผลิต</a>
-      <a class="on" href="catalog.html">แคตาล็อกสินค้า</a>
-      <a href="https://www.trimrite.com/" target="_blank" rel="noopener">TRIMRITE®</a>
-      <a href="about.html">เกี่ยวกับเรา</a>
-      <a href="contact.html">ติดต่อเรา</a>
-    </nav>
-    <a class="btn btn-o" href="contact.html#form">ขอใบเสนอราคา →</a>
-  </div>
-</header>
+<?php require __DIR__ . '/includes/site-header.php'; ?>
 
 <section class="hero">
   <div class="wrap">
@@ -245,12 +241,12 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <h2>หมวดสินค้าหลัก</h2>
     </div>
     <div class="pcgrid">
-      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b>PROD-01</b></figure><div class="pc-b"><span>ELASTIC WEBBING</span><h3>ยางยืด / สายยืด (Elastic Webbing)</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b>PROD-02</b></figure><div class="pc-b"><span>WOVEN TAPE</span><h3>เทปทอ (Woven Tape)</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b>PROD-03</b></figure><div class="pc-b"><span>RASCHEL &amp; CROCHET</span><h3>เทปถัก Raschel / Crochet</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b>PROD-04</b></figure><div class="pc-b"><span>CORDS &amp; ELASTIC CORDS</span><h3>เชือก เชือกยางยืด (Cords &amp; Elastic Cords)</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b>PROD-05</b></figure><div class="pc-b"><span>WAISTBANDS</span><h3>ขอบเอว (Engineered Waistbands)</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b>PROD-06</b></figure><div class="pc-b"><span>FINISHING</span><h3>งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding)</h3><a href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b>PROD-01</b></figure><div class="pc-b"><span>ELASTIC WEBBING</span><h3>ยางยืด / สายยืด (Elastic Webbing)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b>PROD-02</b></figure><div class="pc-b"><span>WOVEN TAPE</span><h3>เทปทอ (Woven Tape)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b>PROD-03</b></figure><div class="pc-b"><span>RASCHEL &amp; CROCHET</span><h3>เทปถัก Raschel / Crochet</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b>PROD-04</b></figure><div class="pc-b"><span>CORDS &amp; ELASTIC CORDS</span><h3>เชือก เชือกยางยืด (Cords &amp; Elastic Cords)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b>PROD-05</b></figure><div class="pc-b"><span>WAISTBANDS</span><h3>ขอบเอว (Engineered Waistbands)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b>PROD-06</b></figure><div class="pc-b"><span>FINISHING</span><h3>งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
     </div>
   </div>
 </section>
@@ -263,12 +259,12 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <p>ทุกชิ้นมีรหัสอ้างอิงเฉพาะ ขอตัวอย่างจริงเพื่อเทียบสัมผัส หรือสั่งพัฒนาต่อยอดได้ทันที</p>
     </div>
     <div class="sqgrid">
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b>LY2086</b><span>Elastic Jacquard</span></div></a>
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/RASCHEL.jpg" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b>RLY1319</b><span>Raschel Knit Tape</span></div></a>
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/BRAIDING.jpg" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b>RLY1452</b><span>Braided Cord Tipped</span></div></a>
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/FINISHING.jpg" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b>LY2101</b><span>Silicone Grip Tape</span></div></a>
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b>RLY1377</b><span>Engineered Waistband</span></div></a>
-      <a class="sq" href="contact.html#form"><figure><img src="https://lyindustries.com/img/nl.jpg" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b>LY2144</b><span>Woven High-Tensile</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b>LY2086</b><span>Elastic Jacquard</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/RASCHEL.jpg" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b>RLY1319</b><span>Raschel Knit Tape</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/BRAIDING.jpg" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b>RLY1452</b><span>Braided Cord Tipped</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/FINISHING.jpg" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b>LY2101</b><span>Silicone Grip Tape</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b>RLY1377</b><span>Engineered Waistband</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/nl.jpg" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b>LY2144</b><span>Woven High-Tensile</span></div></a>
     </div>
   </div>
 </section>
@@ -281,24 +277,13 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <p>สำรวจแคตตาล็อกเต็มรูปแบบของเราบน Inspiration Hub หรือส่งสเปกมาให้ทีมช่วยเลือกวัสดุที่เหมาะกับงานของคุณ</p>
     </div>
     <div class="row">
-      <a class="btn btn-o" href="https://www.lyindustries.com/lyinspiratonhub/" target="_blank" rel="noopener">ดูแคตตาล็อกทั้งหมด ↗</a>
-      <a class="btn btn-g" href="contact.html#form">ขอตัวอย่าง / ใบเสนอราคา →</a>
+      <a class="btn btn-o" href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">ดูแคตตาล็อกทั้งหมด ↗</a>
+      <a class="btn btn-g" href="contact.php#form">ขอตัวอย่าง / ใบเสนอราคา →</a>
     </div>
   </div>
 </div>
 
-<footer class="foot4">
-  <div class="wrap">
-    <div class="grid">
-      <div><b>L.Y. INDUSTRIES CO., LTD.</b>บริษัท แอล วาย อินดัสตรีย์ จำกัด<br>124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510</div>
-      <div><span class="t">OPERATING HOURS</span>จันทร์ – ศุกร์: 08:30 – 17:30 น.<br>เสาร์: 08:30 – 12:00 น.<br>sales@lyindustries.com</div>
-      <div><span class="t">SITEMAP</span><nav>
-        <a href="index.html">หน้าแรก</a><a href="catalog.html">แคตาล็อกสินค้า</a><a href="https://www.trimrite.com/" target="_blank" rel="noopener">TRIMRITE®</a><a href="about.html">เกี่ยวกับเรา</a><a href="contact.html">ติดต่อเรา</a><a href="index.html#faq">คำถามพบบ่อย</a></nav></div>
-      <div><span class="t">QUALITY STANDARDS</span>OEKO-TEX® Standard 100 Certified<br>สอดคล้องข้อกำหนด RSL ของแบรนด์กีฬาระดับโลก</div>
-    </div>
-    <div class="copy"><span>© 2026 L.Y. INDUSTRIES CO., LTD. ALL RIGHTS RESERVED.</span><span>BANGKOK, THAILAND · EST. 1978</span></div>
-  </div>
-</footer>
+<?php require __DIR__ . '/includes/site-footer.php'; ?>
 
 </body>
 </html>

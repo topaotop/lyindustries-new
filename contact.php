@@ -1,9 +1,19 @@
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/includes/bootstrap.php';
+
+$activeNav = 'contact';
+$quoteHref = '#form';
+?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ติดต่อ L.Y. Industries — ผู้ผลิต Narrow Fabric &amp; Trims กรุงเทพฯ</title>
+<link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <meta name="description" content="ติดต่อ L.Y. Industries ผู้ผลิต Narrow Fabric และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือกรูด ขอบเอว) ที่ 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510 โทร 02-517-0768 ต่อ 120, 121 อีเมล sales@lyindustries.com LINE @lyindustries">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +34,7 @@ h1,h2,h3{font-family:var(--font-heading);line-height:1.2}
 .nav{position:sticky;top:0;z-index:50;background:rgba(8,8,10,.8);backdrop-filter:blur(18px);border-bottom:1px solid var(--border-light)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:12px}
-.brand .mark{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));display:grid;place-items:center;font:700 14px var(--font-mono);color:#fff}
+.brand .mark{width:40px;height:40px;display:block;flex-shrink:0}
 .brand b{font:700 15px var(--font-heading);letter-spacing:.02em;display:block}
 .brand small{font:500 9px var(--font-mono);letter-spacing:.12em;color:var(--text-secondary)}
 .nav nav{display:flex;gap:26px;font-size:15px;color:var(--text-secondary)}
@@ -145,20 +155,7 @@ section.block.light+section.block{padding-top:96px}
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap">
-    <a class="brand" href="index.html"><span class="mark">LY</span><span><b>L.Y. INDUSTRIES</b><small>BANGKOK · EST. 1978</small></span></a>
-    <nav>
-      <a href="index.html">หน้าแรก</a>
-      <a href="index.html#process">กระบวนการผลิต</a>
-      <a href="catalog.html">แคตาล็อกสินค้า</a>
-      <a href="https://www.trimrite.com/" target="_blank" rel="noopener">TRIMRITE®</a>
-      <a href="about.html">เกี่ยวกับเรา</a>
-      <a class="on" href="contact.html">ติดต่อเรา</a>
-    </nav>
-    <a class="btn btn-o" href="#form">ขอใบเสนอราคา →</a>
-  </div>
-</header>
+<?php require __DIR__ . '/includes/site-header.php'; ?>
 
 <section class="hero">
   <div class="wrap">
@@ -213,18 +210,7 @@ section.block.light+section.block{padding-top:96px}
   </div>
 </section>
 
-<footer class="foot4">
-  <div class="wrap">
-    <div class="grid">
-      <div><b>L.Y. INDUSTRIES CO., LTD.</b>บริษัท แอล วาย อินดัสตรีย์ จำกัด<br>124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510</div>
-      <div><span class="t">OPERATING HOURS</span>จันทร์ – ศุกร์: 08:30 – 17:30 น.<br>เสาร์: 08:30 – 12:00 น.<br>sales@lyindustries.com</div>
-      <div><span class="t">SITEMAP</span><nav>
-        <a href="index.html">หน้าแรก</a><a href="catalog.html">แคตาล็อกสินค้า</a><a href="https://www.trimrite.com/" target="_blank" rel="noopener">TRIMRITE®</a><a href="about.html">เกี่ยวกับเรา</a><a href="contact.html">ติดต่อเรา</a><a href="index.html#faq">คำถามพบบ่อย</a></nav></div>
-      <div><span class="t">QUALITY STANDARDS</span>OEKO-TEX® Standard 100 Certified<br>สอดคล้องข้อกำหนด RSL ของแบรนด์กีฬาระดับโลก</div>
-    </div>
-    <div class="copy"><span>© 2026 L.Y. INDUSTRIES CO., LTD. ALL RIGHTS RESERVED.</span><span>BANGKOK, THAILAND · EST. 1978</span></div>
-  </div>
-</footer>
+<?php require __DIR__ . '/includes/site-footer.php'; ?>
 
 <script>
 document.getElementById('qform').addEventListener('submit',function(e){

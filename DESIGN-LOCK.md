@@ -13,7 +13,7 @@
 ## หลักเนื้อหา
 - ไม่ระบุชื่อแบรนด์ลูกค้าบนเว็บ (TRUSTED BY แสดงเป็นกลุ่มสินค้าแทน, RSL = "ของแบรนด์กีฬาระดับโลก")
 - ที่อยู่: 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510 · โทร 02-517-0768 ต่อ 120, 121 · LINE @lyindustries
-- Inspiration Hub: https://www.lyindustries.com/lyinspiratonhub/ (สะกดตามที่ Pack ให้ — ยังรอยืนยัน)
+- Inspiration Hub: https://www.lyindustries.com/lyinspirationhub/
 - Tagline About: "Small parts bring great impact."
 
 ## หน้าแรก
