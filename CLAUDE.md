@@ -62,10 +62,24 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
-├─ README.md            ข้อมูลส่งมอบสำหรับ dev
 ├─ CLAUDE.md            ไฟล์นี้
 └─ PROJECT_STATUS.md    สถานะงาน
 ```
+
+## Key links & contact data
+
+| อะไร | ค่า | หมายเหตุ |
+|---|---|---|
+| TRIMRITE® | https://www.trimrite.com/ | เปิดแท็บใหม่ (`SITE_TRIMRITE_URL`) |
+| Inspiration Hub | https://www.lyindustries.com/lyinspirationhub/ | ปุ่ม "สินค้าเพิ่มเติม" / "ดูแคตตาล็อกทั้งหมด" (`SITE_INSPIRATION_URL`) |
+| LINE OA | https://line.me/R/ti/p/@lyindustries | `SITE_LINE_URL` — แต่ `index.php` และ `contact.php` ยัง hard-code URL นี้อยู่ |
+| อีเมล | sales@lyindustries.com | `SITE_EMAIL` — `mailto:` ใน about/contact/index ยัง hard-code |
+| โทร | 02-517-0768 ต่อ 120, 121 (tel: `025170768`) | `SITE_PHONE`, `SITE_PHONE_EXT`, `SITE_PHONE_TEL` |
+| ที่อยู่ | 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510 | อยู่ใน footer partial + schema ของ about/contact |
+
+- ลิงก์กลับหน้าแรกจากหน้าย่อย: `index.php` และ `index.php#process` (กระบวนการผลิตเป็น section ในหน้าแรก ไม่ใช่หน้าแยก)
+- **เมนูให้ยึด DESIGN-LOCK:** CONTENT-DRAFT ฉบับร่างมีหน้า `/sample` และ `/process` แยก — ไม่มีในเว็บจริง อย่าสร้างเพิ่มเอง
+- Schema หน้า contact = `ContactPage` + `["Organization","LocalBusiness"]` (มี ContactPoint, OpeningHoursSpecification, PostalAddress) ต้องคงไว้ตอนย้ายขึ้นระบบจริง
 
 ## Coding conventions
 

@@ -16,7 +16,8 @@
 | 5 ต.ค. 2026 | `.htaccess` + `web.config` (PHP 8.4 handler `PHP84_lyi`, 301 *.html→*.php, บล็อก includes/, MIME .woff2) | `c2db765` |
 | 5 ต.ค. 2026 | Deploy ขึ้น dev `\\192.168.0.70\wwwroot\lyindustries-dev` — ทุกหน้า 200, output ตรงกับ local | — |
 | 5 ต.ค. 2026 | กู้ `web.config` บน dev หลังถูกแทนด้วยไฟล์ของ lyi-dashboard (ทำให้ 404) | — |
-| 5 ต.ค. 2026 | สร้าง `CLAUDE.md` + `PROJECT_STATUS.md` | (commit นี้) |
+| 5 ต.ค. 2026 | สร้าง `CLAUDE.md` + `PROJECT_STATUS.md` | `90b7942` |
+| 5 ต.ค. 2026 | ย้ายข้อมูลที่ยังใช้ได้จาก `README.md` (ลิงก์/ข้อมูลติดต่อ, ข้อขัดแย้งเมนู, schema) เข้า `CLAUDE.md` แล้วลบ `README.md` | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
@@ -42,6 +43,8 @@
 6. หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 7. หา/ตั้ง URL สาธารณะสำหรับ dev และวางแผนขึ้น production
 8. เพิ่ม `.gitignore` (`.DS_Store`, `Thumbs.db`)
+9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
+10. ลบ `README.md` ที่ยังค้างอยู่บน dev server (`N:\lyindustries-dev\README.md`) ตอน deploy ครั้งถัดไป
 
 ### รอยืนยันจาก Pack
 - เวลาทำการ: 08:30–17:30 + ส. 08:30–12:00 (ที่ใช้อยู่ตอนนี้) หรือ 09:00–18:00
