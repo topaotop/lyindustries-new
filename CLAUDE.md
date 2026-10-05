@@ -125,6 +125,15 @@ request → index.php / about.php / catalog.php / contact.php
 - **โค้ดต้องรันได้บน PHP 8.2** เพราะ production เป็น 8.2 ห้ามใช้ฟีเจอร์ที่มีเฉพาะ 8.3/8.4 (เช่น typed class constants, `#[\Override]`, `json_validate()`, property hooks, asymmetric visibility, `new` แบบไม่ใส่วงเล็บแล้ว chain) — ตรวจด้วยการรันกับ PHP 8.2 ก่อน deploy production
 - ต้องมีกฎทั้ง `.htaccess` (local + production LiteSpeed) และ `web.config` (company server IIS) ให้ตรงกันเสมอ
 - `connectgrp.php` เลือก environment จากชื่อเครื่อง (`gethostname()`): `COM-CPU-055` = dev, เครื่องอื่นทั้งหมด = production → **เครื่อง 192.168.0.70 จะถูกนับเป็น production และต่อ DB `LYI` ตัวจริง** ต้องแก้ก่อนเริ่มใช้ DB บน company server (ยังไม่แก้ — ดู PROJECT_STATUS)
+### Production ตอนนี้ = เว็บเวอร์ชันเดิม (สำรวจ 5 ต.ค. 2026)
+
+https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** — ห้ามแตะ/deploy ทับจนกว่าจะมีแผน launch ที่ผู้ใช้อนุมัติ สิ่งที่ต้องรู้ก่อน launch:
+- **ชื่อไฟล์ชนกัน:** เว็บเก่ามี `index.php`, `about.php`, `contact.php` ชื่อเดียวกับเว็บใหม่ → ต้องสำรองเว็บเก่าทั้งหมดก่อนขึ้น
+- **URL เก่าที่ต้อง redirect 301** (ไม่งั้นเสีย SEO / ลิงก์เดิมพัง): `innovation.php`, `shop.php`, `products_detail.php` → หน้าเทียบเท่าในเว็บใหม่ (ยังไม่ได้กำหนด)
+- **ต้องเก็บไว้ ห้ามลบ:** `/lyinspirationhub/` (Inspiration Hub — ปุ่ม "สินค้าเพิ่มเติม" ของเว็บใหม่ลิงก์ไปที่นี่), `/img/` และ `/media/` (หน้าแรกเว็บใหม่ยังดึงภาพ process + วิดีโอ hero จาก `lyindustries.com/img/…` และ `/media/header/…` — ถ้าย้ายมาเก็บใน `assets/` ก่อน launch จะตัดการพึ่งพานี้ได้)
+- เว็บเก่าไม่มี `robots.txt`, `sitemap.xml` และ `<title>` หน้าแรกว่าง
+- PHP 8.2 / LiteSpeed ที่วัดได้คือ server ของเว็บเก่า — เว็บใหม่จะรันบน server เดียวกัน
+
 - Production (z.com) ต้องมี extension `sqlsrv`/`pdo_sqlsrv` และออกพอร์ต SQL Server ไป 183.89.245.21 ได้ — ยังไม่ได้ยืนยันกับ hosting
 
 ### Deploy & versioning

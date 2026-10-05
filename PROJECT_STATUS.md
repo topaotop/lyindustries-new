@@ -47,6 +47,7 @@
 11. **แก้ `connectgrp.php`** ให้ company server (192.168.0.70) ใช้ DB `test_LYI` — ตอนนี้ถูกนับเป็น production และจะต่อ DB `LYI` ตัวจริง (ต้องทำก่อนเริ่มงานหลังบ้าน)
 12. ยืนยันกับ z.com ว่ามี extension `sqlsrv`/`pdo_sqlsrv` และต่อออกไป SQL Server 183.89.245.21 ได้ — ถ้าไม่ได้ ต้องเปลี่ยนแผนหลังบ้าน
 13. ยืนยันว่า `C:\PHP84` บน 192.168.0.70 เปิด extension `sqlsrv` แล้ว (คอมเมนต์ของ bkkkids ระบุว่ามีแค่ `pdo_sqlsrv`)
+14. **แผน launch ขึ้น production** (www.lyindustries.com ตอนนี้ยังเป็นเว็บเก่า): สำรองเว็บเก่า, map + redirect 301 จาก `innovation.php` / `shop.php` / `products_detail.php`, เก็บ `/lyinspirationhub/`, `/img/`, `/media/` ไว้ (หรือย้ายภาพ/วิดีโอที่หน้าแรกใช้มาไว้ใน `assets/` ก่อน — ดูข้อ 3), เพิ่ม `robots.txt` + `sitemap.xml` — รายละเอียดใน CLAUDE.md หัวข้อ Production
 8. ~~เพิ่ม `.gitignore`~~ ✅ ทำแล้ว
 9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
 10. Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) — ตามกฎใหม่เอกสารไม่ขึ้น server
