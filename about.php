@@ -149,7 +149,7 @@ section.video{padding-bottom:96px}
 <section class="video light">
   <div class="wrap">
     <div class="video-frame">
-      <iframe src="https://www.youtube-nocookie.com/embed/YOUTUBE_VIDEO_ID?rel=0&modestbranding=1" title="L.Y. Industries — Inside the factory" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+      <iframe src="https://www.youtube-nocookie.com/embed/Lr59gy7RcWo?start=6&rel=0&modestbranding=1" title="L.Y. Industries — Inside the factory" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
     </div>
     <div class="video-cap"><span>INSIDE THE FACTORY · BANGKOK</span><span>WEAVING · KNITTING · BRAIDING · DYEING · FINISHING</span></div>
   </div>

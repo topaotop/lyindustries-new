@@ -19,6 +19,7 @@
 | 5 ต.ค. 2026 | สร้าง `CLAUDE.md` + `PROJECT_STATUS.md` | `90b7942` |
 | 5 ต.ค. 2026 | ย้ายข้อมูลที่ยังใช้ได้จาก `README.md` (ลิงก์/ข้อมูลติดต่อ, ข้อขัดแย้งเมนู, schema) เข้า `CLAUDE.md` แล้วลบ `README.md` | `e816e03` |
 | 5 ต.ค. 2026 | ระบบ deploy log แบบมี version: `DEPLOY_LOG.md` (SemVer, 1 deploy = 1 git tag) + ขั้นตอนใน `CLAUDE.md` | `4b03aba` |
+| 5 ต.ค. 2026 | ใส่วิดีโอ YouTube หน้า About: https://www.youtube.com/watch?v=Lr59gy7RcWo (embed แบบ youtube-nocookie, `start=6`) | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
@@ -37,7 +38,7 @@
 ## 📋 งานที่ต้องทำต่อ
 
 1. ฟอร์มขอใบเสนอราคา (`contact.php`) ยังเป็น `mailto:` → ทำ backend รับฟอร์มจริง (PHP) — ต้องเลือกวิธีส่งเมล/เก็บข้อมูล
-2. YouTube video ID หน้า About ยังเป็น placeholder `YOUTUBE_VIDEO_ID`
+2. ~~YouTube video ID หน้า About~~ ✅ ใส่แล้ว (`Lr59gy7RcWo`, เริ่มที่วินาที 6)
 3. ภาพ process บางขั้นดึงตรงจาก `lyindustries.com/img/` และวิดีโอ hero จาก `lyindustries.com/media/` → ย้ายมาเก็บใน `assets/`
 4. ภาพจริงแต่ละหมวด/Facilities + ภาพตัวอย่างสินค้า 6 รายการ (gallery หน้าแรกตอนนี้เป็นกรอบเส้นประ — ใส่ path ที่ `img` ใน `$galleryItems`)
 5. Optimize ภาพ PNG ใหญ่ใน `assets/img/`
@@ -49,7 +50,7 @@
 
 ### รอยืนยันจาก Pack
 - เวลาทำการ: 08:30–17:30 + ส. 08:30–12:00 (ที่ใช้อยู่ตอนนี้) หรือ 09:00–18:00
-- YouTube video ID, ภาพจริง, รหัสสินค้าตัวอย่าง 6 รายการ
+- ภาพจริง, รหัสสินค้าตัวอย่าง 6 รายการ (YouTube video ID ได้แล้ว — DESIGN-LOCK.md ยังเขียนว่ารออยู่)
 - (จาก CONTENT-DRAFT) เลข certificate OEKO-TEX, ชื่อมาตรฐานแล็บ, ISO/GRS/Higg, ตัวเลขโรงงาน
 
 ## 🧭 Technical decisions
