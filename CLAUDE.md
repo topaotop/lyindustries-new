@@ -58,6 +58,8 @@ request → index.php / about.php / catalog.php / contact.php
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก
+├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore, ยังไม่มีหน้าไหน require
+├─ .gitignore           connectgrp.php, .DS_Store, Thumbs.db, desktop.ini, .vscode/, .idea/
 ├─ .htaccess            Apache: DirectoryIndex, 301 *.html → *.php, บล็อก includes/
 ├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
@@ -142,3 +144,4 @@ request → index.php / about.php / catalog.php / contact.php
 8. **ทุกครั้งที่แก้ source code** ให้ตรวจว่าต้องอัปเดต `CLAUDE.md` (โครงสร้าง/กฎ/วิธีทำงาน) และ `PROJECT_STATUS.md` (งานเสร็จ/ค้าง/บั๊ก/decision) ด้วยหรือไม่ แล้วรวมไว้ใน commit เดียวกัน
 9. ก่อน deploy/ลบ/เขียนทับไฟล์บน server ให้ดูไฟล์ปลายทางก่อน และสำรองไฟล์ที่จะถูกทับ
 10. **ทุกครั้งที่ deploy ต้องมี version + git tag + entry ใน DEPLOY_LOG.md** (ขั้นตอนใน [Deploy & versioning](#deploy--versioning)) — tag ไม่ต้อง push ผู้ใช้จัดการเองใน SourceTree
+11. **ห้าม commit ความลับ** (รหัสผ่าน DB, API key) — `connectgrp.php` อยู่ใน `.gitignore`; ถ้าต้องเพิ่มไฟล์ config ที่มีความลับให้ใส่ `.gitignore` ก่อนสร้าง และ deploy ไฟล์พวกนี้ไป server แบบ manual (ค่าต่างกันตาม environment)

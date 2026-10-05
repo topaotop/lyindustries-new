@@ -20,6 +20,7 @@
 | 5 ต.ค. 2026 | ย้ายข้อมูลที่ยังใช้ได้จาก `README.md` (ลิงก์/ข้อมูลติดต่อ, ข้อขัดแย้งเมนู, schema) เข้า `CLAUDE.md` แล้วลบ `README.md` | `e816e03` |
 | 5 ต.ค. 2026 | ระบบ deploy log แบบมี version: `DEPLOY_LOG.md` (SemVer, 1 deploy = 1 git tag) + ขั้นตอนใน `CLAUDE.md` | `4b03aba` |
 | 5 ต.ค. 2026 | ใส่วิดีโอ YouTube หน้า About: https://www.youtube.com/watch?v=Lr59gy7RcWo (embed แบบ youtube-nocookie, `start=6`) | `080b64f` |
+| 5 ต.ค. 2026 | เพิ่ม `.gitignore` (กัน `connectgrp.php` ที่มีรหัส DB + ไฟล์ขยะ OS/editor), เอา `.DS_Store` ออกจาก repo | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
@@ -33,7 +34,6 @@
 | `assets/dye-yarn-machine.png` ยังไม่มีไฟล์ (process ขั้น 03 ย้อมสี) | ภาพพื้นหลังขั้น 03 ไม่ขึ้น (404) | รอภาพจาก Pack |
 | ภาพ PNG ใน `assets/img/` รวม ~15MB (lab-dip 6.6MB, dye-dispenser 4.1MB, spectrophotometer 3.4MB) | หน้าแรกโหลดช้า | ยังไม่แก้ — ควรแปลงเป็น JPG/WebP (ต้องไม่เปลี่ยนหน้าตา) |
 | Scroll animation (ไทล์บินเข้าที่, process pipeline) ยืนยันใน headless Chrome ได้แค่ว่า loop ทำงาน/ไม่มี JS error | อาจมีจุดต่างจากต้นฉบับที่ยังไม่เห็น | รอเช็กในเบราว์เซอร์จริง |
-| ยังไม่มี `.gitignore` — `.DS_Store` ถูก track อยู่ | repo มีไฟล์ขยะของ macOS | ยังไม่แก้ |
 
 ## 📋 งานที่ต้องทำต่อ
 
@@ -44,7 +44,7 @@
 5. Optimize ภาพ PNG ใหญ่ใน `assets/img/`
 6. หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 7. หา/ตั้ง URL สาธารณะสำหรับ dev และวางแผนขึ้น production
-8. เพิ่ม `.gitignore` (`.DS_Store`, `Thumbs.db`)
+8. ~~เพิ่ม `.gitignore`~~ ✅ ทำแล้ว
 9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
 10. Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) — ตามกฎใหม่เอกสารไม่ขึ้น server
 

@@ -1,0 +1,11 @@
+# Secrets — DB connection (user/password), never commit
+connectgrp.php
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
