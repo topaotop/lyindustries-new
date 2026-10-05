@@ -63,7 +63,8 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ CLAUDE.md            ไฟล์นี้
-└─ PROJECT_STATUS.md    สถานะงาน
+├─ PROJECT_STATUS.md    สถานะงาน
+└─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
 ```
 
 ## Key links & contact data
@@ -114,11 +115,20 @@ request → index.php / about.php / catalog.php / contact.php
 | Path | `N:\lyindustries-dev` = `\\192.168.0.70\wwwroot\lyindustries-dev` | — |
 | Server | IIS 8.5 + URL Rewrite, PHP default ของ IIS = **7.1** | — |
 
-**วิธี deploy ไป dev** (copy ไฟล์ ไม่มี pipeline)
-1. copy: `*.php`, `includes/`, `assets/`, `web.config`, `.htaccess`, `*.md` → `N:\lyindustries-dev\` (ห้าม copy `.git`)
-2. ถ้าลบ/เปลี่ยนชื่อไฟล์ในโปรเจกต์ ต้องลบไฟล์เก่าบน server ด้วย (ใช้ path แบบ literal ไม่ใช้ตัวแปรใน `rm`)
-3. ตรวจ: `curl` ทุกหน้าได้ 200, `*.html` ได้ 301, `includes/…` ได้ 404, `.woff2` ได้ `font/woff2` และ diff HTML จาก server กับ `php <page>.php` ในเครื่องต้องตรงกัน
-4. เทียบไฟล์ local ↔ server ด้วย `cmp` เพื่อดูว่ามีอะไรต้อง deploy
+### Deploy & versioning
+
+**ทุก deploy ต้องมี version และบันทึกใน [DEPLOY_LOG.md](DEPLOY_LOG.md)** — scheme `vMAJOR.MINOR.PATCH` (เกณฑ์การขึ้นเลขอยู่หัวไฟล์ DEPLOY_LOG) และ 1 deploy = 1 git tag
+
+ขั้นตอน (copy ไฟล์ ไม่มี pipeline):
+1. **deploy เฉพาะสิ่งที่ commit แล้ว** — `git status` ต้องสะอาด; commit ที่ deploy = `HEAD`
+2. เลือก version ถัดไปจาก entry ล่าสุดใน DEPLOY_LOG.md
+3. เทียบไฟล์ local ↔ server ด้วย `cmp` เพื่อรู้ว่ามีไฟล์ไหนเพิ่ม/เปลี่ยน/ต้องลบ
+4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git` และไฟล์ `*.md` — เอกสารไม่ต้องขึ้น server)
+5. ถ้าลบ/เปลี่ยนชื่อไฟล์ในโปรเจกต์ ต้องลบไฟล์เก่าบน server ด้วย (ใช้ path แบบ literal ไม่ใช้ตัวแปรใน `rm`)
+6. ตรวจ: `curl` ทุกหน้าได้ 200, `*.html` ได้ 301, `includes/…` ได้ 404, `.woff2` ได้ `font/woff2` และ diff HTML จาก server กับ `php <page>.php` ในเครื่องต้องตรงกัน
+7. `git tag -a vX.Y.Z -m "Deploy vX.Y.Z to dev"` ที่ commit ที่ deploy
+8. เพิ่ม entry บนสุดของ DEPLOY_LOG.md: version, วันเวลา, environment, commit + tag, target, changes, files, ผล verify, note — แล้วอัปเดต PROJECT_STATUS.md และ commit (`Deploy log: vX.Y.Z`)
+9. ถ้า verify ไม่ผ่าน: rollback ไฟล์ที่สำรองไว้ และบันทึก entry เป็น ❌ พร้อมสาเหตุ (ไม่สร้าง tag)
 
 ## Important rules (agent ต้องปฏิบัติ)
 
@@ -131,3 +141,4 @@ request → index.php / about.php / catalog.php / contact.php
 7. **Git:** ทำงานเสร็จแต่ละชิ้น → commit ให้ทุกครั้ง บน `main` (ผู้ใช้ push เองผ่าน SourceTree — **ห้าม push**) ท้าย commit message ใส่ `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`
 8. **ทุกครั้งที่แก้ source code** ให้ตรวจว่าต้องอัปเดต `CLAUDE.md` (โครงสร้าง/กฎ/วิธีทำงาน) และ `PROJECT_STATUS.md` (งานเสร็จ/ค้าง/บั๊ก/decision) ด้วยหรือไม่ แล้วรวมไว้ใน commit เดียวกัน
 9. ก่อน deploy/ลบ/เขียนทับไฟล์บน server ให้ดูไฟล์ปลายทางก่อน และสำรองไฟล์ที่จะถูกทับ
+10. **ทุกครั้งที่ deploy ต้องมี version + git tag + entry ใน DEPLOY_LOG.md** (ขั้นตอนใน [Deploy & versioning](#deploy--versioning)) — tag ไม่ต้อง push ผู้ใช้จัดการเองใน SourceTree

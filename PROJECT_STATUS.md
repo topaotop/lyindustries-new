@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — L.Y. Industries website
 
-อัปเดตล่าสุด: 5 ต.ค. 2026 · branch `main` · dev: http://192.168.0.70/lyindustries-dev/
+อัปเดตล่าสุด: 5 ต.ค. 2026 · branch `main` · dev: http://192.168.0.70/lyindustries-dev/ · **version บน dev: v1.0.1** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
 
 ## ✅ งานที่ทำเสร็จแล้ว
 
@@ -15,9 +15,10 @@
 | 5 ต.ค. 2026 | แก้ URL Inspiration Hub เป็น `lyinspirationhub` (8 ลิงก์) ใช้ค่าคงที่ `SITE_INSPIRATION_URL` | `c2db765` |
 | 5 ต.ค. 2026 | `.htaccess` + `web.config` (PHP 8.4 handler `PHP84_lyi`, 301 *.html→*.php, บล็อก includes/, MIME .woff2) | `c2db765` |
 | 5 ต.ค. 2026 | Deploy ขึ้น dev `\\192.168.0.70\wwwroot\lyindustries-dev` — ทุกหน้า 200, output ตรงกับ local | — |
-| 5 ต.ค. 2026 | กู้ `web.config` บน dev หลังถูกแทนด้วยไฟล์ของ lyi-dashboard (ทำให้ 404) | — |
+| 5 ต.ค. 2026 | Deploy **v1.0.1**: กู้ `web.config` บน dev หลังถูกแทนด้วยไฟล์ของ lyi-dashboard (ทำให้ 404) | `c2db765` (tag `v1.0.1`) |
 | 5 ต.ค. 2026 | สร้าง `CLAUDE.md` + `PROJECT_STATUS.md` | `90b7942` |
 | 5 ต.ค. 2026 | ย้ายข้อมูลที่ยังใช้ได้จาก `README.md` (ลิงก์/ข้อมูลติดต่อ, ข้อขัดแย้งเมนู, schema) เข้า `CLAUDE.md` แล้วลบ `README.md` | `e816e03` |
+| 5 ต.ค. 2026 | ระบบ deploy log แบบมี version: `DEPLOY_LOG.md` (SemVer, 1 deploy = 1 git tag) + ขั้นตอนใน `CLAUDE.md` | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
@@ -44,7 +45,7 @@
 7. หา/ตั้ง URL สาธารณะสำหรับ dev และวางแผนขึ้น production
 8. เพิ่ม `.gitignore` (`.DS_Store`, `Thumbs.db`)
 9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
-10. ลบ `README.md` ที่ยังค้างอยู่บน dev server (`N:\lyindustries-dev\README.md`) ตอน deploy ครั้งถัดไป
+10. Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) — ตามกฎใหม่เอกสารไม่ขึ้น server
 
 ### รอยืนยันจาก Pack
 - เวลาทำการ: 08:30–17:30 + ส. 08:30–12:00 (ที่ใช้อยู่ตอนนี้) หรือ 09:00–18:00
@@ -62,4 +63,5 @@
 | 5 ต.ค. 2026 | ไม่ refactor CSS ของหน้าย่อย (แต่ละหน้ามี `<style>` ของตัวเอง) — แยกแค่ header/footer | output ตรงกับต้นฉบับทุกไบต์ |
 | 5 ต.ค. 2026 | ลบไฟล์ `.html` และ redirect 301 → `.php` (ทั้ง Apache และ IIS) | ลิงก์/บุ๊กมาร์กเดิมไม่พัง |
 | 5 ต.ค. 2026 | dev server ใช้ `web.config` สลับเป็น PHP 8.4 (`C:\PHP84`) แบบเดียวกับ lyi-dashboard | IIS default เป็น PHP 7.1 รันโค้ด PHP 8 ไม่ได้ |
+| 5 ต.ค. 2026 | ทุก deploy มี version SemVer + git tag + entry ใน `DEPLOY_LOG.md`, deploy เฉพาะ commit ที่สะอาด, ไม่ deploy `*.md` | ย้อนดูได้ว่าบน server เป็นโค้ดชุดไหน และ rollback ได้ |
 | 5 ต.ค. 2026 | gallery ตัวอย่างสินค้าแสดงกรอบ placeholder เมื่อยังไม่มีรูป | เดิมเป็นช่องลากวางรูปของเครื่องมือออกแบบ ซึ่งใช้บนเว็บจริงไม่ได้ |
