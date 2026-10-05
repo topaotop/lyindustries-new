@@ -14,7 +14,7 @@
 | 5 ต.ค. 2026 | ใส่โลโก้ `logo-lyi.svg` ที่ nav ทุกหน้า + favicon + apple-touch-icon | `c2db765` |
 | 5 ต.ค. 2026 | แก้ URL Inspiration Hub เป็น `lyinspirationhub` (8 ลิงก์) ใช้ค่าคงที่ `SITE_INSPIRATION_URL` | `c2db765` |
 | 5 ต.ค. 2026 | `.htaccess` + `web.config` (PHP 8.4 handler `PHP84_lyi`, 301 *.html→*.php, บล็อก includes/, MIME .woff2) | `c2db765` |
-| 5 ต.ค. 2026 | Deploy ขึ้น dev `\\192.168.0.70\wwwroot\lyindustries-dev` — ทุกหน้า 200, output ตรงกับ local | — |
+| 5 ต.ค. 2026 | Deploy **v1.0.0** ขึ้น dev `\\192.168.0.70\wwwroot\lyindustries-dev` — ทุกหน้า 200, output ตรงกับ local | — |
 | 5 ต.ค. 2026 | Deploy **v1.0.1**: กู้ `web.config` บน dev หลังถูกแทนด้วยไฟล์ของ lyi-dashboard (ทำให้ 404) | `c2db765` (tag `v1.0.1`) |
 | 5 ต.ค. 2026 | สร้าง `CLAUDE.md` + `PROJECT_STATUS.md` | `90b7942` |
 | 5 ต.ค. 2026 | ย้ายข้อมูลที่ยังใช้ได้จาก `README.md` (ลิงก์/ข้อมูลติดต่อ, ข้อขัดแย้งเมนู, schema) เข้า `CLAUDE.md` แล้วลบ `README.md` | `e816e03` |
