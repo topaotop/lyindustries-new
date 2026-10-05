@@ -127,10 +127,17 @@ request → index.php / about.php / catalog.php / contact.php
 - `connectgrp.php` เลือก environment จากชื่อเครื่อง (`gethostname()`): `COM-CPU-055` = dev, เครื่องอื่นทั้งหมด = production → **เครื่อง 192.168.0.70 จะถูกนับเป็น production และต่อ DB `LYI` ตัวจริง** ต้องแก้ก่อนเริ่มใช้ DB บน company server (ยังไม่แก้ — ดู PROJECT_STATUS)
 ### Production ตอนนี้ = เว็บเวอร์ชันเดิม (สำรวจ 5 ต.ค. 2026)
 
-https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** — ห้ามแตะ/deploy ทับจนกว่าจะมีแผน launch ที่ผู้ใช้อนุมัติ สิ่งที่ต้องรู้ก่อน launch:
+https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** — ห้ามแตะ/deploy ทับจนกว่าจะมีแผน launch ที่ผู้ใช้อนุมัติ
+
+**Source ของเว็บเก่า:** `\\192.168.0.73\htdocs\lyindustries` (= `P:\lyindustries`) — ไม่ใช่ git repo, PHP + Tailwind, ไม่ใช้ database, ไฟล์ลงวันที่ 1 เม.ย. 2026
+- ⚠️ **ไม่ตรงกับเว็บจริง 100%** — production ใหม่กว่า (มีแก้ responsive/มือถือที่ไม่อยู่ใน .73) → ตอน launch ต้องสำรองจาก server z.com โดยตรง ห้ามถือว่า .73 เป็น backup
+- ใช้ .73 เป็นแหล่งอ้างอิง/ดึงไฟล์ภาพ-วิดีโอได้ (อ่านอย่างเดียว ห้ามแก้ — เป็นของระบบเดิม)
+- ไฟล์: `index.php`, `about.php`, `contact.php`, `innovation.php`, `shop.php`, `products_detail.php`, `braiding.php`, `crochet.php`, `finishing.php`, `needle_loom.php`, `raschel.php` + `header.php`/`footer.php` (include) · โฟลเดอร์ `img/` (122MB), `media/` (114MB), `cert/`, `partners/`
+
+สิ่งที่ต้องรู้ก่อน launch:
 - **ชื่อไฟล์ชนกัน:** เว็บเก่ามี `index.php`, `about.php`, `contact.php` ชื่อเดียวกับเว็บใหม่ → ต้องสำรองเว็บเก่าทั้งหมดก่อนขึ้น
-- **URL เก่าที่ต้อง redirect 301** (ไม่งั้นเสีย SEO / ลิงก์เดิมพัง): `innovation.php`, `shop.php`, `products_detail.php` → หน้าเทียบเท่าในเว็บใหม่ (ยังไม่ได้กำหนด)
-- **ต้องเก็บไว้ ห้ามลบ:** `/lyinspirationhub/` (Inspiration Hub — ปุ่ม "สินค้าเพิ่มเติม" ของเว็บใหม่ลิงก์ไปที่นี่), `/img/` และ `/media/` (หน้าแรกเว็บใหม่ยังดึงภาพ process + วิดีโอ hero จาก `lyindustries.com/img/…` และ `/media/header/…` — ถ้าย้ายมาเก็บใน `assets/` ก่อน launch จะตัดการพึ่งพานี้ได้)
+- **URL เก่าที่ต้อง redirect 301** (ไม่งั้นเสีย SEO / ลิงก์เดิมพัง) — ทุกหน้ายังเปิดได้ (200) บน production: `innovation.php`, `shop.php`, `products_detail.php`, `braiding.php`, `crochet.php`, `finishing.php`, `needle_loom.php`, `raschel.php` → หน้าเทียบเท่าในเว็บใหม่ (ยังไม่ได้กำหนด)
+- **ต้องเก็บไว้ ห้ามลบ:** `/lyinspirationhub/` (อยู่บน production แต่**ไม่อยู่**ใน source .73) (Inspiration Hub — ปุ่ม "สินค้าเพิ่มเติม" ของเว็บใหม่ลิงก์ไปที่นี่), `/img/` และ `/media/` (หน้าแรกเว็บใหม่ยังดึงภาพ process + วิดีโอ hero จาก `lyindustries.com/img/…` และ `/media/header/…` — ถ้าย้ายมาเก็บใน `assets/` ก่อน launch จะตัดการพึ่งพานี้ได้)
 - เว็บเก่าไม่มี `robots.txt`, `sitemap.xml` และ `<title>` หน้าแรกว่าง
 - PHP 8.2 / LiteSpeed ที่วัดได้คือ server ของเว็บเก่า — เว็บใหม่จะรันบน server เดียวกัน
 
