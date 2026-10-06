@@ -17,14 +17,43 @@ header('X-Robots-Tag: noindex, nofollow');
 
 auth_session_start();
 
-/** Admin menu: [file, label, required permission (null = any logged-in user)]. */
+/**
+ * Admin menu grouped by task: group label (null = no heading) => list of
+ * [file, label, icon key, required permission (null = any logged-in user)].
+ */
 function admin_menu(): array
 {
     return [
-        ['index.php',    'แดชบอร์ด',          null],
-        ['blocks.php',   'ข้อความหน้าเว็บ & SEO', 'content.translate'],
-        ['settings.php', 'ข้อมูลติดต่อ & ลิงก์',  'settings.edit'],
+        null => [
+            ['index.php', 'แดชบอร์ด', 'home', null],
+        ],
+        'เนื้อหาเว็บไซต์' => [
+            ['blocks.php', 'ข้อความหน้าเว็บ & SEO', 'text', 'content.translate'],
+        ],
+        'ตั้งค่าเว็บไซต์' => [
+            ['settings.php', 'ข้อมูลติดต่อ & ลิงก์', 'phone', 'settings.edit'],
+        ],
     ];
+}
+
+/** 20×20 line icons for the sidebar (stroke = currentColor). */
+function admin_icon(string $key): string
+{
+    $paths = [
+        'home'     => '<path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z"/>',
+        'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
+        'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
+        'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+    ];
+
+    return '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+         . ($paths[$key] ?? '') . '</svg>';
+}
+
+/** May the current user see this menu entry? (content.edit implies content.translate) */
+function admin_can_see(?string $perm): bool
+{
+    return $perm === null || can($perm) || ($perm === 'content.translate' && can('content.edit'));
 }
 
 /** Stop unless logged in (and holding $permission). */
@@ -101,17 +130,26 @@ function admin_page_start(string $title, string $active): void
   <a class="brand" href="index.php"><img src="../assets/img/logo-lyi.svg" alt="" width="30" height="30"><span>LYI Website <b>Admin</b></span></a>
   <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : ' · ทดสอบ' ?></span>
   <span class="spacer"></span>
-  <a class="view-site" href="../index.php" target="_blank" rel="noopener">ดูหน้าเว็บ ↗</a>
   <span class="who"><?= e($user['name']) ?></span>
   <form method="post" action="logout.php"><?= csrf_field() ?><button class="btn btn-ghost" type="submit">ออกจากระบบ</button></form>
 </header>
 <div class="shell">
-  <nav class="side">
-<?php foreach (admin_menu() as [$file, $label, $perm]): ?>
-<?php if ($perm === null || can($perm) || ($perm === 'content.translate' && can('content.edit'))): ?>
-    <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on"' : '' ?>><?= e($label) ?></a>
+  <nav class="side" aria-label="เมนูหลังบ้าน">
+<?php foreach (admin_menu() as $group => $links):
+        $visible = array_filter($links, static fn(array $l): bool => admin_can_see($l[3]));
+        if ($visible === []) {
+            continue;
+        } ?>
+    <div class="side-group">
+<?php if ($group !== '' && $group !== null): ?>
+      <span class="side-label"><?= e((string) $group) ?></span>
 <?php endif; ?>
+<?php foreach ($visible as [$file, $label, $icon]): ?>
+      <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><?= e($label) ?></span></a>
 <?php endforeach; ?>
+    </div>
+<?php endforeach; ?>
+    <a class="side-site" href="../index.php" target="_blank" rel="noopener"><?= admin_icon('external') ?><span>ดูหน้าเว็บไซต์</span></a>
   </nav>
   <main class="main">
 <?php else: ?>

@@ -67,6 +67,7 @@ request → index.php / about.php / catalog.php / contact.php
 - กันเดารหัส: ผิด 5 ครั้ง/username หรือ 20 ครั้ง/IP ใน 15 นาที → ล็อก (IP ตั้งสูงเพราะทั้งออฟฟิศออก internet ด้วย IP เดียว)
 - สิทธิ์: `sysmnuser.level >= lyiweb_settings.admin_min_level` (5) = ทุกสิทธิ์ · คนอื่นตาม role ใน `lyiweb_user_roles` · permission: `content.edit` (แก้ไทย+อังกฤษ), `content.translate` (แก้อังกฤษอย่างเดียว), `media.upload`, `contact.view`, `settings.edit`, `users.manage` — อ่านใหม่ทุก request (ถอนสิทธิ์มีผลทันที)
 - ทุกฟอร์ม POST ต้องมี CSRF (`csrf_field()` / `admin_check_post()`), ทุกการบันทึก → `audit_log()` + `content_cache_clear()`, header no-store / X-Frame-Options DENY / noindex
+- เมนู sidebar กำหนดที่ `admin_menu()` ใน `includes/admin/init.php` (จัดกลุ่ม + ไอคอนจาก `admin_icon()` + permission) — หน้าใหม่ให้เพิ่มที่นี่ · ดีไซน์: พื้นเข้มต่อแถบบน, เมนูที่เลือกมีแถบลายเทปถัก (`--tape`) — ไม่ใช้ตัวพิมพ์ใหญ่ทั้งคำ/ลูกศรท้ายเมนู
 - UX: หลังบันทึกต้องกลับมาตำแหน่งเดิม (เก็บ scroll ใน sessionStorage ตอน submit, `admin.js`) — **ห้ามทำให้หน้าเด้งขึ้นบนสุด** (ผู้ใช้ไม่ชอบ) · ข้อความผลการบันทึก (`flash()` → `[data-flash]`) แสดงเป็น toast มุมขวาบน · มี error → เลื่อนไปช่องแรกที่ผิด
 - แถบด้านบนแสดง DB ที่ต่ออยู่ (`test_LYI` เขียว / `LYI` แดง = PRODUCTION) กันแก้ผิดที่
 - ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/lib/auth.php`
