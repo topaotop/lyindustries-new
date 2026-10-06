@@ -16,6 +16,18 @@ function img_src(string $path): string
     return $path !== '' ? $path : SITE_PLACEHOLDER_IMG;
 }
 
+/**
+ * URL of a local CSS/JS file with ?v=<modified time>, so browsers fetch the new file as soon as it
+ * changes instead of reusing a cached copy. $url is relative to the page being served.
+ */
+function asset(string $url): string
+{
+    $file = dirname((string) ($_SERVER['SCRIPT_FILENAME'] ?? '')) . '/' . $url;
+    $mtime = is_file($file) ? filemtime($file) : false;
+
+    return $mtime === false ? $url : $url . '?v=' . $mtime;
+}
+
 /** Escape a value for HTML text or attribute output. */
 function e(string|int|float|null $value): string
 {

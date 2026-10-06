@@ -65,12 +65,12 @@
   const stepLine = q('#stepLineProgress');
   const stepCount = stepTexts.length;
 
-  // Wide banner-style photos (wider than 2:1, often with black areas baked in) are shown whole and
+  // Banner-style photos (wider than 2.5:1, often with black areas baked in) are shown whole and
   // centred instead of being zoomed to cover the screen — zooming crops them and makes them blurry.
   stepBgs.forEach(bg => {
     const img = bg.querySelector('img');
     if (!img) return;
-    const fit = () => { if (img.naturalHeight && img.naturalWidth / img.naturalHeight > 2) img.classList.add('step-bg-contain'); };
+    const fit = () => { if (img.naturalHeight && img.naturalWidth / img.naturalHeight > 2.5) img.classList.add('step-bg-contain'); };
     if (img.complete) fit(); else img.addEventListener('load', fit, { once: true });
   });
 

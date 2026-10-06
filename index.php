@@ -35,8 +35,8 @@ $menuItems = [
 <?php endif; ?>
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<link rel="stylesheet" href="assets/css/fonts.css">
-<link rel="stylesheet" href="assets/css/home.css">
+<link rel="stylesheet" href="<?= e(asset('assets/css/fonts.css')) ?>">
+<link rel="stylesheet" href="<?= e(asset('assets/css/home.css')) ?>">
 </head>
 <body>
 
@@ -803,6 +803,6 @@ $menuItems = [
 
 </div>
 
-<script src="assets/js/home.js" defer></script>
+<script src="<?= e(asset('assets/js/home.js')) ?>" defer></script>
 </body>
 </html>

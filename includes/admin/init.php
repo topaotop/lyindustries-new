@@ -121,8 +121,8 @@ function admin_page_start(string $title, string $active): void
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?> · LYI Website Admin</title>
 <link rel="icon" type="image/svg+xml" href="../assets/img/logo-lyi.svg">
-<link rel="stylesheet" href="../assets/css/fonts.css">
-<link rel="stylesheet" href="assets/admin.css">
+<link rel="stylesheet" href="<?= e(asset('../assets/css/fonts.css')) ?>">
+<link rel="stylesheet" href="<?= e(asset('assets/admin.css')) ?>">
 </head>
 <body>
 <?php if ($user): ?>
@@ -167,5 +167,5 @@ function admin_page_end(): void
     } else {
         echo "</div>\n";
     }
-    echo "<script src=\"assets/admin.js\" defer></script>\n</body>\n</html>\n";
+    echo '<script src="' . e(asset('assets/admin.js')) . "\" defer></script>\n</body>\n</html>\n";
 }

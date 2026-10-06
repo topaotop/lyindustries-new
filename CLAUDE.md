@@ -139,6 +139,7 @@ request → index.php / about.php / catalog.php / contact.php
 - array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ยังไม่มีรูป → ใช้ `img_src($img)` ซึ่งคืน `assets/img/placeholder.svg` ("Image pending") ให้คนเห็นว่าต้องอัปโหลด; ห้ามปล่อย `<img>` ชี้ไฟล์ที่ไม่มี
 - ลิงก์ออกนอกเว็บใช้ `'external' => true` + `external_attrs()` → `target="_blank" rel="noopener"`
 - ค่าที่ใช้หลายที่ (โทร, อีเมล, LINE, ที่อยู่, เวลา, URL ภายนอก) **ห้าม hard-code** — ใช้ `site('key')` (เพิ่ม key ใหม่ใน `includes/site-defaults.php` แล้วรัน `php tools/build-seed-site.php`) · ใน JSON-LD ใช้ `json_inner()` แทน `e()`
+- **ไฟล์ CSS/JS ของเราต้องใส่ผ่าน `asset()` เสมอ** เช่น `<link href="<?= e(asset('assets/css/home.css')) ?>">` → ต่อท้าย `?v=<เวลาแก้ไฟล์>` ให้เบราว์เซอร์โหลดไฟล์ใหม่ทันที (เซิร์ฟเวอร์ไม่ส่ง Cache-Control — ถ้าไม่ใส่ เบราว์เซอร์ใช้ไฟล์เก่าค้าง เคยทำให้ผู้ใช้ไม่เห็นการแก้)
 - ลิงก์ภายในใช้ path แบบ relative (`about.php`, `index.php#process`) — เว็บต้องทำงานได้ใต้ sub-folder (`/lyindustries-dev/`, `/lyindustries-new-dev/`)
 - JS: vanilla ES2017+, IIFE + `'use strict'`, เลือก element ด้วย `data-*` attribute; ไม่เพิ่ม library
 - CSS หน้าแรก: เก็บสไตล์แบบ inline ตามเดิม; hover/state ใหม่ให้เพิ่มเป็น class ใน `home.css`
