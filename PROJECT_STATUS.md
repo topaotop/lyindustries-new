@@ -25,12 +25,13 @@
 | 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
 | 6 ต.ค. 2026 | สร้างตาราง `lyiweb_*` 12 ตาราง + ข้อมูลตั้งต้น ทั้งใน `test_LYI` และ `LYI` (ผู้ใช้รัน `docs/sql/001_lyiweb_schema.sql` ผ่าน Navicat) — ตรวจแล้ว: คอลัมน์, constraint 39, index 5, roles 4, permissions 10, settings 2, pages 4 ครบ | `8c73d4d` (script) |
 | 6 ต.ค. 2026 | **ขั้นที่ 2a:** หน้าแรกอ่านรายการ 7 list จาก `lyiweb_items` ผ่าน content layer (cache 5 นาที → DB → cache เก่า → fallback ในโค้ด) · `tools/build-seed-home.php` สร้าง `002_lyiweb_seed_home.sql` · seed 43 แถวลง `test_LYI` · บล็อก `cache/ tools/ docs/` จากเว็บ · ตรวจ: HTML ตรง baseline ทุกไบต์ทุกทาง (DB, cache, cache เก่า, ไม่มี DB, Apache, PHP 8.2) + พิสูจน์ว่าแก้ใน DB แล้วหน้าเว็บเปลี่ยนจริง | `e932ed2` |
+| 6 ต.ค. 2026 | ผู้ใช้รัน `002_lyiweb_seed_home.sql` ใน `LYI` ผ่าน Navicat — ตรวจแล้ว 43 แถวตรงกับ `test_LYI` ทุกแถว, ภาษาไทยไม่เพี้ยน, `test_LYI` ไม่มีแถวซ้ำ | — |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
 ## 🔄 งานที่กำลังทำ
 
-- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1 ✅** ตาราง `lyiweb_*` · **ขั้นที่ 2a ✅** รายการหน้าแรก 7 list อ่านจาก DB (seed ใน `test_LYI` แล้ว, `LYI` ยังไม่ seed) · **ถัดไป 2b:** ข้อความชิ้นเดี่ยวของทุกหน้า (`lyiweb_blocks`), SEO ของหน้า (`lyiweb_pages`), ค่าติดต่อ (`lyiweb_settings`), `I18n`
+- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1 ✅** ตาราง `lyiweb_*` · **ขั้นที่ 2a ✅** รายการหน้าแรก 7 list อ่านจาก DB (seed แล้วทั้ง `test_LYI` และ `LYI`) · **ถัดไป 2b:** ข้อความชิ้นเดี่ยวของทุกหน้า (`lyiweb_blocks`), SEO ของหน้า (`lyiweb_pages`), ค่าติดต่อ (`lyiweb_settings`), `I18n`
 - รอทดสอบหน้าเว็บบน dev ด้วยเบราว์เซอร์จริง (โดยเฉพาะ scroll animation หน้าแรก)
 
 ## 🐞 Bug / ปัญหาที่รู้อยู่
@@ -55,7 +56,6 @@
 - หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
-- Seed `docs/sql/002_lyiweb_seed_home.sql` ลง `LYI` (production) — ทำก่อน launch หรือก่อนใช้หลังบ้านบน production
 - Deploy ครั้งถัดไปขึ้น .70: ตั้งสิทธิ์ให้ IIS เขียนโฟลเดอร์ `cache/` ได้ และตรวจว่ามี `connectgrp.php` บน server (ถ้าไม่มี หน้าแรกใช้ fallback)
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
