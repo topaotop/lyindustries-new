@@ -24,6 +24,7 @@
 | 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
 | 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
+| 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
@@ -51,6 +52,7 @@
 - เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
 - หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
+- SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
 **Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
@@ -86,4 +88,5 @@
 | 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "Image pending" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
 | 6 ต.ค. 2026 | `connectgrp.php` แยก environment จาก HTTP_HOST แทนชื่อเครื่อง; โดเมนที่ไม่รู้จัก → DB ทดสอบ | เดิม .70 ถูกนับเป็น production; fail-safe ไปทาง DB ทดสอบ |
 | 6 ต.ค. 2026 | หน้าเว็บเก่าทั้ง 8 หน้า redirect 301 ไปหน้าแรก (ไม่ส่ง query string ต่อ) | ผู้ใช้เลือก; ไม่มีหน้าเทียบเท่า 1:1 ในเว็บใหม่ |
+| 6 ต.ค. 2026 | URL ที่ browser โหลดจากโดเมนบริษัทต้องมี `www.` เสมอ | AD domain ของบริษัทชื่อ lyindustries.com ทำให้ DNS ภายในชี้โดเมนเปล่าไป Domain Controller — แก้ฝั่ง DNS ไม่ได้ |
 | 6 ต.ค. 2026 | ใช้ driver `sqlsrv` (เหมือน `connectgrp.php` และระบบอื่นของบริษัท) · ตารางใหม่ขึ้นต้น `web_` · login ด้วย `sysmnuser` + ตารางสิทธิ์ของเว็บเอง | ตามมาตรฐานระบบในบริษัท |

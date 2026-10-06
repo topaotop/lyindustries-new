@@ -91,7 +91,7 @@ require __DIR__ . '/includes/home-data.php';
 <section id="hero" style="position:relative;min-height:96vh;overflow:hidden;display:flex;align-items:center;padding:120px 0 60px">
   <!-- Cinematic Background Video with Vignette & Ambient Radial Light -->
   <div style="position:absolute;inset:0;z-index:1;overflow:hidden">
-    <video id="heroVideo" src="https://lyindustries.com/media/header/PASSION%20(1).mp4" poster="https://lyindustries.com/img/bgvideo1.jpg" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:0.78;filter:contrast(1.08) saturate(1);will-change:transform"></video>
+    <video id="heroVideo" src="https://www.lyindustries.com/media/header/PASSION%20(1).mp4" poster="https://www.lyindustries.com/img/bgvideo1.jpg" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;opacity:0.78;filter:contrast(1.08) saturate(1);will-change:transform"></video>
     <!-- Multi-stage Dark Gradient Overlays for Apple Cinematic Depth -->
     <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%, rgba(8,8,10,0.05) 0%, rgba(8,8,10,0.6) 80%, var(--bg-primary) 100%)"></div>
     <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,8,10,0.55) 0%, transparent 35%, rgba(8,8,10,0.85) 85%, var(--bg-primary) 100%)"></div>
