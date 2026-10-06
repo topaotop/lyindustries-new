@@ -188,3 +188,12 @@ p {
 /* FAQ accordion */
 .faq-item:not(.is-open) .faq-answer { display: none; }
 
+
+/* Process step background: banner-shaped photos (> 2:1) are shown whole and centred (set by home.js) */
+.step-bg-contain {
+  position: absolute; left: 0; top: 50%; width: 100% !important; height: auto !important; max-height: 100%;
+  object-fit: contain !important; transform: translateY(-50%);
+  /* fade the top/bottom edges so the photo blends into the dark section instead of showing a box */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+}
