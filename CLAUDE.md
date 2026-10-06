@@ -30,7 +30,7 @@
 ```
 request → index.php / about.php / catalog.php / contact.php
             └─ includes/bootstrap.php   APP_ROOT, SITE_PLACEHOLDER_IMG, e(), img_src(), site_nav(), external_attrs() แล้ว require includes/lib/content.php ให้ทุกหน้า
-            └─ includes/lib/content.php content_list() รายการ · site() ค่าติดต่อ/ลิงก์ · page_meta() ชื่อหน้า+meta · helper รูปแบบเบอร์/ที่อยู่/เวลา
+            └─ includes/lib/content.php content_list() รายการ · site() ค่าติดต่อ/ลิงก์ · page_meta() ชื่อหน้า+meta · b() ข้อความ · lang() · helper รูปแบบเบอร์/ที่อยู่/เวลา
             └─ includes/icons.php       ไอคอนไทล์ (content เก็บแค่ key, template เรียก icon_uri())
             └─ includes/site-header.php (about/catalog/contact) ตั้ง $activeNav, $quoteHref ก่อน require
             └─ includes/site-footer.php (catalog/contact) footer 4 คอลัมน์ — about ใช้ footer สั้นของตัวเอง
@@ -46,6 +46,9 @@ request → index.php / about.php / catalog.php / contact.php
 - ฟิลด์/ลำดับฟิลด์/แปลได้ไหม กำหนดที่ `includes/schema/lists.php` (หลังบ้านจะสร้างฟอร์มจากไฟล์นี้) — ลำดับสำคัญเพราะสี swatch ถูก `json_encode` ลง `data-swatch`
 - แก้ข้อมูลใน DB แล้วต้องเรียก `content_cache_clear()` (หลังบ้านจะทำให้) — ถ้าแก้ตรงใน Navicat หน้าเว็บจะเปลี่ยนภายใน 5 นาที
 - **แก้ `includes/home-data.php` แล้วต้องรัน `php tools/build-seed-home.php`** ให้ `docs/sql/002_lyiweb_seed_home.sql` ตรงกันเสมอ (seed ใส่เฉพาะ list ที่ยังไม่มีแถว — ไม่ทับเนื้อหาที่แก้ในหลังบ้านแล้ว)
+- **ข้อความของหน้า (`lyiweb_blocks`):** ทุกข้อความในหน้าเขียนเป็น `<?= b('page.section.nn') ?>` (escape ให้แล้ว) — key เช่น `home.hero.04`; ค่าเริ่มต้น/fallback อยู่ที่ `includes/blocks/<page>.php` · ภาษาอังกฤษว่าง → ใช้ไทย · ยังไม่ย้าย: เมนู `<header>`/`<aside>` (ใช้ร่วมทุกหน้า), คำนำหน้าที่ติดกับค่า settings เช่น "โทร: ", `alt`/`aria-label`
+- **เพิ่มข้อความใหม่ในหน้า:** เพิ่ม key ใน `includes/blocks/<page>.php` + ใช้ `b()` ใน template แล้วรัน `php tools/build-seed-blocks.php` (ห้ามพิมพ์ข้อความตรงๆ ลง template) · ย้ายหน้าเดิมทั้งหน้า: `php tools/extract-blocks.php <file.php> <slug> [old=new]` (แทนที่ทุก text node + เขียนไฟล์ default; ตรวจ diff HTML หลังรันเสมอ)
+- **ห้ามเขียน `?>` ในคอมเมนต์ `//` ของไฟล์ PHP** — PHP ถือว่าจบโค้ดตรงนั้น (เคยทำให้สคริปต์ parse error)
 - `includes/lib/db.php`: `db()` (เปิด connection ผ่าน `connectgrp.php` เมื่อจำเป็นเท่านั้น), `db_rows($sql, $params)` — **ใช้ parameter `?` เสมอ ห้ามต่อ string เข้า SQL**
 - hover effect = class `.hv-1` … `.hv-16` ใน `assets/css/home.css` (แปลงจาก attribute `style-hover` เดิม ใช้ `!important` เพราะต้องชนะ inline style)
 - state ฝั่ง client (เมนูเปิด, FAQ ที่เปิด, สีที่เลือก) ใช้ class/data attribute: `html.menu-open`, `.faq-item.is-open`, `[data-swatch]`, `[data-menu-toggle]`, `[data-faq-toggle]`
@@ -66,8 +69,9 @@ request → index.php / about.php / catalog.php / contact.php
 │  ├─ schema/lists.php              นิยามฟิลด์ของแต่ละ list
 │  ├─ home-data.php                 ข้อมูลรายการหน้าแรกในโค้ด = fallback + ต้นทางของ seed 002
 │  ├─ site-defaults.php             ค่าติดต่อ/ลิงก์ + ชื่อหน้า/meta = fallback + ต้นทางของ seed 003
+│  ├─ blocks/<page>.php             ข้อความแต่ละหน้า (home.php = 129 block) = fallback + ต้นทางของ seed 004
 │  └─ icons.php                     ไอคอน SVG ของไทล์
-├─ tools/               สคริปต์ CLI (build-seed-home.php, build-seed-site.php) — บล็อกจากเว็บ, ไม่ deploy
+├─ tools/               สคริปต์ CLI (build-seed-home/site/blocks.php, extract-blocks.php + lib-textnodes.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
 ├─ assets/
 │  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
@@ -82,7 +86,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql ← generated …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version

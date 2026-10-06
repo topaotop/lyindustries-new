@@ -130,27 +130,29 @@ $menuItems = [
     <!-- Micro Badge Pill -->
     <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:100px;background:rgba(255,90,31,0.1);border:1px solid rgba(255,90,31,0.3);backdrop-filter:blur(12px)">
       <span style="width:7px;height:7px;border-radius:50%;background:var(--brand-orange);box-shadow:0 0 10px var(--brand-orange)"></span>
-      <span style="font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:0.14em;color:#ff9e75">ONE-STOP NARROW FABRICS &amp; TRIMS · EST. 1978 · BANGKOK</span>
+      <span style="font-family:var(--font-mono);font-size:11.5px;font-weight:600;letter-spacing:0.14em;color:#ff9e75"><?= b('home.hero.01') ?></span>
     </div>
 
     <!-- Massive Precision Headline -->
     <h1 class="text-gradient-silver" style="font-size:clamp(42px,6.2vw,92px);line-height:1.18;font-weight:700;max-width:1080px;margin:0">
-      Trims ที่ไม่เคยทำให้<br>ไลน์ผลิตของคุณ<span class="text-gradient-orange">สะดุด</span>
+      <?= b('home.hero.02') ?><br><?= b('home.hero.03') ?><span class="text-gradient-orange"><?= b('home.hero.04') ?></span>
     </h1>
 
     <!-- 50-word AEO Paragraph -->
     <p style="font-size:clamp(16px,1.3vw,19px);line-height:1.75;color:var(--text-secondary);max-width:720px;font-weight:400">
-      <strong style="color:#fff;font-weight:500">LY Industries</strong> คือผู้ผลิต Narrow Fabric และ Trims ครบวงจรในกรุงเทพฯ ก่อตั้งปี 1978 ผลิตยางยืด เทปทอ เชือกรูด ขอบเอว และงานซิลิโคน ให้แบรนด์กีฬาระดับโลกมากว่า 40 ปี ด้วยการทอ ถัก ย้อม และตกแต่งสำเร็จในโรงงานเดียว — คุณภาพสม่ำเสมอทุกล็อต
+      <strong style="color:#fff;font-weight:500"><?= b('home.hero.05') ?></strong> <?= b('home.hero.06') ?>
+
     </p>
 
     <!-- CTAs -->
     <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;margin-top:8px">
       <a class="hv-5" href="#contact" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:16px 36px;border-radius:100px;font-weight:600;font-size:16px;box-shadow:0 8px 28px var(--brand-orange-glow);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);display:inline-flex;align-items:center;gap:8px">
-        <span>ขอใบเสนอราคา / Request a Quote</span>
+        <span><?= b('home.hero.07') ?></span>
         <span style="font-size:18px">→</span>
       </a>
       <a class="hv-6" href="#process" style="background:rgba(255,255,255,0.06);border:1px solid var(--border-glass);color:var(--text-primary);padding:16px 32px;border-radius:100px;font-weight:500;font-size:16px;backdrop-filter:blur(16px);transition:all 0.3s">
-        ขั้นตอนการผลิตของเรา ↓
+        <?= b('home.hero.08') ?>
+
       </a>
     </div>
 
@@ -158,7 +160,7 @@ $menuItems = [
 
   <!-- Bottom Scroll Cue -->
   <div class="scroll-cue" style="position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none">
-    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.25em;color:var(--text-tertiary)">SCROLL TO EXPLORE</span>
+    <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.25em;color:var(--text-tertiary)"><?= b('home.hero.09') ?></span>
     <div style="width:1.5px;height:32px;background:rgba(255,255,255,0.1);position:relative;overflow:hidden;border-radius:1px">
       <div style="position:absolute;inset:0;background:var(--brand-orange);animation:ly-scroll-line 2s cubic-bezier(0.65,0,0.35,1) infinite"></div>
     </div>
@@ -173,7 +175,8 @@ $menuItems = [
   <div style="max-width:1240px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:28px">
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
       <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.18em;color:var(--text-secondary);font-weight:600">
-        TRUSTED BY GLOBAL SPORTSWEAR &amp; APPAREL LEADERS
+        <?= b('home.trust.01') ?>
+
       </span>
     </div>
 
@@ -192,24 +195,24 @@ $menuItems = [
     <!-- 4 Key Proof Metric Cards -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px">
       <div class="apple-card" style="padding:22px 24px">
-        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block" class="text-gradient-orange">40+</span>
-        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px">ปีแห่งประสบการณ์</div>
-        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">ผลิต narrow fabrics &amp; trims ตั้งแต่ปี 1978</div>
+        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block" class="text-gradient-orange"><?= b('home.trust.02') ?></span>
+        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px"><?= b('home.trust.03') ?></div>
+        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px"><?= b('home.trust.04') ?></div>
       </div>
       <div class="apple-card" style="padding:22px 24px">
-        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block">100%</span>
-        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px">One-Stop Solution</div>
-        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">ทอ ถัก ย้อม Finishing จบในโรงงานเดียว</div>
+        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block"><?= b('home.trust.05') ?></span>
+        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px"><?= b('home.trust.06') ?></div>
+        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px"><?= b('home.trust.07') ?></div>
       </div>
       <div class="apple-card" style="padding:22px 24px">
-        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block;letter-spacing:-0.03em">OEKO-TEX®</span>
-        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px">Standard 100 Certified</div>
-        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">ปลอดภัย ไร้สารอันตราย ผ่านข้อกำหนด RSL</div>
+        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block;letter-spacing:-0.03em"><?= b('home.trust.08') ?></span>
+        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px"><?= b('home.trust.09') ?></div>
+        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px"><?= b('home.trust.10') ?></div>
       </div>
       <div class="apple-card" style="padding:22px 24px">
-        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block">Custom Trims</span>
-        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px">พัฒนาตามแบบแบรนด์คุณ</div>
-        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px">เลือกวัสดุ สี และรายละเอียดให้เหมาะกับงาน</div>
+        <span style="font-family:var(--font-heading);font-weight:700;font-size:34px;line-height:1.1;color:#fff;display:block"><?= b('home.trust.11') ?></span>
+        <div style="font-size:14px;font-weight:500;color:#fff;margin-top:6px"><?= b('home.trust.12') ?></div>
+        <div style="font-size:12.5px;color:var(--text-secondary);margin-top:2px"><?= b('home.trust.13') ?></div>
       </div>
     </div>
 
@@ -229,12 +232,14 @@ $menuItems = [
       
       <!-- Stage Title: Smooth In & Out -->
       <div id="assembleTitle" style="position:relative;text-align:center;max-width:880px;padding:0 24px;display:flex;flex-direction:column;gap:10px;will-change:transform,opacity;z-index:2">
-        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">01 — THE ANATOMY OF A GARMENT</span>
+        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.story.01') ?></span>
         <h2 style="font-size:clamp(28px,3.6vw,52px);line-height:1.2;font-weight:700;letter-spacing:-0.015em">
-          ทุกจุดบนเสื้อผ้ากีฬาที่ต้องใช้ Trims — เรามีให้ครบ
+          <?= b('home.story.02') ?>
+
         </h2>
         <p style="font-size:15px;color:var(--text-secondary);line-height:1.6;max-width:640px;margin:0 auto">
-          คอหลัง · ขอบเอว · เทปตกแต่ง · เชือกรูด · กุ๊นคอและวงแขน · ใต้อก · ชายเสื้อและปลายแขน · อุปกรณ์กีฬา
+          <?= b('home.story.03') ?>
+
         </p>
       </div>
 
@@ -256,7 +261,7 @@ $menuItems = [
       <!-- Caption Bottom Glow -->
       <div id="assembleCaption" style="position:relative;text-align:center;opacity:0;padding:0 24px;will-change:opacity,transform;z-index:4">
         <p style="font-family:var(--font-heading);font-weight:600;font-size:clamp(17px,2vw,24px);color:var(--text-primary);background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);border:1px solid var(--border-light);padding:10px 28px;border-radius:100px;box-shadow:0 8px 30px rgba(0,0,0,0.1);display:inline-block;white-space:nowrap;margin-bottom:24px">
-          <span style="color:var(--brand-orange)">พร้อมพัฒนาตามแบบของคุณ</span>
+          <span style="color:var(--brand-orange)"><?= b('home.story.04') ?></span>
         </p>
       </div>
 
@@ -270,9 +275,10 @@ $menuItems = [
 <section id="why" aria-labelledby="why-heading" data-theme="dark" style="--why-bg:#08080a;color:#f5f5f7;background:var(--why-bg);padding:120px 0">
   
   <div style="max-width:1240px;margin:0 auto;padding:0 24px;display:flex;flex-direction:column;gap:20px;margin-bottom:56px">
-    <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">02 — WHY IT MATTERS TO YOU</span>
+    <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.why.01') ?></span>
     <h2 id="why-heading" style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2;max-width:920px">
-      เพราะ Trims ชิ้นเล็ก ๆ ที่ไม่ได้คุณภาพ คือต้นทุนก้อนใหญ่ที่มองไม่เห็น
+      <?= b('home.why.02') ?>
+
     </h2>
   </div>
 
@@ -298,23 +304,23 @@ $menuItems = [
   <div class="why-grid">
     <article class="why-item" aria-labelledby="why-card-1">
       <span class="why-icon" aria-hidden="true"><svg viewBox="0 0 96 96" aria-hidden="true"><path class="soft" d="M14 48h68"/><path d="M14 40h68v16H14z"/><path d="M22 40v6M30 40v10M38 40v6M46 40v10M54 40v6M62 40v10M70 40v6"/><path d="M26 28c6-4 12-4 18 0s12 4 18 0" class="soft"/><circle cx="72" cy="70" r="10"/><path d="M67 70l3.5 3.5L78 66"/></svg></span>
-      <span class="why-number">01</span>
-      <span class="why-eyebrow">CONSISTENCY YOU CAN SEW ON</span><h3 id="why-card-1">ไลน์ผลิตของคุณไม่สะดุด</h3><span class="why-highlight">มาตรฐานความยืดสม่ำเสมอทุกล็อต</span>
+      <span class="why-number"><?= b('home.why.03') ?></span>
+      <span class="why-eyebrow"><?= b('home.why.04') ?></span><h3 id="why-card-1"><?= b('home.why.05') ?></h3><span class="why-highlight"><?= b('home.why.06') ?></span>
     </article>
     <article class="why-item" aria-labelledby="why-card-2">
       <span class="why-icon" aria-hidden="true"><svg viewBox="0 0 96 96" aria-hidden="true"><path d="M30 22c-8 10-14 18-14 26a14 14 0 0 0 28 0c0-8-6-16-14-26z"/><path d="M62 30c-6 8-11 14-11 20a11 11 0 0 0 22 0c0-6-5-12-11-20z" class="soft"/><rect x="14" y="70" width="16" height="10" rx="2" class="fill"/><rect x="34" y="70" width="16" height="10" rx="2" class="fill" opacity=".7"/><rect x="54" y="70" width="16" height="10" rx="2" class="fill" opacity=".45"/><rect x="74" y="70" width="8" height="10" rx="2" class="fill" opacity=".25"/><path d="M14 66h68" class="soft"/></svg></span>
-      <span class="why-number">02</span>
-      <span class="why-eyebrow">COLOR RIGHT, EVERY LOT</span><h3 id="why-card-2">สีตรง ตรงทุกล็อต</h3><span class="why-highlight">In-house Pantone Color Lab</span>
+      <span class="why-number"><?= b('home.why.07') ?></span>
+      <span class="why-eyebrow"><?= b('home.why.08') ?></span><h3 id="why-card-2"><?= b('home.why.09') ?></h3><span class="why-highlight"><?= b('home.why.10') ?></span>
     </article>
     <article class="why-item" aria-labelledby="why-card-3">
       <span class="why-icon" aria-hidden="true"><svg viewBox="0 0 96 96" aria-hidden="true"><path d="M12 46l36-24 36 24"/><path d="M20 42v36h56V42"/><path d="M20 78h56" class="soft"/><rect x="28" y="56" width="10" height="10" rx="1.5"/><rect x="43" y="56" width="10" height="10" rx="1.5"/><rect x="58" y="56" width="10" height="10" rx="1.5"/><path d="M33 66v12M48 66v12M63 66v12" class="soft"/><circle cx="48" cy="34" r="3" class="fill"/></svg></span>
-      <span class="why-number">03</span>
-      <span class="why-eyebrow">ONE SUPPLIER, ZERO COORDINATION</span><h3 id="why-card-3">จบทุกขั้นตอนในที่เดียว</h3><span class="why-highlight">ครบวงจรใต้หลังคาเดียวในกรุงเทพฯ</span>
+      <span class="why-number"><?= b('home.why.11') ?></span>
+      <span class="why-eyebrow"><?= b('home.why.12') ?></span><h3 id="why-card-3"><?= b('home.why.13') ?></h3><span class="why-highlight"><?= b('home.why.14') ?></span>
     </article>
     <article class="why-item" aria-labelledby="why-card-4">
       <span class="why-icon" aria-hidden="true"><svg viewBox="0 0 96 96" aria-hidden="true"><path d="M18 74L22 60 56 26l10 10-34 34z"/><path d="M50 32l10 10" class="soft"/><path d="M22 60l10 10"/><path d="M62 18c6-4 12-4 16 0s4 10 0 14" class="soft"/><path d="M72 46h8M74 54h10M70 62h8" class="soft"/><path d="M80 24l6-6"/><circle cx="86" cy="18" r="2.5" class="fill"/></svg></span>
-      <span class="why-number">04</span>
-      <span class="why-eyebrow">FROM SKETCH TO SAMPLE, FAST</span><h3 id="why-card-4">พัฒนาของใหม่ได้เร็ว</h3><span class="why-highlight">R&amp;D ร่วมกับดีไซเนอร์แบรนด์</span>
+      <span class="why-number"><?= b('home.why.15') ?></span>
+      <span class="why-eyebrow"><?= b('home.why.16') ?></span><h3 id="why-card-4"><?= b('home.why.17') ?></h3><span class="why-highlight"><?= b('home.why.18') ?></span>
     </article>
   </div>
 </section>
@@ -340,10 +346,12 @@ $menuItems = [
       <div style="position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:0 28px;width:100%">
         <div style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700;margin-bottom:8px">
           <span style="width:6px;height:6px;border-radius:50%;background:var(--brand-orange)"></span>
-          03 — PROCESS PIPELINE
+          <?= b('home.process.01') ?>
+
         </div>
         <h2 style="font-size:clamp(24px,2.8vw,38px);font-weight:600;line-height:1.25;max-width:760px">
-          จากเส้นด้ายสู่ชิ้นงานสำเร็จ — ภายใต้การควบคุมทุกขั้นตอน
+          <?= b('home.process.02') ?>
+
         </h2>
       </div>
 
@@ -393,16 +401,19 @@ $menuItems = [
     <!-- Section Header -->
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
       <div style="display:flex;flex-direction:column;gap:12px;max-width:920px">
-        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">04 — PRODUCT SPECIMENS</span>
+        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.specimens.01') ?></span>
         <h2 style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2">
-          Narrow Fabric &amp; Trims ครบทุกประเภท
+          <?= b('home.specimens.02') ?>
+
         </h2>
         <p style="font-size:16.5px;line-height:1.7;color:var(--text-secondary)">
-          ออกแบบและพัฒนาเฉพาะสำหรับ activewear, sportswear, compression wear และ high-fashion
+          <?= b('home.specimens.03') ?>
+
         </p>
       </div>
       <a class="hv-9" href="#contact" style="font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--text-primary);border:1px solid var(--border-glass);padding:12px 24px;border-radius:100px;backdrop-filter:blur(12px);transition:all 0.3s">
-        ขอรับแคตตาล็อก &amp; ตัวอย่างสินค้า →
+        <?= b('home.specimens.04') ?>
+
       </a>
     </div>
 
@@ -423,7 +434,7 @@ $menuItems = [
             </div>
             <p style="font-size:14.5px;line-height:1.65;color:var(--text-secondary);flex:1"><?= e($p['desc']) ?></p>
             <div style="padding-top:14px;border-top:1px solid var(--border-light);display:flex;justify-content:flex-end;align-items:center;font-size:13.5px">
-              <a class="hv-11" href="#contact" style="color:var(--brand-orange);font-weight:600">สั่งผลิต →</a>
+              <a class="hv-11" href="#contact" style="color:var(--brand-orange);font-weight:600"><?= b('home.specimens.05') ?></a>
             </div>
           </div>
         </div>
@@ -444,28 +455,30 @@ $menuItems = [
     <!-- Header + Hero photo -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;align-items:center">
       <div style="display:flex;flex-direction:column;gap:22px">
-        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">05 — R&amp;D SERVICE · FROM SKETCH TO REALITY</span>
+        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.rnd.01') ?></span>
         <h2 style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2;letter-spacing:-0.015em">
-          เราพัฒนา Trims ให้เข้ากับการใช้งาน
+          <?= b('home.rnd.02') ?>
+
         </h2>
         <p style="font-size:16.5px;line-height:1.75;color:var(--text-secondary);max-width:560px;text-wrap:pretty">
-          ทีม R&amp;D ของเราทำงานร่วมกับดีไซเนอร์และ Product Developer ตั้งแต่สเก็ตช์แรก จนได้ตัวอย่างที่ใส่จริง ทดสอบจริง และพร้อมเข้าสู่การผลิตจริง
+          <?= b('home.rnd.03') ?>
+
         </p>
         <div style="display:flex;flex-wrap:wrap;gap:8px">
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">STRETCH %</span>
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">RECOVERY</span>
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">COMPRESSION</span>
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">WIDTH &amp; HAND-FEEL</span>
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">GRIP</span>
-          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)">COLOR &amp; BRANDING</span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.04') ?></span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.05') ?></span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.06') ?></span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.07') ?></span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.08') ?></span>
+          <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;padding:8px 14px;border-radius:100px;border:1px solid var(--border-light);color:#fff;background:rgba(255,255,255,0.03)"><?= b('home.rnd.09') ?></span>
         </div>
       </div>
       <div style="position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
         <img src="assets/img/rnd-team.png" alt="LY R&amp;D team developing trims with a designer" style="width:100%;height:100%;object-fit:cover;display:block">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
         <div style="position:absolute;left:20px;right:20px;bottom:18px;display:flex;flex-direction:column;gap:3px">
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)">IN-HOUSE R&amp;D TEAM</span>
-          <span style="font-family:var(--font-heading);font-weight:600;font-size:17px;color:#fff">ทีมพัฒนาคุยกับดีไซเนอร์ของคุณโดยตรง</span>
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.rnd.10') ?></span>
+          <span style="font-family:var(--font-heading);font-weight:600;font-size:17px;color:#fff"><?= b('home.rnd.11') ?></span>
         </div>
       </div>
     </div>
@@ -474,40 +487,41 @@ $menuItems = [
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px">
       <div class="apple-card" style="padding:26px 24px;display:flex;flex-direction:column;gap:14px;position:relative">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)">01</span>
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)">SKETCH</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)"><?= b('home.rnd.12') ?></span>
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)"><?= b('home.rnd.13') ?></span>
         </div>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3">รับโจทย์จากการใช้งาน</span>
-        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty">ส่งมาได้ทั้งตัวอย่างจริง ไฟล์ภาพ สเก็ตช์ tech pack หรือแค่โจทย์การใช้งาน — เราแปลงเป็นสเปกทางเทคนิคให้</span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3"><?= b('home.rnd.14') ?></span>
+        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty"><?= b('home.rnd.15') ?></span>
       </div>
       <div class="apple-card" style="padding:26px 24px;display:flex;flex-direction:column;gap:14px;position:relative">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)">02</span>
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)">ENGINEER</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)"><?= b('home.rnd.16') ?></span>
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)"><?= b('home.rnd.17') ?></span>
         </div>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3">ออกแบบโครงสร้างและวัสดุ</span>
-        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty">ออกแบบโครงสร้างและเลือกวัสดุให้ตรงกับ requirements ของการใช้งาน อาทิ แรงดึง การคืนตัว และสัมผัสที่การใช้งานนั้นต้องการ</span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3"><?= b('home.rnd.18') ?></span>
+        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty"><?= b('home.rnd.19') ?></span>
       </div>
       <div class="apple-card" style="padding:26px 24px;display:flex;flex-direction:column;gap:14px;position:relative">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)">03</span>
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)">SAMPLE &amp; TEST</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)"><?= b('home.rnd.20') ?></span>
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)"><?= b('home.rnd.21') ?></span>
         </div>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3">ตัวอย่างจริง ทดสอบจริง</span>
-        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty">ขึ้นตัวอย่างพร้อม Lab-dip สี ทดสอบแรงดึง การคืนตัว และความคงทน ปรับจนดีไซเนอร์ลองใส่แล้วพอใจ</span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3"><?= b('home.rnd.22') ?></span>
+        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty"><?= b('home.rnd.23') ?></span>
       </div>
       <div class="apple-card" style="padding:26px 24px;display:flex;flex-direction:column;gap:14px;position:relative">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)">04</span>
-          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)">PRODUCTION</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--brand-orange)"><?= b('home.rnd.24') ?></span>
+          <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--text-tertiary)"><?= b('home.rnd.25') ?></span>
         </div>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3">ขึ้นผลิตจริง พร้อมส่งมอบ</span>
-        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty">ล็อกสเปกที่ผ่านการอนุมัติเป็นรหัสสินค้าของคุณ เข้าสู่การผลิตจริงตามกำหนด และส่งมอบในคุณภาพเดียวกันทุกล็อต</span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:19px;color:#fff;line-height:1.3"><?= b('home.rnd.26') ?></span>
+        <span style="font-size:14px;line-height:1.65;color:var(--text-secondary);text-wrap:pretty"><?= b('home.rnd.27') ?></span>
       </div>
     </div>
 
     <a class="hv-12" href="#contact" style="align-self:flex-start;background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:15px 30px;border-radius:100px;font-weight:600;font-size:15px;box-shadow:0 6px 20px var(--brand-orange-glow)">
-      เริ่มต้นพัฒนาชิ้นงานกับเรา →
+      <?= b('home.rnd.28') ?>
+
     </a>
   </div>
 </section>
@@ -523,46 +537,49 @@ $menuItems = [
     
     <!-- Left Column: Story & Lab Precision -->
     <div style="display:flex;flex-direction:column;gap:24px">
-      <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">06 — IN-HOUSE DYEING &amp; PANTONE LAB</span>
+      <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.colorlab.01') ?></span>
       <h2 style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2">
-        โรงย้อมมาตรฐาน<br>สีตรงแม่นยำทุกล็อต
+        <?= b('home.colorlab.02') ?><br><?= b('home.colorlab.03') ?>
+
       </h2>
       <p style="font-size:16.5px;line-height:1.75;color:var(--text-secondary)">
-        ระบบจ่ายสีย้อมอัตโนมัติและห้องแล็บเทียบสีมาตรฐานสากล <strong style="color:#fff">เทียบสีได้จาก Pantone TCX, Lab-dip หรือชิ้นงานตัวอย่างจริง</strong> ควบคุมเฉดให้ตรงกันตั้งแต่ตัวอย่างแรกจนถึงการผลิตซ้ำ พร้อมรับประกันความคงทนของสีต่อการซัก เหงื่อ และแสง UV
+        <?= b('home.colorlab.04') ?> <strong style="color:#fff"><?= b('home.colorlab.05') ?></strong> <?= b('home.colorlab.06') ?>
+
       </p>
 
       <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px">
         <div style="background:rgba(255,255,255,0.03);padding:16px 18px;border-radius:12px;border:1px solid var(--border-light);display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em">ΔE&lt;0.5</span>
-          <span style="font-size:12.5px;color:var(--text-secondary)">ค่าความต่างสีที่ยอมรับ</span>
+          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em"><?= b('home.colorlab.07') ?></span>
+          <span style="font-size:12.5px;color:var(--text-secondary)"><?= b('home.colorlab.08') ?></span>
         </div>
         <div style="background:rgba(255,255,255,0.03);padding:16px 18px;border-radius:12px;border:1px solid var(--border-light);display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em">TCX</span>
-          <span style="font-size:12.5px;color:var(--text-secondary)">รองรับรหัส Pantone ทั้งระบบ</span>
+          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em"><?= b('home.colorlab.09') ?></span>
+          <span style="font-size:12.5px;color:var(--text-secondary)"><?= b('home.colorlab.10') ?></span>
         </div>
         <div style="background:rgba(255,255,255,0.03);padding:16px 18px;border-radius:12px;border:1px solid var(--border-light);display:flex;flex-direction:column;gap:4px">
-          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em">4–5</span>
-          <span style="font-size:12.5px;color:var(--text-secondary)">เกรดความคงทนสี ซัก/เหงื่อ/แสง</span>
+          <span style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.02em"><?= b('home.colorlab.11') ?></span>
+          <span style="font-size:12.5px;color:var(--text-secondary)"><?= b('home.colorlab.12') ?></span>
         </div>
       </div>
 
       <a class="hv-12" href="#contact" style="align-self:flex-start;background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:15px 30px;border-radius:100px;font-weight:600;font-size:15px;box-shadow:0 6px 20px var(--brand-orange-glow);margin-top:6px">
-        ส่งรหัสสีให้เราเทียบ →
+        <?= b('home.colorlab.13') ?>
+
       </a>
     </div>
 
     <!-- Right Column: Interactive Pantone Swatch & Trim Preview Simulator -->
     <div class="apple-card" style="padding:32px;display:flex;flex-direction:column;gap:24px">
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--brand-orange);letter-spacing:0.12em">COLORWAY SPECIMEN</span>
-        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary)">ΔE &lt; 0.5 TOLERANCE</span>
+        <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--brand-orange);letter-spacing:0.12em"><?= b('home.colorlab.14') ?></span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary)"><?= b('home.colorlab.15') ?></span>
       </div>
 
       <!-- Trim Simulation Visual -->
       <div style="position:relative;height:200px;border-radius:16px;overflow:hidden;background:#0d0d10;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-light)">
         <!-- Elastic Ribbon Vector -->
         <div id="swatchRibbon" style="width:85%;height:54px;border-radius:8px;background:<?= e($activeSwatch['hex']) ?>;box-shadow:0 12px 36px <?= e($activeSwatch['glow']) ?>;transition:background 0.4s cubic-bezier(0.16,1,0.3,1),box-shadow 0.4s;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border:1px solid rgba(255,255,255,0.25)">
-          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:<?= e($activeSwatch['text']) ?>;letter-spacing:0.1em" data-swatch-text>L.Y. PRECISION WEAVE</span>
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:<?= e($activeSwatch['text']) ?>;letter-spacing:0.1em" data-swatch-text><?= b('home.colorlab.16') ?></span>
           <span style="font-family:var(--font-mono);font-size:11px;font-weight:500;color:<?= e($activeSwatch['text']) ?>" data-swatch-text data-swatch-code><?= e($activeSwatch['code']) ?></span>
         </div>
       </div>
@@ -570,7 +587,7 @@ $menuItems = [
       <!-- Active Swatch Data -->
       <div style="display:flex;justify-content:space-between;align-items:flex-end">
         <div>
-          <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary)">SELECTED PANTONE®</div>
+          <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary)"><?= b('home.colorlab.17') ?></div>
           <div style="font-family:var(--font-heading);font-weight:600;font-size:20px;color:#fff;margin-top:2px" data-swatch-name><?= e($activeSwatch['name']) ?></div>
         </div>
         <div style="font-family:var(--font-mono);font-size:13px;color:var(--brand-orange)" data-swatch-code><?= e($activeSwatch['code']) ?></div>
@@ -593,24 +610,24 @@ $menuItems = [
       <img class="hv-13" src="assets/img/dye-dispenser.png" alt="Automated dye dispenser" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
-        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)">AUTO DYE DISPENSER</span>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff">ระบบจ่ายสีย้อมอัตโนมัติ</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.18') ?></span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff"><?= b('home.colorlab.19') ?></span>
       </div>
     </div>
     <div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
       <img class="hv-13" src="assets/img/spectrophotometer.png" alt="Spectrophotometer color measurement" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
-        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)">SPECTROPHOTOMETER</span>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff">วัดค่าสีด้วยเครื่อง ไม่ใช้สายตา</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.20') ?></span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff"><?= b('home.colorlab.21') ?></span>
       </div>
     </div>
     <div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
       <img class="hv-13" src="assets/img/lab-dip.png" alt="Lab-dip compared to standard" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
-        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)">LAB-DIP vs STANDARD</span>
-        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff">เทียบ Lab-dip กับมาตรฐานก่อนขึ้นไลน์</span>
+        <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.22') ?></span>
+        <span style="font-family:var(--font-heading);font-weight:600;font-size:16px;color:#fff"><?= b('home.colorlab.23') ?></span>
       </div>
     </div>
   </div>
@@ -624,16 +641,19 @@ $menuItems = [
     
     <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
       <div style="display:flex;flex-direction:column;gap:12px;max-width:640px">
-        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">07 — INSPIRATION HUB</span>
+        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.gallery.01') ?></span>
         <h2 style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2">
-          ตัวอย่างสินค้าของเรา
+          <?= b('home.gallery.02') ?>
+
         </h2>
         <p style="font-size:16.5px;line-height:1.7;color:var(--text-secondary)">
-          ทุกชิ้นมีรหัสอ้างอิงเฉพาะ สั่งพัฒนาต่อยอด หรือขอตัวอย่างจริงเพื่อเทียบสัมผัสได้ทันที
+          <?= b('home.gallery.03') ?>
+
         </p>
       </div>
       <a class="hv-14" href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener" style="font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--text-primary);border:1px solid var(--border-glass);padding:12px 24px;border-radius:100px;backdrop-filter:blur(12px)">
-        ดูแคตตาล็อกทั้งหมด →
+        <?= b('home.gallery.04') ?>
+
       </a>
     </div>
 
@@ -663,15 +683,18 @@ $menuItems = [
     
     <!-- Left Column: FAQ Intro -->
     <div style="display:flex;flex-direction:column;gap:18px">
-      <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">08 — FAQ &amp; SPECIFICATION</span>
+      <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.faq.01') ?></span>
       <h2 style="font-size:clamp(30px,3.6vw,50px);font-weight:700;line-height:1.2">
-        คำถามที่พบบ่อย
+        <?= b('home.faq.02') ?>
+
       </h2>
       <p style="font-size:16px;line-height:1.75;color:var(--text-secondary)">
-        ข้อมูลเกี่ยวกับขั้นต่ำในการผลิต (MOQ), กระบวนการทำตัวอย่าง, มาตรฐานการเทียบสี และระยะเวลาจัดส่ง — ทีมฝ่ายขายพร้อมตอบทุกข้อสงสัยภายใน 24 ชั่วโมงทำการ
+        <?= b('home.faq.03') ?>
+
       </p>
       <a class="hv-15" href="mailto:<?= e(site('email')) ?>" style="align-self:flex-start;background:rgba(0,0,0,0.04);border:1px solid var(--border-glass);color:var(--text-primary);padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;margin-top:6px;backdrop-filter:blur(12px)">
-        สอบถามคำถามอื่นเพิ่มเติม →
+        <?= b('home.faq.04') ?>
+
       </a>
     </div>
 
@@ -708,19 +731,21 @@ $menuItems = [
     <!-- CTA Card -->
     <div class="apple-card" style="padding:60px 48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:center;background:linear-gradient(135deg,rgba(24,24,30,0.85) 0%,rgba(14,14,18,0.9) 100%)">
       <div style="display:flex;flex-direction:column;gap:18px">
-        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700">GET IN TOUCH</span>
+        <span style="font-family:var(--font-mono);font-size:clamp(18px,1.6vw,22px);letter-spacing:0.16em;color:var(--brand-orange);font-weight:700"><?= b('home.contact.01') ?></span>
         <h2 style="font-size:clamp(32px,4vw,54px);font-weight:700;line-height:1.18;color:#fff">
-          เริ่มงาน Trims กับเรา
+          <?= b('home.contact.02') ?>
+
         </h2>
         <p style="font-size:16.5px;line-height:1.7;color:var(--text-secondary)">
-          ส่งตัวอย่าง แบบร่าง หรือสเปกที่คุณต้องการมาให้เรา — ทีมงานฝ่ายเทคนิคและฝ่าย Support พร้อมประเมินและตอบกลับภายใน 24 ชั่วโมงทำการ
+          <?= b('home.contact.03') ?>
+
         </p>
       </div>
 
       <!-- Contact Actions -->
       <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:440px;justify-self:end">
         <a class="hv-12" href="mailto:<?= e(site('email')) ?>" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 24px var(--brand-orange-glow);transition:transform 0.2s">
-          <span>ขอใบเสนอราคา / Request a Quote</span>
+          <span><?= b('home.contact.04') ?></span>
           <span style="font-size:18px">→</span>
         </a>
         <a class="hv-16" href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
@@ -738,39 +763,39 @@ $menuItems = [
     <footer style="border-top:1px solid var(--border-light);padding-top:48px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:36px;font-size:14px;line-height:1.75;color:var(--text-secondary)">
       
       <div style="display:flex;flex-direction:column;gap:10px">
-        <span style="font-family:var(--font-heading);font-weight:700;font-size:16px;letter-spacing:0.06em;color:#fff">L.Y. INDUSTRIES CO., LTD.</span>
+        <span style="font-family:var(--font-heading);font-weight:700;font-size:16px;letter-spacing:0.06em;color:#fff"><?= b('home.contact.05') ?></span>
         <span><?= e(site('company_th')) ?><br><?= address_th_html('<br>') ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
-        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)">OPERATING HOURS</span>
+        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)"><?= b('home.contact.06') ?></span>
         <span><?= hours_th_html() ?><br><?= e(site('email')) ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
-        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)">SITEMAP</span>
+        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)"><?= b('home.contact.07') ?></span>
         <div style="display:flex;flex-direction:column;gap:4px">
-          <a class="hv-1" href="#hero" style="color:var(--text-secondary)">หน้าแรก</a>
-          <a class="hv-1" href="catalog.php" style="color:var(--text-secondary)">แคตาล็อกสินค้า</a>
-          <a class="hv-1" href="<?= e(site('trimrite_url')) ?>" target="_blank" rel="noopener" style="color:var(--text-secondary)">TRIMRITE®</a>
-          <a class="hv-1" href="about.php" style="color:var(--text-secondary)">เกี่ยวกับเรา</a>
-          <a class="hv-1" href="contact.php" style="color:var(--text-secondary)">ติดต่อเรา</a>
-          <a class="hv-1" href="#faq" style="color:var(--text-secondary)">คำถามพบบ่อย</a>
+          <a class="hv-1" href="#hero" style="color:var(--text-secondary)"><?= b('home.contact.08') ?></a>
+          <a class="hv-1" href="catalog.php" style="color:var(--text-secondary)"><?= b('home.contact.09') ?></a>
+          <a class="hv-1" href="<?= e(site('trimrite_url')) ?>" target="_blank" rel="noopener" style="color:var(--text-secondary)"><?= b('home.contact.10') ?></a>
+          <a class="hv-1" href="about.php" style="color:var(--text-secondary)"><?= b('home.contact.11') ?></a>
+          <a class="hv-1" href="contact.php" style="color:var(--text-secondary)"><?= b('home.contact.12') ?></a>
+          <a class="hv-1" href="#faq" style="color:var(--text-secondary)"><?= b('home.contact.13') ?></a>
         </div>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
-        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)">QUALITY STANDARDS</span>
-        <span>OEKO-TEX® Standard 100 Certified<br>สอดคล้องข้อกำหนด RSL ของแบรนด์กีฬาระดับโลก</span>
+        <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)"><?= b('home.contact.14') ?></span>
+        <span><?= b('home.contact.15') ?><br><?= b('home.contact.16') ?></span>
       </div>
 
     </footer>
 
     <!-- Copyright & Disclaimer -->
     <div style="border-top:1px solid rgba(255,255,255,0.05);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-tertiary)">
-      <span>© 2026 L.Y. INDUSTRIES CO., LTD. ALL RIGHTS RESERVED.</span>
-      <span>ALSO SERVING: UNDERWEAR · FOOTWEAR · BAGS</span>
-      <span>BANGKOK, THAILAND · EST. 1978</span>
+      <span><?= b('home.contact.17') ?></span>
+      <span><?= b('home.contact.18') ?></span>
+      <span><?= b('home.contact.19') ?></span>
     </div>
 
   </div>

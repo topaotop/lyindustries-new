@@ -33,13 +33,14 @@ function content_cache_clear(): void
 }
 
 /** Bump when the cached structure changes so old cache files are ignored. */
-const CONTENT_CACHE_VERSION = 2;
+const CONTENT_CACHE_VERSION = 3;
 
 /**
  * Everything public pages need from the DB in one round trip, or null when neither DB nor cache
- * is available: ['items' => list_key => rows, 'settings' => key => value, 'pages' => slug => row].
+ * is available: ['items' => list_key => rows, 'settings' => key => value, 'pages' => slug => row,
+ * 'blocks' => 'page.key' => ['th' => …, 'en' => …]].
  *
- * @return array{v: int, items: array<string, list<array<string, mixed>>>, settings: array<string, string>, pages: array<string, array<string, ?string>>}|null
+ * @return array{v: int, items: array<string, list<array<string, mixed>>>, settings: array<string, string>, pages: array<string, array<string, ?string>>, blocks: array<string, array{th: ?string, en: ?string}>}|null
  */
 function content_raw(): ?array
 {
@@ -76,13 +77,17 @@ function content_raw(): ?array
         );
         $settingRows = db_rows('SELECT setting_key, value FROM dbo.lyiweb_settings');
         $pageRows = db_rows('SELECT slug, title_th, title_en, meta_desc_th, meta_desc_en FROM dbo.lyiweb_pages');
+        $blockRows = db_rows('SELECT page_slug, block_key, value_th, value_en FROM dbo.lyiweb_blocks');
     } catch (Throwable $e) {
         error_log('[lyiweb] content DB unavailable: ' . $e->getMessage());
         content_write_file($marker, (string) time());
         return $memo = $stale;
     }
 
-    $data = ['v' => CONTENT_CACHE_VERSION, 'items' => [], 'settings' => [], 'pages' => []];
+    $data = ['v' => CONTENT_CACHE_VERSION, 'items' => [], 'settings' => [], 'pages' => [], 'blocks' => []];
+    foreach ($blockRows as $row) {
+        $data['blocks'][$row['page_slug'] . '.' . $row['block_key']] = ['th' => $row['value_th'], 'en' => $row['value_en']];
+    }
     foreach ($settingRows as $row) {
         $data['settings'][$row['setting_key']] = (string) $row['value'];
     }
@@ -241,4 +246,49 @@ function hours_th_html(): string
 function json_inner(string $value): string
 {
     return substr((string) json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG), 1, -1);
+}
+
+/* ---- Page copy (lyiweb_blocks) ---- */
+
+/** Language of the current request (set once per page; "th" until the English site exists). */
+function lang(?string $set = null): string
+{
+    static $lang = 'th';
+    if ($set !== null) {
+        $lang = $set;
+    }
+
+    return $lang;
+}
+
+/**
+ * Raw text of a copy block, key "page.section.nn" (e.g. "home.hero.01"). English falls back to
+ * Thai; a block missing from the DB falls back to includes/blocks/<page>.php.
+ */
+function block_text(string $key): string
+{
+    static $defaults = [];
+    $value = content_raw()['blocks'][$key] ?? null;
+    $lang = lang();
+    if ($value !== null) {
+        if ($lang !== 'th' && (string) ($value[$lang] ?? '') !== '') {
+            return (string) $value[$lang];
+        }
+        if ((string) ($value['th'] ?? '') !== '') {
+            return (string) $value['th'];
+        }
+    }
+    $page = strstr($key, '.', true);
+    if (!isset($defaults[$page])) {
+        $file = APP_ROOT . '/includes/blocks/' . basename((string) $page) . '.php';
+        $defaults[$page] = is_file($file) ? require $file : [];
+    }
+
+    return $defaults[$page][$key] ?? '';
+}
+
+/** Escaped copy block for templates: <?= b('home.hero.01') ?> */
+function b(string $key): string
+{
+    return e(block_text($key));
 }
