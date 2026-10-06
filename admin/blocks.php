@@ -148,6 +148,15 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
   <input type="hidden" name="page" value="<?= e($slug) ?>">
 
   <div class="toolbar">
+    <nav class="subnav" aria-label="ส่วนของหน้า" data-subnav data-page="<?= e($slug) ?>">
+      <button type="button" class="on" data-sec="all" aria-pressed="true">ทั้งหมด</button>
+<?php if ($hasSeo): ?>
+      <button type="button" data-sec="seo" aria-pressed="false">SEO</button>
+<?php endif; ?>
+<?php foreach ($bySection as $section => $items): ?>
+      <button type="button" data-sec="<?= e($section) ?>" aria-pressed="false"><?= e($sectionNames[$slug][$section] ?? $section) ?><small><?= count($items) ?></small></button>
+<?php endforeach; ?>
+    </nav>
     <input type="search" class="filter" placeholder="ค้นหาข้อความ…" data-filter>
     <label class="check"><input type="checkbox" data-only-missing> แสดงเฉพาะที่ยังไม่แปล (<?= $missingEn ?>)</label>
     <a class="btn btn-ghost" href="../<?= e($pages[$slug][1]) ?>" target="_blank" rel="noopener">ดูหน้านี้ ↗</a>
@@ -155,7 +164,7 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
   </div>
 
 <?php if ($hasSeo): ?>
-  <fieldset class="card">
+  <fieldset class="card" data-section-key="seo">
     <legend>SEO — ชื่อหน้า (title) และคำอธิบาย (meta description)</legend>
     <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
 <?php foreach (['title' => ['ชื่อหน้า', 200, 'แสดงบนแท็บเบราว์เซอร์และหัวข้อผลการค้นหา Google — แนะนำ 50–60 ตัวอักษร'], 'meta_desc' => ['คำอธิบาย', 400, 'ข้อความใต้หัวข้อในผลการค้นหา — แนะนำ 120–160 ตัวอักษร']] as $f => [$label, $max, $help]): ?>
@@ -170,7 +179,7 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
 <?php endif; ?>
 
 <?php foreach ($bySection as $section => $items): ?>
-  <fieldset class="card" data-section>
+  <fieldset class="card" data-section data-section-key="<?= e($section) ?>">
     <legend><?= e($sectionNames[$slug][$section] ?? $section) ?> <small class="muted"><?= e($slug . '.' . $section) ?></small></legend>
     <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
 <?php foreach ($items as $key => $b): $rows = max(1, min(6, (int) ceil(mb_strlen($b['th']) / 60))); ?>

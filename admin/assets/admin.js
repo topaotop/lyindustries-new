@@ -6,19 +6,48 @@
   const filter = document.querySelector('[data-filter]');
   const onlyMissing = document.querySelector('[data-only-missing]');
 
+  // sub-menu: show one section of the page at a time ("all" = everything); remembered per page
+  const subnav = document.querySelector('[data-subnav]');
+  const secKey = subnav ? 'lyiweb-admin-section:' + subnav.dataset.page : null;
+  let currentSec = 'all';
+  try { currentSec = (secKey && sessionStorage.getItem(secKey)) || 'all'; } catch (err) { /* storage blocked */ }
+  if (subnav && !subnav.querySelector(`[data-sec="${CSS.escape(currentSec)}"]`)) currentSec = 'all';
+
   const applyFilter = () => {
     const q = (filter?.value || '').trim().toLowerCase();
     const missing = !!onlyMissing?.checked;
+    const bySection = q === '' && currentSec !== 'all';   // a search always looks through every section
     rows.forEach(row => {
       const text = [...row.querySelectorAll('textarea')].map(t => t.value).join(' ').toLowerCase() + ' ' + row.textContent.toLowerCase();
       row.hidden = (q !== '' && !text.includes(q)) || (missing && row.dataset.missing !== '1');
     });
-    document.querySelectorAll('[data-section]').forEach(sec => {
-      sec.hidden = sec.querySelectorAll('[data-row]:not([hidden])').length === 0;
+    document.querySelectorAll('[data-section-key]').forEach(sec => {
+      const key = sec.dataset.sectionKey;
+      const outOfSection = bySection && key !== currentSec;
+      sec.hidden = key === 'seo'
+        ? outOfSection || q !== '' || missing
+        : outOfSection || sec.querySelectorAll('[data-row]:not([hidden])').length === 0;
+    });
+    subnav?.querySelectorAll('[data-sec]').forEach(b => {
+      const on = b.dataset.sec === (q === '' ? currentSec : 'all');
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
     });
   };
   filter?.addEventListener('input', applyFilter);
   onlyMissing?.addEventListener('change', applyFilter);
+  subnav?.addEventListener('click', e => {
+    const btn = e.target.closest('[data-sec]');
+    if (!btn) return;
+    currentSec = btn.dataset.sec;
+    try { sessionStorage.setItem(secKey, currentSec); } catch (err) { /* storage blocked */ }
+    if (filter) filter.value = '';
+    applyFilter();
+    // jump to the start of the content, just under the sticky toolbar
+    const form = document.getElementById('blocks-form');
+    if (form) window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+  });
+  if (subnav) applyFilter();
 
   // character counters on SEO fields
   document.querySelectorAll('[data-count]').forEach(t => {
