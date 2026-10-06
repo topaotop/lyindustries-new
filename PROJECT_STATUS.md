@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — L.Y. Industries website
 
-อัปเดตล่าสุด: 5 ต.ค. 2026 · branch `main` · dev: https://lysystems.sytes.net/lyindustries-dev/ (ภายใน http://192.168.0.70/lyindustries-dev/) · **version บน dev: v1.0.1** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
+อัปเดตล่าสุด: 6 ต.ค. 2026 · branch `main` · dev: https://lysystems.sytes.net/lyindustries-dev/ (ภายใน http://192.168.0.70/lyindustries-dev/) · **version บน dev: v1.0.1** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
 
 ## ✅ งานที่ทำเสร็จแล้ว
 
@@ -21,41 +21,54 @@
 | 5 ต.ค. 2026 | ระบบ deploy log แบบมี version: `DEPLOY_LOG.md` (SemVer, 1 deploy = 1 git tag) + ขั้นตอนใน `CLAUDE.md` | `4b03aba` |
 | 5 ต.ค. 2026 | ใส่วิดีโอ YouTube หน้า About: https://www.youtube.com/watch?v=Lr59gy7RcWo (embed แบบ youtube-nocookie, `start=6`) | `080b64f` |
 | 5 ต.ค. 2026 | เพิ่ม `.gitignore` (กัน `connectgrp.php` ที่มีรหัส DB + ไฟล์ขยะ OS/editor), เอา `.DS_Store` ออกจาก repo | `a1dd48b` |
+| 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
+| 6 ต.ค. 2026 | รูป "รอใส่รูป" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | (commit นี้) |
+| 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | (commit นี้) |
 
 ## 🔄 งานที่กำลังทำ
 
-- รอผู้ใช้ตรวจ `CLAUDE.md` / `PROJECT_STATUS.md`
+- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → ร่าง design ให้ผู้ใช้ตรวจก่อนลงมือ
 - รอทดสอบหน้าเว็บบน dev ด้วยเบราว์เซอร์จริง (โดยเฉพาะ scroll animation หน้าแรก)
 
 ## 🐞 Bug / ปัญหาที่รู้อยู่
 
 | ปัญหา | ผลกระทบ | สถานะ |
 |---|---|---|
-| `assets/dye-yarn-machine.png` ยังไม่มีไฟล์ (process ขั้น 03 ย้อมสี) | ภาพพื้นหลังขั้น 03 ไม่ขึ้น (404) | รอภาพจาก Pack |
-| ภาพ PNG ใน `assets/img/` รวม ~15MB (lab-dip 6.6MB, dye-dispenser 4.1MB, spectrophotometer 3.4MB) | หน้าแรกโหลดช้า | ยังไม่แก้ — ควรแปลงเป็น JPG/WebP (ต้องไม่เปลี่ยนหน้าตา) |
+| ภาพ PNG ใน `assets/img/` รวม ~15MB (lab-dip 6.6MB, dye-dispenser 4.1MB, spectrophotometer 3.4MB) | หน้าแรกโหลดช้า | จะแก้ในหลังบ้าน (อัปโหลดแล้วย่อ/แปลง WebP อัตโนมัติ) |
 | Scroll animation (ไทล์บินเข้าที่, process pipeline) ยืนยันใน headless Chrome ได้แค่ว่า loop ทำงาน/ไม่มี JS error | อาจมีจุดต่างจากต้นฉบับที่ยังไม่เห็น | รอเช็กในเบราว์เซอร์จริง |
+| ภาพ `assets/prod-waistband.jpg` (PROD-05) มีโลโก้ "LAKERS" | อาจขัดกฎ "ห้ามแสดงชื่อแบรนด์ลูกค้า" | รอผู้ใช้/Pack ตัดสิน — เปลี่ยนรูปผ่านหลังบ้านได้ |
 
 ## 📋 งานที่ต้องทำต่อ
 
-1. ฟอร์มขอใบเสนอราคา (`contact.php`) ยังเป็น `mailto:` → ทำ backend รับฟอร์มจริง (PHP) — ต้องเลือกวิธีส่งเมล/เก็บข้อมูล
-2. ~~YouTube video ID หน้า About~~ ✅ ใส่แล้ว (`Lr59gy7RcWo`, เริ่มที่วินาที 6)
-3. ภาพ process บางขั้นดึงตรงจาก `lyindustries.com/img/` และวิดีโอ hero จาก `lyindustries.com/media/` → ย้ายมาเก็บใน `assets/`
-4. ภาพจริงแต่ละหมวด/Facilities + ภาพตัวอย่างสินค้า 6 รายการ (gallery หน้าแรกตอนนี้เป็นกรอบเส้นประ — ใส่ path ที่ `img` ใน `$galleryItems`)
-5. Optimize ภาพ PNG ใหญ่ใน `assets/img/`
-6. หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
-7. ~~หา URL สาธารณะสำหรับ dev~~ ✅ https://lysystems.sytes.net/lyindustries-dev/ — เหลือ: วางแผนขึ้น production บน z.com (วิธี upload, ทดสอบบน PHP 8.2)
-11. **แก้ `connectgrp.php`** ให้ company server (192.168.0.70) ใช้ DB `test_LYI` — ตอนนี้ถูกนับเป็น production และจะต่อ DB `LYI` ตัวจริง (ต้องทำก่อนเริ่มงานหลังบ้าน)
-12. ยืนยันกับ z.com ว่ามี extension `sqlsrv`/`pdo_sqlsrv` และต่อออกไป SQL Server 183.89.245.21 ได้ — ถ้าไม่ได้ ต้องเปลี่ยนแผนหลังบ้าน
-13. ยืนยันว่า `C:\PHP84` บน 192.168.0.70 เปิด extension `sqlsrv` แล้ว (คอมเมนต์ของ bkkkids ระบุว่ามีแค่ `pdo_sqlsrv`)
-14. **แผน launch ขึ้น production** (www.lyindustries.com ตอนนี้ยังเป็นเว็บเก่า): สำรองเว็บเก่า, map + redirect 301 จากหน้าเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`), สำรองจาก z.com โดยตรง (source บน 192.168.0.73 เก่ากว่าเว็บจริง), เก็บ `/lyinspirationhub/`, `/img/`, `/media/` ไว้ (หรือย้ายภาพ/วิดีโอที่หน้าแรกใช้มาไว้ใน `assets/` ก่อน — ดูข้อ 3), เพิ่ม `robots.txt` + `sitemap.xml` — รายละเอียดใน CLAUDE.md หัวข้อ Production
-8. ~~เพิ่ม `.gitignore`~~ ✅ ทำแล้ว
-9. เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
-10. Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) — ตามกฎใหม่เอกสารไม่ขึ้น server
+**Roadmap (ลำดับที่ตกลงกัน 6 ต.ค. 2026)**
+1. **Phase 1 — ย้ายเนื้อหาเข้า DB** (ตาราง `web_*` มีคอลัมน์ th/en) ให้หน้าเว็บอ่านจาก DB โดย output เท่าเดิม
+2. **Phase 2 — หลังบ้าน admin**: login ด้วย `sysmnuser`, ตารางสิทธิ์ของเว็บ, แก้ข้อความ/รูป 2 ภาษา, อัปโหลดรูป (ย่อ/WebP), ฟอร์ม contact บันทึกลง DB (แทน `mailto:`), เปลี่ยนภาษา default ได้
+3. **Phase 3 — หน้าภาษาอังกฤษ** `/` = ไทย (default), `/en/` = อังกฤษ, ปุ่มเปลี่ยนภาษา, `hreflang`
+4. **Phase 4 — SEO/AEO**: meta description/canonical/OG ทุกหน้า 2 ภาษา, `sitemap.xml` + `robots.txt`, schema `FAQPage`, ความเร็ว — วัดผลด้วย Ahrefs Site Audit
+5. **API** (JSON) ใช้ชั้นข้อมูลเดียวกับหลังบ้าน — ออกแบบพร้อม Phase 2
 
-### รอยืนยันจาก Pack
+**งานย่อย**
+- เปลี่ยน LINE URL / `mailto:` ที่ยัง hard-code ใน `index.php`, `about.php`, `contact.php` ให้ใช้ค่าคงที่ `SITE_*`
+- หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
+- Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
+- รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
+
+**Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
+- ผู้ใช้สำรองเว็บเก่าจาก z.com แล้ว (6 ต.ค. 2026)
+- redirect 301 หน้าเก่า 8 หน้า → หน้าแรก: ✅ ทำแล้วใน `.htaccess` + `web.config`
+- ต้องเก็บ `/lyinspirationhub/`, `/img/`, `/media/` บน server ไว้ (หน้าแรกยังดึงภาพ/วิดีโอจากที่นั่นจนกว่าจะเปลี่ยนผ่านหลังบ้าน)
+- วิธี upload ไป z.com — ยังไม่ได้กำหนด
+
+### รอยืนยัน
 - เวลาทำการ: 08:30–17:30 + ส. 08:30–12:00 (ที่ใช้อยู่ตอนนี้) หรือ 09:00–18:00
-- ภาพจริง, รหัสสินค้าตัวอย่าง 6 รายการ (YouTube video ID ได้แล้ว — DESIGN-LOCK.md ยังเขียนว่ารออยู่)
+- ภาพจริง (process ขั้น 03, ตัวอย่างสินค้า 6 รายการ, หมวดสินค้า) — ตอนนี้แสดง "รอใส่รูป" จะอัปโหลดผ่านหลังบ้าน
+- ผู้รับผิดชอบเนื้อหาแต่ละส่วน (รวมคำแปลภาษาอังกฤษ) — ยังไม่กำหนด
 - (จาก CONTENT-DRAFT) เลข certificate OEKO-TEX, ชื่อมาตรฐานแล็บ, ISO/GRS/Higg, ตัวเลขโรงงาน
+
+### ยืนยันแล้ว (6 ต.ค. 2026)
+- z.com มี `sqlsrv`/`pdo_sqlsrv` และต่อ SQL Server 183.89.245.21 ได้ (Inspiration Hub ใช้อยู่) · โควตา hosting ~10GB ใช้ไป 1.6GB
+- `C:\PHP84` บน 192.168.0.70 มี `sqlsrv` (ระบบอื่นใช้อยู่)
+- ภาพ/วิดีโอเดิมยังไม่ต้องย้าย — จะเปลี่ยนใหม่ผ่านหลังบ้าน
 
 ## 🧭 Technical decisions
 
@@ -70,4 +83,7 @@
 | 5 ต.ค. 2026 | dev server ใช้ `web.config` สลับเป็น PHP 8.4 (`C:\PHP84`) แบบเดียวกับ lyi-dashboard | IIS default เป็น PHP 7.1 รันโค้ด PHP 8 ไม่ได้ |
 | 5 ต.ค. 2026 | ทุก deploy มี version SemVer + git tag + entry ใน `DEPLOY_LOG.md`, deploy เฉพาะ commit ที่สะอาด, ไม่ deploy `*.md` | ย้อนดูได้ว่าบน server เป็นโค้ดชุดไหน และ rollback ได้ |
 | 5 ต.ค. 2026 | 3 environment: local (COM-CPU-055) → company server .70 (IIS, public ผ่าน lysystems.sytes.net) → production z.com (LiteSpeed PHP 8.2) ซึ่งหลังบ้านจะต่อ DB ในบริษัทผ่าน 183.89.245.21 | ตามโครงสร้างที่มีอยู่ของบริษัท; ผลคือโค้ดต้องรองรับ PHP 8.2 และต้องมีทั้ง `.htaccess` + `web.config` |
-| 5 ต.ค. 2026 | gallery ตัวอย่างสินค้าแสดงกรอบ placeholder เมื่อยังไม่มีรูป | เดิมเป็นช่องลากวางรูปของเครื่องมือออกแบบ ซึ่งใช้บนเว็บจริงไม่ได้ |
+| 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "รอใส่รูป" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
+| 6 ต.ค. 2026 | `connectgrp.php` แยก environment จาก HTTP_HOST แทนชื่อเครื่อง; โดเมนที่ไม่รู้จัก → DB ทดสอบ | เดิม .70 ถูกนับเป็น production; fail-safe ไปทาง DB ทดสอบ |
+| 6 ต.ค. 2026 | หน้าเว็บเก่าทั้ง 8 หน้า redirect 301 ไปหน้าแรก (ไม่ส่ง query string ต่อ) | ผู้ใช้เลือก; ไม่มีหน้าเทียบเท่า 1:1 ในเว็บใหม่ |
+| 6 ต.ค. 2026 | ใช้ driver `sqlsrv` (เหมือน `connectgrp.php` และระบบอื่นของบริษัท) · ตารางใหม่ขึ้นต้น `web_` · login ด้วย `sysmnuser` + ตารางสิทธิ์ของเว็บเอง | ตามมาตรฐานระบบในบริษัท |

@@ -259,12 +259,12 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <p>ทุกชิ้นมีรหัสอ้างอิงเฉพาะ ขอตัวอย่างจริงเพื่อเทียบสัมผัส หรือสั่งพัฒนาต่อยอดได้ทันที</p>
     </div>
     <div class="sqgrid">
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b>LY2086</b><span>Elastic Jacquard</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/RASCHEL.jpg" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b>RLY1319</b><span>Raschel Knit Tape</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/BRAIDING.jpg" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b>RLY1452</b><span>Braided Cord Tipped</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/FINISHING.jpg" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b>LY2101</b><span>Silicone Grip Tape</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/CROCHET.jpg" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b>RLY1377</b><span>Engineered Waistband</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="https://lyindustries.com/img/nl.jpg" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b>LY2144</b><span>Woven High-Tensile</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b>LY2086</b><span>Elastic Jacquard</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b>RLY1319</b><span>Raschel Knit Tape</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b>RLY1452</b><span>Braided Cord Tipped</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b>LY2101</b><span>Silicone Grip Tape</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b>RLY1377</b><span>Engineered Waistband</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b>LY2144</b><span>Woven High-Tensile</span></div></a>
     </div>
   </div>
 </section>

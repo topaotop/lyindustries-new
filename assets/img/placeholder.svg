@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
+  <!-- Shown wherever a real photo has not been uploaded yet (replace via admin). -->
+  <rect width="800" height="600" fill="#e8e8ed"/>
+  <rect x="250" y="160" width="300" height="280" rx="18" fill="none" stroke="#a1a1a6" stroke-width="4" stroke-dasharray="14 10"/>
+  <g fill="none" stroke="#86868b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" transform="translate(340 205)">
+    <rect x="0" y="0" width="120" height="96" rx="12"/>
+    <circle cx="36" cy="32" r="11"/>
+    <path d="M0 80l38-34 28 24 22-18 32 28"/>
+  </g>
+  <text x="400" y="368" text-anchor="middle" font-family="Tahoma, 'Leelawadee UI', sans-serif" font-size="34" font-weight="700" fill="#515154">รอใส่รูป</text>
+  <text x="400" y="408" text-anchor="middle" font-family="Tahoma, 'Leelawadee UI', sans-serif" font-size="20" fill="#86868b">Image pending · upload via admin</text>
+</svg>

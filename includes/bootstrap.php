@@ -13,6 +13,15 @@ const SITE_LINE_URL      = 'https://line.me/R/ti/p/@lyindustries';
 const SITE_TRIMRITE_URL  = 'https://www.trimrite.com/';
 const SITE_INSPIRATION_URL = 'https://www.lyindustries.com/lyinspirationhub/';
 
+/** Shown wherever a real photo has not been uploaded yet. */
+const SITE_PLACEHOLDER_IMG = 'assets/img/placeholder.svg';
+
+/** Image path, or the "image pending" placeholder when none is set. */
+function img_src(string $path): string
+{
+    return $path !== '' ? $path : SITE_PLACEHOLDER_IMG;
+}
+
 /** Escape a value for HTML text or attribute output. */
 function e(string|int|float|null $value): string
 {

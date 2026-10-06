@@ -307,7 +307,7 @@ require __DIR__ . '/includes/home-data.php';
       <div style="position:absolute;inset:0;z-index:1;overflow:hidden">
         <?php foreach ($steps as $i => $s): ?>
           <div data-step-bg="<?= $i ?>" style="position:absolute;inset:0;opacity:0;transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1);will-change:opacity">
-            <?php if ($s['img'] !== ''): ?><img src="<?= e($s['img']) ?>" alt="<?= e($s['th']) ?>" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)"><?php endif; ?>
+            <img src="<?= e(img_src($s['img'])) ?>" alt="<?= e($s['th']) ?>" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)">
             <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(8,8,10,0.88) 0%, rgba(8,8,10,0.6) 55%, rgba(8,8,10,0.35) 100%)"></div>
           </div>
         <?php endforeach; ?>
@@ -619,11 +619,7 @@ require __DIR__ . '/includes/home-data.php';
       <?php foreach ($galleryItems as $g): ?>
         <div class="apple-card" style="padding:14px;display:flex;flex-direction:column;gap:12px">
           <div style="aspect-ratio:1;border-radius:14px;overflow:hidden;background:#e8e8ed;position:relative">
-            <?php if ($g['img'] !== ''): ?>
-            <img src="<?= e($g['img']) ?>" alt="<?= e($g['code'] . ' ' . $g['type']) ?>" style="width:100%;height:100%;object-fit:cover;display:block">
-            <?php else: ?>
-            <div class="img-placeholder"><?= e($g['placeholder']) ?></div>
-            <?php endif; ?>
+            <img src="<?= e(img_src($g['img'])) ?>" alt="<?= e($g['code'] . ' ' . $g['type']) ?>" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">
             <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--text-primary)"><?= e($g['code']) ?></span>

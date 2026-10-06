@@ -47,11 +47,11 @@ $tiles = [
     ['en' => 'SPORTS ACCESSORIES', 'ic' => $icons['cap'],    'th' => 'ผ้าคาดหัว ริสแบนด์ และอุปกรณ์กีฬา', 'img' => '',                          'dx' => 240,  'dy' => 200, 'rot' => -3, 'isMore' => true],
 ];
 
-// 6-step process journey (scroll-driven in assets/js/home.js — keep the count in sync there via data attributes).
+// 6-step process journey; empty 'img' shows placeholder.svg (scroll-driven in assets/js/home.js — keep the count in sync there via data attributes).
 $steps = [
     ['n' => '01', 'th' => 'เส้นด้าย & วัตถุดิบคุณภาพ', 'short' => 'เส้นด้าย', 'desc' => 'คัดเลือกเส้นด้าย ทั้งโพลีเอสเตอร์ ไนลอน และสแปนเดกซ์ ให้เหมาะกับโครงสร้าง ความยืดหยุ่น และสัมผัสที่ต้องการของแต่ละชิ้นงาน', 'tag' => 'OEKO-TEX® STANDARD', 'img' => 'https://lyindustries.com/img/bgvideo1.jpg'],
     ['n' => '02', 'th' => 'ทอ / ถัก / ถักเชือก', 'short' => 'ทอ/ถัก/ถักเชือก', 'desc' => 'เครื่องจักรรองรับโครงสร้างงานทอ งานถัก และงานถักเชือกหลากหลายรูปแบบ ตั้งแต่งานละเอียด เนื้อนุ่ม ไปจนถึงงานที่ต้องการรับแรงสูง', 'tag' => 'WEAVING · KNITTING · BRAIDING', 'img' => 'https://lyindustries.com/img/nl.jpg'],
-    ['n' => '03', 'th' => 'โรงย้อมและห้องแล็บภายใน', 'short' => 'ย้อมสีและแล็บ', 'desc' => 'ระบบจ่ายสีย้อมอัตโนมัติ ควบคุมสูตรด้วยคอมพิวเตอร์ เทียบสีตามผ้าตัวอย่างและรหัส Pantone พร้อมจัดทำ Lab dip เพื่ออนุมัติสี ควบคุมคุณภาพสีตามมาตรฐานที่กำหนดในทุกล็อตการสั่งซื้อ', 'tag' => 'PANTONE MATCHING', 'img' => 'assets/dye-yarn-machine.png'], // file still missing — awaiting image from Pack
+    ['n' => '03', 'th' => 'โรงย้อมและห้องแล็บภายใน', 'short' => 'ย้อมสีและแล็บ', 'desc' => 'ระบบจ่ายสีย้อมอัตโนมัติ ควบคุมสูตรด้วยคอมพิวเตอร์ เทียบสีตามผ้าตัวอย่างและรหัส Pantone พร้อมจัดทำ Lab dip เพื่ออนุมัติสี ควบคุมคุณภาพสีตามมาตรฐานที่กำหนดในทุกล็อตการสั่งซื้อ', 'tag' => 'PANTONE MATCHING', 'img' => ''], // no photo yet (dye-yarn-machine.png) — placeholder shown
     ['n' => '04', 'th' => 'Finishing — งานตกแต่งสำเร็จ', 'short' => 'Finishing', 'desc' => 'งานสกรีน พิมพ์ Sublimation ทำปลายเชือก (Tipping) ด้วยซิลิโคน โลหะ และฟิล์ม เคลือบซิลิโคนกันลื่น ตัดตามความยาว และปั๊มนูน–จม ทั้งตัวอักษรและโลโก้ พร้อมนำไปเย็บประกอบบนชิ้นงาน', 'tag' => 'VERSATILE FINISHING', 'img' => 'https://lyindustries.com/img/BRAIDING.jpg'],
     ['n' => '05', 'th' => 'QC ตรวจสอบคุณภาพทุกล็อต', 'short' => 'QC ทุกล็อต', 'desc' => 'ตรวจสอบคุณภาพและทดสอบคุณสมบัติด้วยห้องแล็บภายใน ทั้งแรงดึง ความยืดหยุ่นหลังซัก และความคงทนของสี (Colorfastness) เพื่อให้ชิ้นงานผ่านเกณฑ์มาตรฐานที่กำหนดก่อนส่งมอบ', 'tag' => 'IN-HOUSE LAB & QC', 'img' => 'https://lyindustries.com/img/FINISHING.jpg'],
     ['n' => '06', 'th' => 'ส่งมอบตรงเวลา ซัพพลายเออร์เดียว', 'short' => 'ส่งมอบตรงเวลา', 'desc' => 'ซัพพลายเออร์รายเดียวรับผิดชอบคุณภาพตลอดสาย ลด lead time และตัดปัญหาความผิดพลาดในการประสานงานระหว่างโรงงานย่อย', 'tag' => 'RELIABLE DELIVERY', 'img' => 'https://lyindustries.com/img/CROCHET.jpg'],
@@ -76,14 +76,14 @@ $productCards = [
     ['th' => 'งาน Finish หลากหลายแบบ (Finishing & Branding)', 'en' => 'FINISHING', 'desc' => 'ต่อยอดเทปให้ครบทั้งฟังก์ชันและแบรนด์ — ซิลิโคนกันลื่น พิมพ์ลาย heat transfer ปั๊มนูน เลเซอร์ ตัดร้อน/ตัดเย็น ไปจนถึงงานป้ายเลเบล เลือกผสมได้ตามการใช้งาน', 'spec' => 'Silicone / Print / Emboss / Laser / Labels', 'code' => 'PROD-06', 'img' => 'assets/prod-finishing.jpg'],
 ];
 
-// Inspiration Hub samples. 'img' is empty until real product photos arrive — a placeholder is shown instead.
+// Inspiration Hub samples. 'img' is empty until real product photos arrive — placeholder.svg is shown instead.
 $galleryItems = [
-    ['code' => 'LY2086',  'type' => 'Elastic Jacquard',     'placeholder' => 'LY2086 Elastic',    'img' => ''],
-    ['code' => 'RLY1319', 'type' => 'Raschel Knit Tape',    'placeholder' => 'RLY1319 Raschel',   'img' => ''],
-    ['code' => 'RLY1452', 'type' => 'Braided Cord Tipped',  'placeholder' => 'RLY1452 Cord',      'img' => ''],
-    ['code' => 'LY2101',  'type' => 'Silicone Grip Tape',   'placeholder' => 'LY2101 Silicone',   'img' => ''],
-    ['code' => 'RLY1377', 'type' => 'Engineered Waistband', 'placeholder' => 'RLY1377 Waistband', 'img' => ''],
-    ['code' => 'LY2144',  'type' => 'Woven High-Tensile',   'placeholder' => 'LY2144 Woven',      'img' => ''],
+    ['code' => 'LY2086',  'type' => 'Elastic Jacquard',     'img' => ''],
+    ['code' => 'RLY1319', 'type' => 'Raschel Knit Tape',    'img' => ''],
+    ['code' => 'RLY1452', 'type' => 'Braided Cord Tipped',  'img' => ''],
+    ['code' => 'LY2101',  'type' => 'Silicone Grip Tape',   'img' => ''],
+    ['code' => 'RLY1377', 'type' => 'Engineered Waistband', 'img' => ''],
+    ['code' => 'LY2144',  'type' => 'Woven High-Tensile',   'img' => ''],
 ];
 
 // FAQ accordion; the first item starts open.

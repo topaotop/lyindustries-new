@@ -29,7 +29,7 @@
 
 ```
 request → index.php / about.php / catalog.php / contact.php
-            └─ includes/bootstrap.php   ค่าคงที่ของเว็บ (โทร, อีเมล, LINE, URL ภายนอก), site_nav(), e(), external_attrs()
+            └─ includes/bootstrap.php   ค่าคงที่ของเว็บ (โทร, อีเมล, LINE, URL ภายนอก, SITE_PLACEHOLDER_IMG), site_nav(), e(), external_attrs(), img_src()
             └─ includes/home-data.php   (เฉพาะ index.php) array เนื้อหารายการทั้งหมดของหน้าแรก
             └─ includes/site-header.php (about/catalog/contact) ตั้ง $activeNav, $quoteHref ก่อน require
             └─ includes/site-footer.php (catalog/contact) footer 4 คอลัมน์ — about ใช้ footer สั้นของตัวเอง
@@ -55,14 +55,14 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ includes/            PHP partial/ข้อมูล (ห้ามเปิดตรงจากเว็บ — บล็อกทั้งใน .htaccess และ web.config)
 ├─ assets/
 │  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
-│  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
+│  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, placeholder.svg (รอใส่รูป), ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก
-├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore, ยังไม่มีหน้าไหน require
+├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore (ไม่อยู่ใน git — สำรองเอง), ยังไม่มีหน้าไหน require
 ├─ .gitignore           connectgrp.php, .DS_Store, Thumbs.db, desktop.ini, .vscode/, .idea/
-├─ .htaccess            Apache: DirectoryIndex, 301 *.html → *.php, บล็อก includes/
-├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php
+├─ .htaccess            Apache/LiteSpeed: DirectoryIndex, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก, บล็อก includes/
+├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ CLAUDE.md            ไฟล์นี้
@@ -90,7 +90,7 @@ request → index.php / about.php / catalog.php / contact.php
 - ทุกไฟล์ PHP ขึ้นต้น `declare(strict_types=1);` (ยกเว้น partial ที่เป็น template ล้วน)
 - **escape ทุกค่าที่ echo ด้วย `e()`** (`htmlspecialchars` ENT_QUOTES|ENT_HTML5 UTF-8) ใช้ `<?= e($x) ?>` ใน template
 - template ใช้ alternative syntax: `<?php foreach (...): ?> … <?php endforeach; ?>`, `<?php if (...): ?> … <?php endif; ?>`
-- array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ไม่มีรูป (template เช็ก `!== ''`)
+- array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ยังไม่มีรูป → ใช้ `img_src($img)` ซึ่งคืน `assets/img/placeholder.svg` ("รอใส่รูป") ให้คนเห็นว่าต้องอัปโหลด; ห้ามปล่อย `<img>` ชี้ไฟล์ที่ไม่มี
 - ลิงก์ออกนอกเว็บใช้ `'external' => true` + `external_attrs()` → `target="_blank" rel="noopener"`
 - ค่าที่ใช้หลายที่ (โทร, อีเมล, URL) ให้ใช้/เพิ่มเป็นค่าคงที่ `SITE_*` ใน `includes/bootstrap.php` ไม่ hard-code ซ้ำ
 - ลิงก์ภายในใช้ path แบบ relative (`about.php`, `index.php#process`) — เว็บต้องทำงานได้ใต้ sub-folder (`/lyindustries-dev/`, `/lyindustries-new-dev/`)
@@ -124,7 +124,8 @@ request → index.php / about.php / catalog.php / contact.php
 **ผลต่อโค้ด**
 - **โค้ดต้องรันได้บน PHP 8.2** เพราะ production เป็น 8.2 ห้ามใช้ฟีเจอร์ที่มีเฉพาะ 8.3/8.4 (เช่น typed class constants, `#[\Override]`, `json_validate()`, property hooks, asymmetric visibility, `new` แบบไม่ใส่วงเล็บแล้ว chain) — ตรวจด้วยการรันกับ PHP 8.2 ก่อน deploy production
 - ต้องมีกฎทั้ง `.htaccess` (local + production LiteSpeed) และ `web.config` (company server IIS) ให้ตรงกันเสมอ
-- `connectgrp.php` เลือก environment จากชื่อเครื่อง (`gethostname()`): `COM-CPU-055` = dev, เครื่องอื่นทั้งหมด = production → **เครื่อง 192.168.0.70 จะถูกนับเป็น production และต่อ DB `LYI` ตัวจริง** ต้องแก้ก่อนเริ่มใช้ DB บน company server (ยังไม่แก้ — ดู PROJECT_STATUS)
+- `connectgrp.php` เลือก environment จาก**โดเมนที่เข้าเว็บ** (`$_SERVER['HTTP_HOST']`, แก้ 6 ต.ค. 2026): `www.lyindustries.com` / `lyindustries.com` = `production` (DB `LYI` @ 183.89.245.21) · `lysystems.sytes.net` / `192.168.0.70` = `test` · อื่นๆ ทั้งหมดรวม CLI = `dev` (ทั้ง test/dev ใช้ `test_LYI` @ 192.168.0.22) — โดเมนที่ไม่รู้จักจะตกไป DB ทดสอบเสมอ ถ้าเพิ่มโดเมน production ใหม่ต้องเพิ่มใน `$PROD_HOSTS`
+- ตารางผู้ใช้ `sysmnuser` มีทั้งใน `LYI` และ `test_LYI` · ตารางใหม่ของเว็บให้ขึ้นต้น `web_` (เช็กแล้วยังไม่มีตารางชื่อ `web%`/`site%`/`cms%` ในทั้งสอง DB)
 ### Production ตอนนี้ = เว็บเวอร์ชันเดิม (สำรวจ 5 ต.ค. 2026)
 
 https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** — ห้ามแตะ/deploy ทับจนกว่าจะมีแผน launch ที่ผู้ใช้อนุมัติ

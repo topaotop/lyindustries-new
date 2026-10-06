@@ -5,6 +5,10 @@ DirectoryIndex index.php
   # Old static URLs (index.html, about.html, …) → PHP pages
   RewriteCond %{REQUEST_URI} ^(.*/)(index|about|catalog|contact)\.html$
   RewriteRule \.html$ %1%2.php [R=301,L,QSA]
+
+  # Pages of the previous www.lyindustries.com site → homepage (query string dropped)
+  RewriteCond %{REQUEST_URI} ^(.*/)(innovation|shop|products_detail|braiding|crochet|finishing|needle_loom|raschel)\.php$
+  RewriteRule \.php$ %1? [R=301,L]
 </IfModule>
 
 # Shared PHP partials are not pages
