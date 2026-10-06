@@ -22,7 +22,7 @@
 | 5 ต.ค. 2026 | ใส่วิดีโอ YouTube หน้า About: https://www.youtube.com/watch?v=Lr59gy7RcWo (embed แบบ youtube-nocookie, `start=6`) | `080b64f` |
 | 5 ต.ค. 2026 | เพิ่ม `.gitignore` (กัน `connectgrp.php` ที่มีรหัส DB + ไฟล์ขยะ OS/editor), เอา `.DS_Store` ออกจาก repo | `a1dd48b` |
 | 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
-| 6 ต.ค. 2026 | รูป "รอใส่รูป" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
+| 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 
 ## 🔄 งานที่กำลังทำ
@@ -61,7 +61,7 @@
 
 ### รอยืนยัน
 - เวลาทำการ: 08:30–17:30 + ส. 08:30–12:00 (ที่ใช้อยู่ตอนนี้) หรือ 09:00–18:00
-- ภาพจริง (process ขั้น 03, ตัวอย่างสินค้า 6 รายการ, หมวดสินค้า) — ตอนนี้แสดง "รอใส่รูป" จะอัปโหลดผ่านหลังบ้าน
+- ภาพจริง (process ขั้น 03, ตัวอย่างสินค้า 6 รายการ, หมวดสินค้า) — ตอนนี้แสดง "Image pending" จะอัปโหลดผ่านหลังบ้าน
 - ผู้รับผิดชอบเนื้อหาแต่ละส่วน (รวมคำแปลภาษาอังกฤษ) — ยังไม่กำหนด
 - (จาก CONTENT-DRAFT) เลข certificate OEKO-TEX, ชื่อมาตรฐานแล็บ, ISO/GRS/Higg, ตัวเลขโรงงาน
 
@@ -83,7 +83,7 @@
 | 5 ต.ค. 2026 | dev server ใช้ `web.config` สลับเป็น PHP 8.4 (`C:\PHP84`) แบบเดียวกับ lyi-dashboard | IIS default เป็น PHP 7.1 รันโค้ด PHP 8 ไม่ได้ |
 | 5 ต.ค. 2026 | ทุก deploy มี version SemVer + git tag + entry ใน `DEPLOY_LOG.md`, deploy เฉพาะ commit ที่สะอาด, ไม่ deploy `*.md` | ย้อนดูได้ว่าบน server เป็นโค้ดชุดไหน และ rollback ได้ |
 | 5 ต.ค. 2026 | 3 environment: local (COM-CPU-055) → company server .70 (IIS, public ผ่าน lysystems.sytes.net) → production z.com (LiteSpeed PHP 8.2) ซึ่งหลังบ้านจะต่อ DB ในบริษัทผ่าน 183.89.245.21 | ตามโครงสร้างที่มีอยู่ของบริษัท; ผลคือโค้ดต้องรองรับ PHP 8.2 และต้องมีทั้ง `.htaccess` + `web.config` |
-| 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "รอใส่รูป" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
+| 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "Image pending" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
 | 6 ต.ค. 2026 | `connectgrp.php` แยก environment จาก HTTP_HOST แทนชื่อเครื่อง; โดเมนที่ไม่รู้จัก → DB ทดสอบ | เดิม .70 ถูกนับเป็น production; fail-safe ไปทาง DB ทดสอบ |
 | 6 ต.ค. 2026 | หน้าเว็บเก่าทั้ง 8 หน้า redirect 301 ไปหน้าแรก (ไม่ส่ง query string ต่อ) | ผู้ใช้เลือก; ไม่มีหน้าเทียบเท่า 1:1 ในเว็บใหม่ |
 | 6 ต.ค. 2026 | ใช้ driver `sqlsrv` (เหมือน `connectgrp.php` และระบบอื่นของบริษัท) · ตารางใหม่ขึ้นต้น `web_` · login ด้วย `sysmnuser` + ตารางสิทธิ์ของเว็บเอง | ตามมาตรฐานระบบในบริษัท |

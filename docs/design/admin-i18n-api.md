@@ -178,7 +178,7 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 
 - รับ JPG/PNG/WebP ≤ 10MB → ย่อด้านยาวสุด 2000px + สร้าง WebP คุณภาพ ~82 (ใช้ GD ของ PHP — **ต้องเช็กว่า z.com เปิด GD + WebP**)
 - ตั้งชื่อไฟล์ใหม่แบบสุ่ม, ตรวจ MIME จากเนื้อไฟล์จริง, ห้าม `.php` ใน `uploads/` (บล็อกทั้ง `.htaccess`/`web.config`)
-- ช่องที่ยังไม่มีรูปแสดง `placeholder.svg` "รอใส่รูป" (ทำแล้ว)
+- ช่องที่ยังไม่มีรูปแสดง `placeholder.svg` "Image pending" (ทำแล้ว)
 - โควตา z.com เหลือ ~8.4GB — พอแน่นอน (รูป WebP ~200–400KB/รูป)
 
 ## 9. ย้ายข้อมูลระหว่าง environment

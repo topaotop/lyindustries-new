@@ -55,7 +55,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ includes/            PHP partial/ข้อมูล (ห้ามเปิดตรงจากเว็บ — บล็อกทั้งใน .htaccess และ web.config)
 ├─ assets/
 │  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
-│  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, placeholder.svg (รอใส่รูป), ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
+│  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, placeholder.svg ("Image pending"), ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก
@@ -91,7 +91,7 @@ request → index.php / about.php / catalog.php / contact.php
 - ทุกไฟล์ PHP ขึ้นต้น `declare(strict_types=1);` (ยกเว้น partial ที่เป็น template ล้วน)
 - **escape ทุกค่าที่ echo ด้วย `e()`** (`htmlspecialchars` ENT_QUOTES|ENT_HTML5 UTF-8) ใช้ `<?= e($x) ?>` ใน template
 - template ใช้ alternative syntax: `<?php foreach (...): ?> … <?php endforeach; ?>`, `<?php if (...): ?> … <?php endif; ?>`
-- array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ยังไม่มีรูป → ใช้ `img_src($img)` ซึ่งคืน `assets/img/placeholder.svg` ("รอใส่รูป") ให้คนเห็นว่าต้องอัปโหลด; ห้ามปล่อย `<img>` ชี้ไฟล์ที่ไม่มี
+- array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ยังไม่มีรูป → ใช้ `img_src($img)` ซึ่งคืน `assets/img/placeholder.svg` ("Image pending") ให้คนเห็นว่าต้องอัปโหลด; ห้ามปล่อย `<img>` ชี้ไฟล์ที่ไม่มี
 - ลิงก์ออกนอกเว็บใช้ `'external' => true` + `external_attrs()` → `target="_blank" rel="noopener"`
 - ค่าที่ใช้หลายที่ (โทร, อีเมล, URL) ให้ใช้/เพิ่มเป็นค่าคงที่ `SITE_*` ใน `includes/bootstrap.php` ไม่ hard-code ซ้ำ
 - ลิงก์ภายในใช้ path แบบ relative (`about.php`, `index.php#process`) — เว็บต้องทำงานได้ใต้ sub-folder (`/lyindustries-dev/`, `/lyindustries-new-dev/`)
