@@ -37,6 +37,7 @@
 | 6 ต.ค. 2026 | ภาพพื้นหลังขั้นตอนผลิต: รูปที่แบนกว่า 2:1 (รูปเก่าจากเว็บเดิม มีพื้นดำในไฟล์) แสดงเต็มรูปตรงกลาง + ขอบบน/ล่างจางเข้าพื้น แทนการขยายเต็มจอ (เดิมเห็นก้อนดำครึ่งจอ และขั้น 05 เบลอ) — รูป 16:9 ปกติยังเต็มจอเหมือนเดิม (ตามที่ผู้ใช้เสนอ) | `215024a` |
 | 6 ต.ค. 2026 | แก้ "รูปยังไม่ center" — สาเหตุคือเบราว์เซอร์ใช้ home.js เก่าจาก cache: เพิ่ม `asset()` ต่อ `?v=เวลาแก้ไฟล์` ให้ CSS/JS ทุกไฟล์ (หน้าเว็บ + หลังบ้าน) · ปรับเกณฑ์เป็น > 2.5:1 ให้ขั้น 01 (2.35:1 ไม่มีพื้นดำ) กลับมาเต็มจอ · ตรวจในหน้าจริง: 01 เต็มจอ, 02/04/05/06 เต็มรูปตรงกลาง | `5acc544` |
 | 6 ต.ค. 2026 | **รื้อ section 03 Process pipeline ใหม่ (ผู้ใช้ขอ):** รูปแต่ละขั้นอยู่ในกรอบ 4:5 ด้านขวาตำแหน่งเดียวกันทุกขั้น + พื้นหลังเป็นรูปเดียวกันแบบเบลอ (มือถือ: รูปมืดเต็มจอ) · รูปใหม่ 6 รูปจากสำเนาเว็บจริง (FTP) ตัดเป็น 4:5 ไว้ที่ `assets/img/process/` — 01 เชือกหลายสี, 02 เครื่องถัก, 03 โรงย้อม (เดิมไม่มีรูป), 04 หัวเชือก tipping, 05 ผิวงานทอโลโก้, 06 เทปพร้อมส่ง · `005_lyiweb_process_images.sql` (รัน `test_LYI` แล้ว) · ลบตัวจัดรูปแบบ banner (contain) ที่ไม่ใช้แล้ว | `137a594` |
+| 6 ต.ค. 2026 | ผู้ใช้รัน `005_lyiweb_process_images.sql` ใน `LYI` — ตรวจแล้ว 6 ขั้นชี้ `assets/img/process/` ครบ, ไม่เหลือลิงก์รูปเก่า, `lyiweb_items` ตรงกับ `test_LYI` ทุกแถว | — |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
@@ -67,7 +68,7 @@
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
 - Deploy ครั้งถัดไปขึ้น .70: ตั้งสิทธิ์ให้ IIS เขียนโฟลเดอร์ `cache/` ได้ และตรวจว่ามี `connectgrp.php` บน server (ถ้าไม่มี หน้าแรกใช้ fallback)
-- **`LYI` ต้องรัน `docs/sql/005_lyiweb_process_images.sql`** (รูปขั้นตอนผลิตใหม่) · ถ้ามีรูปกระบวนการจริงที่ดีกว่า (แนวตั้ง 4:5) เปลี่ยนผ่านหลังบ้านได้ (ขั้น 3b)
+- รูปขั้นตอนผลิต: ถ้ามีรูปกระบวนการจริงที่ดีกว่า (แนวตั้ง 4:5) เปลี่ยนผ่านหลังบ้านได้ (ขั้น 3b)
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
 **Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
