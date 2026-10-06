@@ -189,11 +189,13 @@ p {
 .faq-item:not(.is-open) .faq-answer { display: none; }
 
 
-/* Process step background: banner-shaped photos (> 2.5:1) are shown whole and centred (set by home.js) */
-.step-bg-contain {
-  position: absolute; left: 0; top: 50%; width: 100% !important; height: auto !important; max-height: 100%;
-  object-fit: contain !important; transform: translateY(-50%);
-  /* fade the top/bottom edges so the photo blends into the dark section instead of showing a box */
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+/* Process pipeline (redesigned 6 Oct 2026, user request): every step shows its photo in the same
+   4:5 frame on the right; the full-bleed layer behind becomes a blurred colour wash of that photo.
+   Small screens hide the frame (.step-media rule above) and keep the dimmed full-bleed photo. */
+.step-media-stage { position: relative; flex: none; margin-left: auto; width: min(30vw, 400px, calc((100vh - 330px) * 0.8)); aspect-ratio: 4 / 5; }
+.step-media-frame { position: absolute; inset: 0; margin: 0; border-radius: 18px; overflow: hidden; opacity: 0; background: #111114;
+  border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 6px rgba(255,255,255,0.03); will-change: opacity, transform; }
+.step-media-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 901px) {
+  #process .step-bg-img { filter: blur(56px) brightness(0.32) saturate(1.4) !important; transform: scale(1.3); }
 }

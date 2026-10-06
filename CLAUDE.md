@@ -53,6 +53,7 @@ request → index.php / about.php / catalog.php / contact.php
 - hover effect = class `.hv-1` … `.hv-16` ใน `assets/css/home.css` (แปลงจาก attribute `style-hover` เดิม ใช้ `!important` เพราะต้องชนะ inline style)
 - state ฝั่ง client (เมนูเปิด, FAQ ที่เปิด, สีที่เลือก) ใช้ class/data attribute: `html.menu-open`, `.faq-item.is-open`, `[data-swatch]`, `[data-menu-toggle]`, `[data-faq-toggle]`
 - `assets/js/home.js` = interaction ทั้งหมด + scroll engine (requestAnimationFrame) ที่ขยับ `#lyProgress`, `#heroContent`, `[data-tile]`, `[data-step-*]` — จำนวนขั้น process อ่านจากจำนวน `[data-step-text]` ใน DOM
+- **Section 03 Process pipeline (รื้อใหม่ 6 ต.ค. 2026 ตามที่ผู้ใช้ขอ — ต่างจาก DESIGN-LOCK เดิม):** รูปของแต่ละขั้นอยู่ในกรอบ 4:5 ด้านขวา (`.step-media-stage` / `[data-step-media]` ซึ่ง home.js ขยับให้อยู่แล้ว) ตำแหน่งเดียวกันทุกขั้น · ชั้นพื้นหลัง `[data-step-bg] .step-bg-img` เป็นรูปเดียวกันแบบเบลอมาก (เดสก์ท็อป) / รูปมืดเต็มจอ (มือถือ ≤ 900px ซ่อนกรอบ) · รูปอยู่ที่ `assets/img/process/step-0N.jpg` (1000×1250) — รูปใหม่ควรเป็นแนวตั้ง 4:5
 - section ธีมสว่างใช้ `data-theme="light"` + override CSS variables inline บน `<section>`
 
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
@@ -103,7 +104,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005_lyiweb_process_images.sql …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
@@ -179,7 +180,9 @@ request → index.php / about.php / catalog.php / contact.php
 
 https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** — ห้ามแตะ/deploy ทับจนกว่าจะมีแผน launch ที่ผู้ใช้อนุมัติ
 
-**Source ของเว็บเก่า:** `\\192.168.0.73\htdocs\lyindustries` (= `P:\lyindustries`) — ไม่ใช่ git repo, PHP + Tailwind, ไม่ใช้ database, ไฟล์ลงวันที่ 1 เม.ย. 2026
+**สำเนาเว็บจริงล่าสุด (ผู้ใช้ดึงผ่าน FTP 6 ต.ค. 2026):** `D:\@ReferanceData\@ LYI Company\lyindustries.com` (อยู่ใน VS Code workspace `lyindustries-new-dev.code-workspace` ในโฟลเดอร์เดียวกัน — path ใน workspace เป็นแบบ relative ให้ดูจากไฟล์ .code-workspace ก่อนค้นหา) — มี `img/` รูปความละเอียดสูง (~2100×1230 ส่วนใหญ่เป็นภาพสินค้า 2 ช่องคั่นเส้นขาว + `11f.JPG` โรงย้อม, `beemmc.png` เครื่องถัก), `media/`, `lyinspirationhub/` · ใช้เป็นแหล่งรูปได้ (อ่านอย่างเดียว)
+
+**Source ของเว็บเก่า (เก่ากว่า FTP):** `\\192.168.0.73\htdocs\lyindustries` (= `P:\lyindustries`) — ไม่ใช่ git repo, PHP + Tailwind, ไม่ใช้ database, ไฟล์ลงวันที่ 1 เม.ย. 2026
 - ⚠️ **ไม่ตรงกับเว็บจริง 100%** — production ใหม่กว่า (มีแก้ responsive/มือถือที่ไม่อยู่ใน .73) → ตอน launch ต้องสำรองจาก server z.com โดยตรง ห้ามถือว่า .73 เป็น backup
 - ใช้ .73 เป็นแหล่งอ้างอิง/ดึงไฟล์ภาพ-วิดีโอได้ (อ่านอย่างเดียว ห้ามแก้ — เป็นของระบบเดิม)
 - ไฟล์: `index.php`, `about.php`, `contact.php`, `innovation.php`, `shop.php`, `products_detail.php`, `braiding.php`, `crochet.php`, `finishing.php`, `needle_loom.php`, `raschel.php` + `header.php`/`footer.php` (include) · โฟลเดอร์ `img/` (122MB), `media/` (114MB), `cert/`, `partners/`

@@ -336,7 +336,7 @@ $menuItems = [
       <div style="position:absolute;inset:0;z-index:1;overflow:hidden">
         <?php foreach ($steps as $i => $s): ?>
           <div data-step-bg="<?= $i ?>" style="position:absolute;inset:0;opacity:0;transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1);will-change:opacity">
-            <img src="<?= e(img_src($s['img'])) ?>" alt="<?= e($s['title']) ?>" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)">
+            <img class="step-bg-img" src="<?= e(img_src($s['img'])) ?>" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)">
             <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(8,8,10,0.88) 0%, rgba(8,8,10,0.6) 55%, rgba(8,8,10,0.35) 100%)"></div>
           </div>
         <?php endforeach; ?>
@@ -367,6 +367,15 @@ $menuItems = [
                 <span style="font-family:var(--font-mono);font-size:11px;color:var(--brand-orange);background:rgba(255,90,31,0.12);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,90,31,0.25)"><?= e($s['tag']) ?></span>
               </div>
             </div>
+          <?php endforeach; ?>
+        </div>
+
+        <!-- Step photo: one framed 4:5 photo per step, same place every step (hidden on small screens) -->
+        <div class="step-media-stage step-media" aria-hidden="false">
+          <?php foreach ($steps as $i => $s): ?>
+            <figure class="step-media-frame" data-step-media="<?= $i ?>">
+              <img src="<?= e(img_src($s['img'])) ?>" alt="<?= e($s['title']) ?>" loading="lazy">
+            </figure>
           <?php endforeach; ?>
         </div>
       </div>
