@@ -24,12 +24,13 @@
 | 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
 | 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
 | 6 ต.ค. 2026 | สร้างตาราง `lyiweb_*` 12 ตาราง + ข้อมูลตั้งต้น ทั้งใน `test_LYI` และ `LYI` (ผู้ใช้รัน `docs/sql/001_lyiweb_schema.sql` ผ่าน Navicat) — ตรวจแล้ว: คอลัมน์, constraint 39, index 5, roles 4, permissions 10, settings 2, pages 4 ครบ | `8c73d4d` (script) |
+| 6 ต.ค. 2026 | **ขั้นที่ 2a:** หน้าแรกอ่านรายการ 7 list จาก `lyiweb_items` ผ่าน content layer (cache 5 นาที → DB → cache เก่า → fallback ในโค้ด) · `tools/build-seed-home.php` สร้าง `002_lyiweb_seed_home.sql` · seed 43 แถวลง `test_LYI` · บล็อก `cache/ tools/ docs/` จากเว็บ · ตรวจ: HTML ตรง baseline ทุกไบต์ทุกทาง (DB, cache, cache เก่า, ไม่มี DB, Apache, PHP 8.2) + พิสูจน์ว่าแก้ใน DB แล้วหน้าเว็บเปลี่ยนจริง | (commit นี้) |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
 ## 🔄 งานที่กำลังทำ
 
-- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1 ✅** ตาราง `lyiweb_*` สร้างแล้ว · **ถัดไป ขั้นที่ 2:** seed เนื้อหาปัจจุบันลง DB + `Db`/`Content`/`I18n` ให้หน้าเว็บอ่านจาก DB (output ต้องเท่าเดิมทุกไบต์)
+- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1 ✅** ตาราง `lyiweb_*` · **ขั้นที่ 2a ✅** รายการหน้าแรก 7 list อ่านจาก DB (seed ใน `test_LYI` แล้ว, `LYI` ยังไม่ seed) · **ถัดไป 2b:** ข้อความชิ้นเดี่ยวของทุกหน้า (`lyiweb_blocks`), SEO ของหน้า (`lyiweb_pages`), ค่าติดต่อ (`lyiweb_settings`), `I18n`
 - รอทดสอบหน้าเว็บบน dev ด้วยเบราว์เซอร์จริง (โดยเฉพาะ scroll animation หน้าแรก)
 
 ## 🐞 Bug / ปัญหาที่รู้อยู่
@@ -54,6 +55,8 @@
 - หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
+- Seed `docs/sql/002_lyiweb_seed_home.sql` ลง `LYI` (production) — ทำก่อน launch หรือก่อนใช้หลังบ้านบน production
+- Deploy ครั้งถัดไปขึ้น .70: ตั้งสิทธิ์ให้ IIS เขียนโฟลเดอร์ `cache/` ได้ และตรวจว่ามี `connectgrp.php` บน server (ถ้าไม่มี หน้าแรกใช้ fallback)
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
 **Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
@@ -89,6 +92,8 @@
 | 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "Image pending" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
 | 6 ต.ค. 2026 | `connectgrp.php` แยก environment จาก HTTP_HOST แทนชื่อเครื่อง; โดเมนที่ไม่รู้จัก → DB ทดสอบ | เดิม .70 ถูกนับเป็น production; fail-safe ไปทาง DB ทดสอบ |
 | 6 ต.ค. 2026 | หน้าเว็บเก่าทั้ง 8 หน้า redirect 301 ไปหน้าแรก (ไม่ส่ง query string ต่อ) | ผู้ใช้เลือก; ไม่มีหน้าเทียบเท่า 1:1 ในเว็บใหม่ |
+| 6 ต.ค. 2026 | หน้าเว็บสาธารณะอ่านเนื้อหาผ่าน file cache + fallback ในโค้ด ไม่ query DB ทุก request | production อยู่ z.com แต่ DB อยู่ในบริษัท — ช้าและล่มตามเน็ตบริษัทถ้า query ตรง |
+| 6 ต.ค. 2026 | seed SQL generate จาก `includes/home-data.php` (ไม่เขียนมือ) | fallback กับข้อมูลใน DB ตั้งต้นตรงกันเสมอ |
 | 6 ต.ค. 2026 | URL ที่ browser โหลดจากโดเมนบริษัทต้องมี `www.` เสมอ | AD domain ของบริษัทชื่อ lyindustries.com ทำให้ DNS ภายในชี้โดเมนเปล่าไป Domain Controller — แก้ฝั่ง DNS ไม่ได้ |
 | 6 ต.ค. 2026 | ฟอร์มขอใบเสนอราคาบันทึกลง `lyiweb_contact_requests` แล้วดูในหลังบ้านอย่างเดียว ไม่ส่งอีเมล/LINE | ผู้ใช้เลือก — ไม่ต้องมี SMTP/LINE token, ลดจุดที่พังได้ |
 | 6 ต.ค. 2026 | ใช้ driver `sqlsrv` (เหมือน `connectgrp.php` และระบบอื่นของบริษัท) · ตารางใหม่ขึ้นต้น `lyiweb_` · login ด้วย `sysmnuser` + ตารางสิทธิ์ของเว็บเอง | ตามมาตรฐานระบบในบริษัท |

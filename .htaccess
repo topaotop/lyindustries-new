@@ -11,7 +11,7 @@ DirectoryIndex index.php
   RewriteRule \.php$ %1? [R=301,L]
 </IfModule>
 
-# Shared PHP partials are not pages
+# Not web pages: PHP partials, content cache, CLI tools, docs/SQL
 <IfModule mod_alias.c>
-  RedirectMatch 404 ^/(.*/)?includes/
+  RedirectMatch 404 ^/(.*/)?(includes|cache|tools|docs)/
 </IfModule>

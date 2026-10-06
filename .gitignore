@@ -1,6 +1,9 @@
 # Secrets — DB connection (user/password), never commit
 connectgrp.php
 
+# Content cache written at runtime (includes/lib/content.php)
+/cache/
+
 # OS junk
 .DS_Store
 Thumbs.db

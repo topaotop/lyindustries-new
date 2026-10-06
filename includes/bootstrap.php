@@ -5,6 +5,8 @@ declare(strict_types=1);
  * Shared site settings and helpers. Every page requires this file first.
  */
 
+define('APP_ROOT', dirname(__DIR__));
+
 const SITE_PHONE         = '02-517-0768';
 const SITE_PHONE_EXT     = '120, 121';
 const SITE_PHONE_TEL     = '025170768';

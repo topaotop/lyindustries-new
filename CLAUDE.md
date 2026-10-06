@@ -30,14 +30,23 @@
 ```
 request → index.php / about.php / catalog.php / contact.php
             └─ includes/bootstrap.php   ค่าคงที่ของเว็บ (โทร, อีเมล, LINE, URL ภายนอก, SITE_PLACEHOLDER_IMG), site_nav(), e(), external_attrs(), img_src()
-            └─ includes/home-data.php   (เฉพาะ index.php) array เนื้อหารายการทั้งหมดของหน้าแรก
+            └─ includes/lib/content.php (เฉพาะ index.php) content_list('home.xxx', $lang) — อ่านรายการจาก DB
+            └─ includes/icons.php       ไอคอนไทล์ (content เก็บแค่ key, template เรียก icon_uri())
             └─ includes/site-header.php (about/catalog/contact) ตั้ง $activeNav, $quoteHref ก่อน require
             └─ includes/site-footer.php (catalog/contact) footer 4 คอลัมน์ — about ใช้ footer สั้นของตัวเอง
 ```
 
 **หน้าแรก (`index.php`)**
 - markup มาจาก design export → ใช้ inline `style="..."` เกือบทั้งหมด (ตั้งใจเก็บไว้ให้ตรงดีไซน์ที่ล็อก)
-- รายการที่วนซ้ำ (เมนูมือถือ, marquee, ไทล์ 8 ช่อง, process 6 ขั้น, สินค้า 6, สี Pantone 5, gallery 6, FAQ 4) render ด้วย `foreach` จาก `includes/home-data.php`
+- รายการที่วนซ้ำ 7 list (marquee 8, ไทล์ 8, process 6, สี Pantone 5, สินค้า 6, gallery 6, FAQ 4) มาจาก `content_list()` ส่วนเมนูมือถือยังกำหนดในหัว `index.php`
+
+**Content layer (`includes/lib/content.php`) — ข้อมูลรายการอยู่ใน DB ตาราง `lyiweb_items`**
+- ลำดับการอ่าน: cache สด (`cache/content.json`, อายุ 5 นาที) → DB → cache เก่า → ข้อมูลในโค้ด `includes/home-data.php` (fallback ราย list — list ที่ไม่มีแถวใน DB ก็ใช้ fallback)
+- DB ต่อไม่ได้ → เขียน `cache/db-unavailable` แล้วไม่ลองใหม่ 60 วินาที (กันหน้าเว็บรอ timeout) · env `LYIWEB_DB=off` = บังคับทางไม่มี DB (ใช้ทดสอบ)
+- ฟิลด์/ลำดับฟิลด์/แปลได้ไหม กำหนดที่ `includes/schema/lists.php` (หลังบ้านจะสร้างฟอร์มจากไฟล์นี้) — ลำดับสำคัญเพราะสี swatch ถูก `json_encode` ลง `data-swatch`
+- แก้ข้อมูลใน DB แล้วต้องเรียก `content_cache_clear()` (หลังบ้านจะทำให้) — ถ้าแก้ตรงใน Navicat หน้าเว็บจะเปลี่ยนภายใน 5 นาที
+- **แก้ `includes/home-data.php` แล้วต้องรัน `php tools/build-seed-home.php`** ให้ `docs/sql/002_lyiweb_seed_home.sql` ตรงกันเสมอ (seed ใส่เฉพาะ list ที่ยังไม่มีแถว — ไม่ทับเนื้อหาที่แก้ในหลังบ้านแล้ว)
+- `includes/lib/db.php`: `db()` (เปิด connection ผ่าน `connectgrp.php` เมื่อจำเป็นเท่านั้น), `db_rows($sql, $params)` — **ใช้ parameter `?` เสมอ ห้ามต่อ string เข้า SQL**
 - hover effect = class `.hv-1` … `.hv-16` ใน `assets/css/home.css` (แปลงจาก attribute `style-hover` เดิม ใช้ `!important` เพราะต้องชนะ inline style)
 - state ฝั่ง client (เมนูเปิด, FAQ ที่เปิด, สีที่เลือก) ใช้ class/data attribute: `html.menu-open`, `.faq-item.is-open`, `[data-swatch]`, `[data-menu-toggle]`, `[data-faq-toggle]`
 - `assets/js/home.js` = interaction ทั้งหมด + scroll engine (requestAnimationFrame) ที่ขยับ `#lyProgress`, `#heroContent`, `[data-tile]`, `[data-step-*]` — จำนวนขั้น process อ่านจากจำนวน `[data-step-text]` ใน DOM
@@ -53,20 +62,26 @@ request → index.php / about.php / catalog.php / contact.php
 /
 ├─ index.php, about.php, catalog.php, contact.php   หน้าเว็บ
 ├─ includes/            PHP partial/ข้อมูล (ห้ามเปิดตรงจากเว็บ — บล็อกทั้งใน .htaccess และ web.config)
+│  ├─ lib/db.php, lib/content.php   ชั้น DB + content (cache/fallback)
+│  ├─ schema/lists.php              นิยามฟิลด์ของแต่ละ list
+│  ├─ home-data.php                 ข้อมูลหน้าแรกในโค้ด = fallback + ต้นทางของ seed
+│  └─ icons.php                     ไอคอน SVG ของไทล์
+├─ tools/               สคริปต์ CLI (build-seed-home.php) — บล็อกจากเว็บ, ไม่ deploy
+├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
 ├─ assets/
 │  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
 │  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, placeholder.svg ("Image pending"), ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก
-├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore (ไม่อยู่ใน git — สำรองเอง), ยังไม่มีหน้าไหน require
-├─ .gitignore           connectgrp.php, .DS_Store, Thumbs.db, desktop.ini, .vscode/, .idea/
-├─ .htaccess            Apache/LiteSpeed: DirectoryIndex, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก, บล็อก includes/
-├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
+├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore (ไม่อยู่ใน git — สำรองเอง); `includes/lib/db.php` require เมื่อต้อง query — ถ้าไม่มีไฟล์นี้บน server เว็บยังขึ้นด้วย fallback
+├─ .gitignore           connectgrp.php, /cache/, .DS_Store, Thumbs.db, desktop.ini, .vscode/, .idea/
+├─ .htaccess            Apache/LiteSpeed: DirectoryIndex, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก, บล็อก includes/ cache/ tools/ docs/
+├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes/cache/tools/docs, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql ← generated …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
@@ -156,7 +171,7 @@ https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** 
 1. **deploy เฉพาะสิ่งที่ commit แล้ว** — `git status` ต้องสะอาด; commit ที่ deploy = `HEAD`
 2. เลือก version ถัดไปจาก entry ล่าสุดใน DEPLOY_LOG.md
 3. เทียบไฟล์ local ↔ server ด้วย `cmp` เพื่อรู้ว่ามีไฟล์ไหนเพิ่ม/เปลี่ยน/ต้องลบ
-4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git` และไฟล์ `*.md` — เอกสารไม่ต้องขึ้น server)
+4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git`, `*.md`, `docs/`, `tools/`, `cache/` และ `connectgrp.php` — ไฟล์ connectgrp ของแต่ละ server วางเองครั้งเดียว ห้ามทับ) · โฟลเดอร์ `cache/` บน server ต้องให้ PHP เขียนได้ (IIS: สิทธิ์ Modify ให้ IUSR/app pool) — ถ้าเขียนไม่ได้เว็บยังทำงานแต่จะ query DB ทุกครั้ง
 5. ถ้าลบ/เปลี่ยนชื่อไฟล์ในโปรเจกต์ ต้องลบไฟล์เก่าบน server ด้วย (ใช้ path แบบ literal ไม่ใช้ตัวแปรใน `rm`)
 6. ตรวจ: `curl` ทุกหน้าได้ 200, `*.html` ได้ 301, `includes/…` ได้ 404, `.woff2` ได้ `font/woff2` และ diff HTML จาก server กับ `php <page>.php` ในเครื่องต้องตรงกัน
 7. `git tag -a vX.Y.Z -m "Deploy vX.Y.Z to dev"` ที่ commit ที่ deploy

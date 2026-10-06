@@ -2,7 +2,27 @@
 declare(strict_types=1);
 
 require __DIR__ . '/includes/bootstrap.php';
-require __DIR__ . '/includes/home-data.php';
+require __DIR__ . '/includes/icons.php';
+require __DIR__ . '/includes/lib/content.php';
+
+$lang = 'th';
+$partnerLogos = content_list('home.partners', $lang);
+$tiles        = content_list('home.tiles', $lang);
+$steps        = content_list('home.steps', $lang);
+$swatches     = content_list('home.swatches', $lang);
+$productCards = content_list('home.products', $lang);
+$galleryItems = content_list('home.gallery', $lang);
+$faqList      = content_list('home.faq', $lang);
+$activeSwatch = $swatches[0];
+
+// Mobile side-menu (☰).
+$menuItems = [
+    ['n' => '01', 'label' => 'หน้าแรก',                 'href' => '#hero'],
+    ['n' => '02', 'label' => 'แคตาล็อกสินค้า',            'href' => 'catalog.php'],
+    ['n' => '03', 'label' => 'TRIMRITE® ↗',             'href' => SITE_TRIMRITE_URL, 'external' => true],
+    ['n' => '04', 'label' => 'เกี่ยวกับเรา',               'href' => 'about.php'],
+    ['n' => '05', 'label' => 'ติดต่อเรา / ขอใบเสนอราคา',   'href' => 'contact.php'],
+];
 ?>
 <!DOCTYPE html>
 <html lang="th">
@@ -219,12 +239,12 @@ require __DIR__ . '/includes/home-data.php';
       <div id="assembleGrid" style="position:relative;width:min(1240px,94vw,calc((100vh - 330px) * 2.6));display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;padding:0 20px;z-index:3">
         <?php foreach ($tiles as $i => $t): ?>
           <div data-tile="<?= $i ?>" data-dx="<?= $t['dx'] ?>" data-dy="<?= $t['dy'] ?>" data-rot="<?= $t['rot'] ?>" class="apple-card" style="position:relative;aspect-ratio:4/3;overflow:hidden;opacity:0;will-change:transform,opacity">
-            <?php if ($t['img'] !== ''): ?><img class="hv-8" src="<?= e($t['img']) ?>" alt="<?= e($t['en']) ?>" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0.85;transition:transform 0.5s"><?php endif; ?>
-            <?php if ($t['isMore']): ?><div style="position:absolute;inset:0;background:#0e0e11;background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:28px 28px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:30px;padding-bottom:34px"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M3%2012c0-4%204-6%209-6s9%202%209%206%27%2F%3E%3Cpath%20d%3D%27M3%2012c0%202%204%203%209%203s9-1%209-3%27%2F%3E%3C%2Fsvg%3E" alt="Headband" style="width:46px;height:46px;opacity:0.75"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Crect%20x%3D%276%27%20y%3D%275%27%20width%3D%2712%27%20height%3D%2714%27%20rx%3D%274%27%2F%3E%3Cpath%20d%3D%27M6%209h12M6%2015h12%27%2F%3E%3C%2Fsvg%3E" alt="Wristband" style="width:46px;height:46px;opacity:0.75"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M4%2018L14%206%27%2F%3E%3Cpath%20d%3D%27M8%2020l12-12%27%2F%3E%3Crect%20x%3D%2712%27%20y%3D%274%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%271%27%20transform%3D%27rotate%2840%2015%206%29%27%2F%3E%3C%2Fsvg%3E" alt="Straps" style="width:46px;height:46px;opacity:0.75"></div></div><?php endif; ?>
+            <?php if ($t['img'] !== ''): ?><img class="hv-8" src="<?= e($t['img']) ?>" alt="<?= e($t['label']) ?>" style="width:100%;height:100%;object-fit:cover;display:block;opacity:0.85;transition:transform 0.5s"><?php endif; ?>
+            <?php if ($t['more']): ?><div style="position:absolute;inset:0;background:#0e0e11;background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:28px 28px"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:30px;padding-bottom:34px"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M3%2012c0-4%204-6%209-6s9%202%209%206%27%2F%3E%3Cpath%20d%3D%27M3%2012c0%202%204%203%209%203s9-1%209-3%27%2F%3E%3C%2Fsvg%3E" alt="Headband" style="width:46px;height:46px;opacity:0.75"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Crect%20x%3D%276%27%20y%3D%275%27%20width%3D%2712%27%20height%3D%2714%27%20rx%3D%274%27%2F%3E%3Cpath%20d%3D%27M6%209h12M6%2015h12%27%2F%3E%3C%2Fsvg%3E" alt="Wristband" style="width:46px;height:46px;opacity:0.75"><img src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23f26b1d%27%20stroke-width%3D%271.6%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpath%20d%3D%27M4%2018L14%206%27%2F%3E%3Cpath%20d%3D%27M8%2020l12-12%27%2F%3E%3Crect%20x%3D%2712%27%20y%3D%274%27%20width%3D%276%27%20height%3D%274%27%20rx%3D%271%27%20transform%3D%27rotate%2840%2015%206%29%27%2F%3E%3C%2Fsvg%3E" alt="Straps" style="width:46px;height:46px;opacity:0.75"></div></div><?php endif; ?>
             <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(8,8,10,0.92) 100%)"></div>
             <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:5px">
-              <div style="display:flex;align-items:center;gap:8px"><img src="<?= e($t['ic']) ?>" alt="" style="width:18px;height:18px;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= e($t['en']) ?></span></div>
-              <span style="font-family:var(--font-heading);font-weight:600;font-size:clamp(14px,1.4vw,19px);color:#fff;line-height:1.25"><?= e($t['th']) ?></span>
+              <div style="display:flex;align-items:center;gap:8px"><img src="<?= e(icon_uri($t['icon'])) ?>" alt="" style="width:18px;height:18px;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5))"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= e($t['label']) ?></span></div>
+              <span style="font-family:var(--font-heading);font-weight:600;font-size:clamp(14px,1.4vw,19px);color:#fff;line-height:1.25"><?= e($t['title']) ?></span>
             </div>
           </div>
         <?php endforeach; ?>
@@ -307,7 +327,7 @@ require __DIR__ . '/includes/home-data.php';
       <div style="position:absolute;inset:0;z-index:1;overflow:hidden">
         <?php foreach ($steps as $i => $s): ?>
           <div data-step-bg="<?= $i ?>" style="position:absolute;inset:0;opacity:0;transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1);will-change:opacity">
-            <img src="<?= e(img_src($s['img'])) ?>" alt="<?= e($s['th']) ?>" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)">
+            <img src="<?= e(img_src($s['img'])) ?>" alt="<?= e($s['title']) ?>" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:brightness(0.55) saturate(0.9)">
             <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(8,8,10,0.88) 0%, rgba(8,8,10,0.6) 55%, rgba(8,8,10,0.35) 100%)"></div>
           </div>
         <?php endforeach; ?>
@@ -330,7 +350,7 @@ require __DIR__ . '/includes/home-data.php';
           <?php foreach ($steps as $i => $s): ?>
             <div data-step-text="<?= $i ?>" style="position:absolute;left:0;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;gap:14px;opacity:0;transform:translateY(30px);will-change:transform,opacity;pointer-events:none">
               <span style="font-family:var(--font-mono);font-weight:700;font-size:clamp(56px,8vw,100px);line-height:1;color:rgba(255,90,31,0.22);letter-spacing:-0.04em"><?= e($s['n']) ?></span>
-              <h3 style="font-size:clamp(28px,3.6vw,48px);font-weight:700;line-height:1.2;color:#fff;margin-top:-10px"><?= e($s['th']) ?></h3>
+              <h3 style="font-size:clamp(28px,3.6vw,48px);font-weight:700;line-height:1.2;color:#fff;margin-top:-10px"><?= e($s['title']) ?></h3>
               <p style="font-size:clamp(16px,1.3vw,19px);line-height:1.7;color:var(--text-secondary)"><?= e($s['desc']) ?></p>
               <div style="display:flex;gap:10px;margin-top:6px">
                 <span style="font-family:var(--font-mono);font-size:11px;color:var(--brand-orange);background:rgba(255,90,31,0.12);padding:4px 10px;border-radius:6px;border:1px solid rgba(255,90,31,0.25)"><?= e($s['tag']) ?></span>
@@ -388,15 +408,15 @@ require __DIR__ . '/includes/home-data.php';
       <?php foreach ($productCards as $p): ?>
         <div class="apple-card" style="overflow:hidden;display:flex;flex-direction:column;height:100%">
           <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:#e8e8ed">
-            <?php if ($p['img'] !== ''): ?><img class="hv-10" src="<?= e($p['img']) ?>" alt="<?= e($p['th']) ?>" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)"><?php endif; ?>
+            <?php if ($p['img'] !== ''): ?><img class="hv-10" src="<?= e($p['img']) ?>" alt="<?= e($p['title']) ?>" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)"><?php endif; ?>
             <div style="position:absolute;top:14px;left:14px">
               <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.1em;background:rgba(8,8,10,0.8);color:var(--brand-orange);border:1px solid rgba(255,90,31,0.3);padding:4px 10px;border-radius:100px;backdrop-filter:blur(8px)"><?= e($p['code']) ?></span>
             </div>
           </div>
           <div style="padding:28px 24px;display:flex;flex-direction:column;gap:12px;flex:1">
             <div style="display:flex;flex-direction:column;gap:4px">
-              <span style="font-family:var(--font-mono);font-size:11px;color:var(--brand-orange);letter-spacing:0.12em"><?= e($p['en']) ?></span>
-              <h3 style="font-size:20px;font-weight:600;line-height:1.3;color:var(--text-primary)"><?= e($p['th']) ?></h3>
+              <span style="font-family:var(--font-mono);font-size:11px;color:var(--brand-orange);letter-spacing:0.12em"><?= e($p['label']) ?></span>
+              <h3 style="font-size:20px;font-weight:600;line-height:1.3;color:var(--text-primary)"><?= e($p['title']) ?></h3>
             </div>
             <p style="font-size:14.5px;line-height:1.65;color:var(--text-secondary);flex:1"><?= e($p['desc']) ?></p>
             <div style="padding-top:14px;border-top:1px solid var(--border-light);display:flex;justify-content:flex-end;align-items:center;font-size:13.5px">
