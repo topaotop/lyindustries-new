@@ -42,6 +42,7 @@
 | 6 ต.ค. 2026 | หลังบ้าน: เมนูย่อยรายส่วนในหน้าแก้ข้อความ (ทั้งหมด / SEO / แต่ละ section พร้อมจำนวนข้อความ) — กดแล้วแสดงเฉพาะส่วนนั้น (หน้าแรก 10,056px → 1,658px), ค้นหาค้นทุกส่วนอัตโนมัติ, จำส่วนที่เลือกหลังบันทึก/โหลดใหม่ (ผู้ใช้ขอ — แก้ปัญหาหน้ายาว) | `32cf5c1` |
 | 6 ต.ค. 2026 | **คืน section 03 Process pipeline เป็นดีไซน์เดิมของ Pack** (ผู้ใช้สั่ง): HTML/CSS/JS ตรงกับต้นฉบับ (ก่อน `215024a`) — ต่างแค่ src รูปที่เป็นไฟล์จริงจาก FTP ใน `assets/img/process/` (ตรงกับรูปบนเว็บจริงทุกไบต์) · ลบรูป 4:5 ที่ตัดไว้ · `006_lyiweb_process_images_original.sql` (รัน `test_LYI` แล้ว) | `268f745` |
 | 7 ต.ค. 2026 | จัดรูปเป็นหมวดใน `assets/img/`: brand / applications / products / process / rnd / colorlab (ย้าย `app-*`, `prod-*` จาก `assets/` เข้ามาด้วย, ชื่อไฟล์เดิม) · แก้ path ในโค้ด 9 ไฟล์ + `007_lyiweb_image_folders.sql` (รัน `test_LYI` แล้ว) · ตรวจ: รูปทุก URL ทั้ง 4 หน้า + หน้า login หลังบ้านโหลดได้ 39/39 | `9b960ed` |
+| 7 ต.ค. 2026 | `LYI`: `006` (ขั้นตอนผลิต) และ `007` (path หลังจัดโฟลเดอร์) มีผลแล้ว — ตรวจ: ไม่เหลือ path เก่า, ไทล์ 7 / สินค้า 6 / ขั้นตอนผลิต 5 รูปชี้ `assets/img/…`, `lyiweb_items` ตรงกับ `test_LYI` ทุกแถว | — |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
@@ -72,7 +73,7 @@
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
 - Deploy ครั้งถัดไปขึ้น .70: ตั้งสิทธิ์ให้ IIS เขียนโฟลเดอร์ `cache/` ได้ และตรวจว่ามี `connectgrp.php` บน server (ถ้าไม่มี หน้าแรกใช้ fallback)
-- **`LYI` ต้องรัน `docs/sql/006_lyiweb_process_images_original.sql` แล้วตามด้วย `007_lyiweb_image_folders.sql`** (รูปขั้นตอนผลิตชุดเดิม + path รูปหลังจัดโฟลเดอร์) · ขั้น 03 ยังรอรูปจริง
+- รูปขั้นตอนผลิต: ขั้น 03 ยังรอรูปจริง
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
 **Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
