@@ -40,6 +40,7 @@
 | 6 ต.ค. 2026 | ผู้ใช้รัน `005_lyiweb_process_images.sql` ใน `LYI` — ตรวจแล้ว 6 ขั้นชี้ `assets/img/process/` ครบ, ไม่เหลือลิงก์รูปเก่า, `lyiweb_items` ตรงกับ `test_LYI` ทุกแถว | — |
 | 6 ต.ค. 2026 | หลังบ้าน: ใส่ไอคอนในแท็บหน้า (บ้าน / ตึกโรงงาน / ม้วนเทป / ซองจดหมาย / footer) ชุดเดียวกับ sidebar, แท็บที่เลือกไอคอนสีส้ม (ผู้ใช้ขอ) | `56b7f48` |
 | 6 ต.ค. 2026 | หลังบ้าน: เมนูย่อยรายส่วนในหน้าแก้ข้อความ (ทั้งหมด / SEO / แต่ละ section พร้อมจำนวนข้อความ) — กดแล้วแสดงเฉพาะส่วนนั้น (หน้าแรก 10,056px → 1,658px), ค้นหาค้นทุกส่วนอัตโนมัติ, จำส่วนที่เลือกหลังบันทึก/โหลดใหม่ (ผู้ใช้ขอ — แก้ปัญหาหน้ายาว) | `32cf5c1` |
+| 6 ต.ค. 2026 | **คืน section 03 Process pipeline เป็นดีไซน์เดิมของ Pack** (ผู้ใช้สั่ง): HTML/CSS/JS ตรงกับต้นฉบับ (ก่อน `215024a`) — ต่างแค่ src รูปที่เป็นไฟล์จริงจาก FTP ใน `assets/img/process/` (ตรงกับรูปบนเว็บจริงทุกไบต์) · ลบรูป 4:5 ที่ตัดไว้ · `006_lyiweb_process_images_original.sql` (รัน `test_LYI` แล้ว) | (commit นี้) |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
@@ -70,7 +71,7 @@
 - Deploy ครั้งถัดไป: ลบไฟล์ `*.md` ที่ค้างบน dev server (`README.md`, `DESIGN-LOCK.md`, `CONTENT-DRAFT.md`) และทดสอบ redirect หน้าเว็บเก่าบน IIS (`web.config` ยังไม่ได้ทดสอบบน server จริง)
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
 - Deploy ครั้งถัดไปขึ้น .70: ตั้งสิทธิ์ให้ IIS เขียนโฟลเดอร์ `cache/` ได้ และตรวจว่ามี `connectgrp.php` บน server (ถ้าไม่มี หน้าแรกใช้ fallback)
-- รูปขั้นตอนผลิต: ถ้ามีรูปกระบวนการจริงที่ดีกว่า (แนวตั้ง 4:5) เปลี่ยนผ่านหลังบ้านได้ (ขั้น 3b)
+- **`LYI` ต้องรัน `docs/sql/006_lyiweb_process_images_original.sql`** (คืนรูปขั้นตอนผลิตชุดเดิมเป็นไฟล์ในเว็บ) · ขั้น 03 ยังรอรูปจริง
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 
 **Launch ขึ้น production** (www.lyindustries.com ยังเป็นเว็บเก่า)
@@ -106,7 +107,7 @@
 | 6 ต.ค. 2026 | รูปที่ยังไม่มีแสดง `placeholder.svg` "Image pending" ผ่าน `img_src()` (แทนกรอบเส้นประเดิม) | ให้เห็นชัดว่าต้องอัปโหลดรูป และไม่มี `<img>` ที่ 404 |
 | 6 ต.ค. 2026 | `connectgrp.php` แยก environment จาก HTTP_HOST แทนชื่อเครื่อง; โดเมนที่ไม่รู้จัก → DB ทดสอบ | เดิม .70 ถูกนับเป็น production; fail-safe ไปทาง DB ทดสอบ |
 | 6 ต.ค. 2026 | หน้าเว็บเก่าทั้ง 8 หน้า redirect 301 ไปหน้าแรก (ไม่ส่ง query string ต่อ) | ผู้ใช้เลือก; ไม่มีหน้าเทียบเท่า 1:1 ในเว็บใหม่ |
-| 6 ต.ค. 2026 | Section Process pipeline เปลี่ยนจากรูปเต็มจอเป็นกรอบรูป 4:5 ด้านขวา + พื้นหลังเบลอ (ต่างจาก DESIGN-LOCK) | ผู้ใช้เห็นว่าแบบเดิมไม่สวย — รูปที่มีอยู่เป็นภาพสินค้า/รูปแบน ใช้เป็นพื้นหลังเต็มจอได้ไม่ดี |
+| 6 ต.ค. 2026 | ~~Section Process pipeline เปลี่ยนเป็นกรอบรูป 4:5~~ → **คืนเป็นดีไซน์เดิมของ Pack** เปลี่ยนแค่แหล่งรูปเป็นไฟล์จริงจาก source (FTP) | ผู้ใช้สั่งให้คืนแบบเดิมก่อนจะสั่งปรับเพิ่ม |
 | 6 ต.ค. 2026 | ล็อกการ login ผิดแยก username (5 ครั้ง) กับ IP (20 ครั้ง) | production มองเห็นทั้งออฟฟิศเป็น IP เดียว — ล็อกตาม IP 5 ครั้งจะล็อกทั้งบริษัท |
 | 6 ต.ค. 2026 | หลังบ้านไม่เขียน `sysmnuser` เลย (ไม่อัปเดต `logintime` แบบระบบอื่น) | เป็นตาราง ERP ส่วนกลาง — เว็บเก็บประวัติ login ใน `lyiweb_login_attempts` เอง |
 | 6 ต.ค. 2026 | หน้าเว็บสาธารณะอ่านเนื้อหาผ่าน file cache + fallback ในโค้ด ไม่ query DB ทุก request | production อยู่ z.com แต่ DB อยู่ในบริษัท — ช้าและล่มตามเน็ตบริษัทถ้า query ตรง |

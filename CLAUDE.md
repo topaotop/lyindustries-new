@@ -53,7 +53,7 @@ request → index.php / about.php / catalog.php / contact.php
 - hover effect = class `.hv-1` … `.hv-16` ใน `assets/css/home.css` (แปลงจาก attribute `style-hover` เดิม ใช้ `!important` เพราะต้องชนะ inline style)
 - state ฝั่ง client (เมนูเปิด, FAQ ที่เปิด, สีที่เลือก) ใช้ class/data attribute: `html.menu-open`, `.faq-item.is-open`, `[data-swatch]`, `[data-menu-toggle]`, `[data-faq-toggle]`
 - `assets/js/home.js` = interaction ทั้งหมด + scroll engine (requestAnimationFrame) ที่ขยับ `#lyProgress`, `#heroContent`, `[data-tile]`, `[data-step-*]` — จำนวนขั้น process อ่านจากจำนวน `[data-step-text]` ใน DOM
-- **Section 03 Process pipeline (รื้อใหม่ 6 ต.ค. 2026 ตามที่ผู้ใช้ขอ — ต่างจาก DESIGN-LOCK เดิม):** รูปของแต่ละขั้นอยู่ในกรอบ 4:5 ด้านขวา (`.step-media-stage` / `[data-step-media]` ซึ่ง home.js ขยับให้อยู่แล้ว) ตำแหน่งเดียวกันทุกขั้น · ชั้นพื้นหลัง `[data-step-bg] .step-bg-img` เป็นรูปเดียวกันแบบเบลอมาก (เดสก์ท็อป) / รูปมืดเต็มจอ (มือถือ ≤ 900px ซ่อนกรอบ) · รูปอยู่ที่ `assets/img/process/step-0N.jpg` (1000×1250) — รูปใหม่ควรเป็นแนวตั้ง 4:5
+- **Section 03 Process pipeline = ดีไซน์เดิมของ Pack** (รูปเต็มจอเป็นพื้นหลัง `[data-step-bg]` object-fit: cover + เงามืด) — **ห้ามเปลี่ยนรูปแบบการแสดงผลส่วนนี้จนกว่าผู้ใช้สั่ง** (เคยลองแบบกรอบรูป 4:5 แล้วผู้ใช้ให้คืนแบบเดิม 6 ต.ค. 2026) · รูปเป็นไฟล์จริงจาก source เว็บ (FTP) ที่ `assets/img/process/` (bgvideo1, nl, BRAIDING, FINISHING, CROCHET .jpg) แทนการลิงก์ไป lyindustries.com · ขั้น 03 ยังไม่มีรูป (`dye-yarn-machine.png` ไม่มีในทุก source) → Image pending
 - section ธีมสว่างใช้ `data-theme="light"` + override CSS variables inline บน `<section>`
 
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
@@ -105,7 +105,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005_lyiweb_process_images.sql …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
