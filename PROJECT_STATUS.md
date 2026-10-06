@@ -24,7 +24,7 @@
 | 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
 | 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
-| 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | (commit นี้) |
+| 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
 ## 🔄 งานที่กำลังทำ
 
