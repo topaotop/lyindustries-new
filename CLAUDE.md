@@ -65,7 +65,8 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
-├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API, ร่างรอตรวจ)
+├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_web_schema.sql …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version

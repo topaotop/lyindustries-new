@@ -28,7 +28,7 @@
 
 ## 🔄 งานที่กำลังทำ
 
-- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → ร่างอยู่ที่ [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) รอผู้ใช้ตรวจ + ตอบคำถามข้อ 11
+- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (เหลือข้อ 12: ความหมาย "โทร", LINE OA/กลุ่ม, SMTP) · **ขั้นที่ 1:** สคริปต์สร้างตาราง [docs/sql/001_web_schema.sql](docs/sql/001_web_schema.sql) รอผู้ใช้อนุมัติก่อนรันใน `test_LYI`
 - รอทดสอบหน้าเว็บบน dev ด้วยเบราว์เซอร์จริง (โดยเฉพาะ scroll animation หน้าแรก)
 
 ## 🐞 Bug / ปัญหาที่รู้อยู่
