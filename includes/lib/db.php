@@ -53,3 +53,36 @@ function db_rows(string $sql, array $params = []): array
 
     return $rows;
 }
+
+/**
+ * Run a parameterised INSERT/UPDATE/DELETE; returns the number of affected rows.
+ *
+ * @param list<mixed> $params
+ */
+function db_exec(string $sql, array $params = []): int
+{
+    $stmt = sqlsrv_query(db(), $sql, $params);
+    if ($stmt === false) {
+        throw new RuntimeException('Statement failed: ' . print_r(sqlsrv_errors(), true));
+    }
+    $affected = sqlsrv_rows_affected($stmt);
+    sqlsrv_free_stmt($stmt);
+
+    return is_int($affected) ? $affected : 0;
+}
+
+/** Run $fn inside a transaction; rolls back and rethrows on any error. */
+function db_transaction(callable $fn): mixed
+{
+    if (!sqlsrv_begin_transaction(db())) {
+        throw new RuntimeException('Cannot start transaction: ' . print_r(sqlsrv_errors(), true));
+    }
+    try {
+        $result = $fn();
+        sqlsrv_commit(db());
+        return $result;
+    } catch (Throwable $e) {
+        sqlsrv_rollback(db());
+        throw $e;
+    }
+}

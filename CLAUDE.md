@@ -60,6 +60,18 @@ request → index.php / about.php / catalog.php / contact.php
 - แต่ละหน้ามี `<style>` ของตัวเองใน `<head>` (CSS ซ้ำกันบางส่วน เช่น `.nav`, `.brand .mark`) — แก้ส่วนที่ใช้ร่วมต้องแก้ทั้ง 3 หน้า
 - ฟอร์มขอใบเสนอราคาใน `contact.php` ยังเป็น JS เปิด `mailto:` (ยังไม่มี backend)
 
+## หลังบ้าน (Admin) — `admin/`
+
+- เข้าใช้: `<site>/admin/` เช่น http://localhost/lyindustries-new-dev/admin/ · https://lysystems.sytes.net/lyindustries-dev/admin/
+- Login ด้วยบัญชี `sysmnuser` (อ่านอย่างเดียว ห้ามเขียนตารางนี้) — ตรวจรหัสแบบเดียวกับระบบอื่นของบริษัท (plaintext `pass`/`password` ด้วย `hash_equals` หรือ `password_verify`), `locked = 1` เข้าไม่ได้ · session ชื่อ `LYIWEBADMIN` cookie จำกัด path `/…/admin/`, HttpOnly, SameSite=Lax, Secure เมื่อเป็น HTTPS · ไม่ใช้งาน 2 ชม. หลุด
+- กันเดารหัส: ผิด 5 ครั้ง/username หรือ 20 ครั้ง/IP ใน 15 นาที → ล็อก (IP ตั้งสูงเพราะทั้งออฟฟิศออก internet ด้วย IP เดียว)
+- สิทธิ์: `sysmnuser.level >= lyiweb_settings.admin_min_level` (5) = ทุกสิทธิ์ · คนอื่นตาม role ใน `lyiweb_user_roles` · permission: `content.edit` (แก้ไทย+อังกฤษ), `content.translate` (แก้อังกฤษอย่างเดียว), `media.upload`, `contact.view`, `settings.edit`, `users.manage` — อ่านใหม่ทุก request (ถอนสิทธิ์มีผลทันที)
+- ทุกฟอร์ม POST ต้องมี CSRF (`csrf_field()` / `admin_check_post()`), ทุกการบันทึก → `audit_log()` + `content_cache_clear()`, header no-store / X-Frame-Options DENY / noindex
+- แถบด้านบนแสดง DB ที่ต่ออยู่ (`test_LYI` เขียว / `LYI` แดง = PRODUCTION) กันแก้ผิดที่
+- ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/lib/auth.php`
+- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์)
+- ทดสอบหน้าที่ต้อง login โดยไม่มีรหัสจริง: จำลอง session ใน CLI (ตั้ง `$_SESSION['lyiweb_user']` + `lyiweb_csrf` แล้ว require หน้า) — เขียนได้เฉพาะ `test_LYI` และต้องคืนค่าหลังทดสอบ
+
 ## Folder structure
 
 ```
@@ -72,6 +84,8 @@ request → index.php / about.php / catalog.php / contact.php
 │  ├─ site-defaults.php             ค่าติดต่อ/ลิงก์ + ชื่อหน้า/meta = fallback + ต้นทางของ seed 003
 │  ├─ blocks/<page>.php             ข้อความแต่ละหน้า (home 129, about 52, catalog 49, contact 28, footer 14 = footer ร่วมของ catalog/contact) = fallback + ต้นทางของ seed 004
 │  └─ icons.php                     ไอคอน SVG ของไทล์
+├─ admin/               หลังบ้าน (ดูหัวข้อ "หลังบ้าน") — deploy ด้วย
+├─ includes/admin/      init.php ของหลังบ้าน (บล็อกจากเว็บเพราะอยู่ใต้ includes/)
 ├─ tools/               สคริปต์ CLI (build-seed-home/site/blocks.php, extract-blocks.php + lib-textnodes.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
 ├─ assets/
@@ -184,7 +198,7 @@ https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** 
 1. **deploy เฉพาะสิ่งที่ commit แล้ว** — `git status` ต้องสะอาด; commit ที่ deploy = `HEAD`
 2. เลือก version ถัดไปจาก entry ล่าสุดใน DEPLOY_LOG.md
 3. เทียบไฟล์ local ↔ server ด้วย `cmp` เพื่อรู้ว่ามีไฟล์ไหนเพิ่ม/เปลี่ยน/ต้องลบ
-4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git`, `*.md`, `docs/`, `tools/`, `cache/` และ `connectgrp.php` — ไฟล์ connectgrp ของแต่ละ server วางเองครั้งเดียว ห้ามทับ) · โฟลเดอร์ `cache/` บน server ต้องให้ PHP เขียนได้ (IIS: สิทธิ์ Modify ให้ IUSR/app pool) — ถ้าเขียนไม่ได้เว็บยังทำงานแต่จะ query DB ทุกครั้ง
+4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `admin/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git`, `*.md`, `docs/`, `tools/`, `cache/` และ `connectgrp.php` — ไฟล์ connectgrp ของแต่ละ server วางเองครั้งเดียว ห้ามทับ) · โฟลเดอร์ `cache/` บน server ต้องให้ PHP เขียนได้ (IIS: สิทธิ์ Modify ให้ IUSR/app pool) — ถ้าเขียนไม่ได้เว็บยังทำงานแต่จะ query DB ทุกครั้ง
 5. ถ้าลบ/เปลี่ยนชื่อไฟล์ในโปรเจกต์ ต้องลบไฟล์เก่าบน server ด้วย (ใช้ path แบบ literal ไม่ใช้ตัวแปรใน `rm`)
 6. ตรวจ: `curl` ทุกหน้าได้ 200, `*.html` ได้ 301, `includes/…` ได้ 404, `.woff2` ได้ `font/woff2` และ diff HTML จาก server กับ `php <page>.php` ในเครื่องต้องตรงกัน
 7. `git tag -a vX.Y.Z -m "Deploy vX.Y.Z to dev"` ที่ commit ที่ deploy
