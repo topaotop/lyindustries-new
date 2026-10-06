@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 admin_page_start('เข้าสู่ระบบ', '');
 ?>
 <form class="card login" method="post" action="login.php" autocomplete="on">
-  <img src="../assets/img/logo-lyi.svg" alt="L.Y. Industries" width="56" height="56">
+  <img src="../assets/img/brand/logo-lyi.svg" alt="L.Y. Industries" width="56" height="56">
   <h1>LYI Website Admin</h1>
   <p class="muted">เข้าสู่ระบบด้วยบัญชีเดียวกับระบบอื่นของบริษัท</p>
   <?php if ($error !== ''): ?><div class="flash flash-error"><?= e($error) ?></div><?php endif; ?>

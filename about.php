@@ -12,8 +12,8 @@ $meta = page_meta('about');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($meta['title']) ?></title>
-<link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/img/brand/logo-lyi.svg">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -125,14 +125,14 @@ function admin_page_start(string $title, string $active): void
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title><?= e($title) ?> · LYI Website Admin</title>
-<link rel="icon" type="image/svg+xml" href="../assets/img/logo-lyi.svg">
+<link rel="icon" type="image/svg+xml" href="../assets/img/brand/logo-lyi.svg">
 <link rel="stylesheet" href="<?= e(asset('../assets/css/fonts.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset('assets/admin.css')) ?>">
 </head>
 <body>
 <?php if ($user): ?>
 <header class="topbar">
-  <a class="brand" href="index.php"><img src="../assets/img/logo-lyi.svg" alt="" width="30" height="30"><span>LYI Website <b>Admin</b></span></a>
+  <a class="brand" href="index.php"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="30" height="30"><span>LYI Website <b>Admin</b></span></a>
   <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : ' · ทดสอบ' ?></span>
   <span class="spacer"></span>
   <span class="who"><?= e($user['name']) ?></span>

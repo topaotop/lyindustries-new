@@ -8,7 +8,7 @@ declare(strict_types=1);
 define('APP_ROOT', dirname(__DIR__));
 
 /** Shown wherever a real photo has not been uploaded yet. */
-const SITE_PLACEHOLDER_IMG = 'assets/img/placeholder.svg';
+const SITE_PLACEHOLDER_IMG = 'assets/img/brand/placeholder.svg';
 
 /** Image path, or the "image pending" placeholder when none is set. */
 function img_src(string $path): string

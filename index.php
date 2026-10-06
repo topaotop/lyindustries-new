@@ -33,8 +33,8 @@ $menuItems = [
 <?php if ($meta['meta_desc'] !== ''): ?>
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <?php endif; ?>
-<link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
-<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="assets/img/brand/logo-lyi.svg">
+<link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <link rel="stylesheet" href="<?= e(asset('assets/css/fonts.css')) ?>">
 <link rel="stylesheet" href="<?= e(asset('assets/css/home.css')) ?>">
 </head>
@@ -53,7 +53,7 @@ $menuItems = [
   <nav style="background:var(--bg-glass);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border-glass);border-radius:100px;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:24px;box-shadow:0 12px 32px rgba(0,0,0,0.45)">
     <!-- Brand Logo -->
     <a href="#" style="display:flex;align-items:center;gap:12px">
-      <img src="assets/img/logo-lyi.svg" alt="L.Y. Industries" width="40" height="40" style="display:block;width:40px;height:40px">
+      <img src="assets/img/brand/logo-lyi.svg" alt="L.Y. Industries" width="40" height="40" style="display:block;width:40px;height:40px">
       <div class="brand-text" style="display:flex;flex-direction:column;line-height:1.15;white-space:nowrap">
         <span style="font-family:var(--font-heading);font-weight:600;font-size:15px;letter-spacing:0.08em;color:#fff">L.Y. INDUSTRIES</span>
         <span style="font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:0.12em">BANGKOK · EST. 1978</span>
@@ -474,7 +474,7 @@ $menuItems = [
         </div>
       </div>
       <div style="position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
-        <img src="assets/img/rnd-team.png" alt="LY R&amp;D team developing trims with a designer" style="width:100%;height:100%;object-fit:cover;display:block">
+        <img src="assets/img/rnd/rnd-team.png" alt="LY R&amp;D team developing trims with a designer" style="width:100%;height:100%;object-fit:cover;display:block">
         <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
         <div style="position:absolute;left:20px;right:20px;bottom:18px;display:flex;flex-direction:column;gap:3px">
           <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.rnd.10') ?></span>
@@ -607,7 +607,7 @@ $menuItems = [
   <!-- Lab photo strip: real equipment behind the color guarantee -->
   <div style="position:relative;max-width:1240px;margin:64px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
     <div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
-      <img class="hv-13" src="assets/img/dye-dispenser.png" alt="Automated dye dispenser" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
+      <img class="hv-13" src="assets/img/colorlab/dye-dispenser.png" alt="Automated dye dispenser" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
         <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.18') ?></span>
@@ -615,7 +615,7 @@ $menuItems = [
       </div>
     </div>
     <div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
-      <img class="hv-13" src="assets/img/spectrophotometer.png" alt="Spectrophotometer color measurement" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
+      <img class="hv-13" src="assets/img/colorlab/spectrophotometer.png" alt="Spectrophotometer color measurement" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
         <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.20') ?></span>
@@ -623,7 +623,7 @@ $menuItems = [
       </div>
     </div>
     <div style="position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;border:1px solid var(--border-glass);background:#14141a">
-      <img class="hv-13" src="assets/img/lab-dip.png" alt="Lab-dip compared to standard" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
+      <img class="hv-13" src="assets/img/colorlab/lab-dip.png" alt="Lab-dip compared to standard" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(0.16,1,0.3,1)">
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,8,10,0.85) 100%)"></div>
       <div style="position:absolute;left:18px;right:18px;bottom:16px;display:flex;flex-direction:column;gap:3px">
         <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.14em;color:var(--brand-orange)"><?= b('home.colorlab.22') ?></span>

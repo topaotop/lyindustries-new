@@ -93,8 +93,13 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ tools/               สคริปต์ CLI (build-seed-home/site/blocks.php, extract-blocks.php + lib-textnodes.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
 ├─ assets/
-│  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
-│  ├─ img/                    โลโก้ (logo-lyi.svg), apple-touch-icon.png, placeholder.svg ("Image pending"), ภาพหน้าแรกที่แตกจาก bundle (PNG ใหญ่)
+│  ├─ img/                    รูปทั้งหมด แยกโฟลเดอร์ตามหมวด (จัด 7 ต.ค. 2026) — รูปใหม่ให้วางในหมวดที่ตรง ห้ามวางที่ assets/ หรือ img/ ตรงๆ
+│  │  ├─ brand/               logo-lyi.svg, apple-touch-icon.png, placeholder.svg ("Image pending")
+│  │  ├─ applications/        app-*.jpg — ไทล์จุดใช้งานบนเสื้อผ้า (home.tiles)
+│  │  ├─ products/            prod-*.jpg — หมวดสินค้า (home.products + catalog.php)
+│  │  ├─ process/             bgvideo1, nl, BRAIDING, FINISHING, CROCHET .jpg — ขั้นตอนผลิต (home.steps)
+│  │  ├─ rnd/                 rnd-team.png — ส่วน R&D หน้าแรก
+│  │  └─ colorlab/            dye-dispenser, spectrophotometer, lab-dip .png — ส่วนโรงย้อม/Color Lab หน้าแรก (PNG ใหญ่)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก
@@ -105,7 +110,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต, 007 ย้ายโฟลเดอร์รูป …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
