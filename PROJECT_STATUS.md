@@ -32,6 +32,7 @@
 | 6 ต.ค. 2026 | **ขั้นที่ 2b-3:** ข้อความ about (52), catalog (49), contact (28) และ footer ร่วม (14) → `lyiweb_blocks` ด้วย `tools/extract-blocks.php` · `004` regenerate เป็น 272 block และ seed `test_LYI` · ตรวจ: ทุกหน้าตรงผลเดิมทุกไบต์ (DB, cache, ไม่มี DB, Apache, PHP 8.2) + แก้ footer 1 จุดเปลี่ยนทั้ง catalog/contact | `c29e15f` |
 | 6 ต.ค. 2026 | ผู้ใช้รัน `004_lyiweb_seed_blocks.sql` ใน `LYI` — ตรวจแล้ว 272 block ตรงกับ `test_LYI` | — |
 | 6 ต.ค. 2026 | **ขั้นที่ 3a — หลังบ้าน:** `admin/` login ด้วย `sysmnuser` (อ่านอย่างเดียว), ล็อกหลังผิด 5 ครั้ง/username หรือ 20/IP, session/CSRF/audit, สิทธิ์ตาม role + level ≥ 5 = admin · หน้า: แดชบอร์ด, ข้อความหน้าเว็บ & SEO (ไทย/อังกฤษ, translator แก้ได้แค่อังกฤษ), ข้อมูลติดต่อ & ลิงก์ (validate) · ทดสอบด้วย session จำลองบน `test_LYI`: redirect/CSRF/ล็อก/สิทธิ์/บันทึก/validate ผ่าน แล้วคืนค่า — ข้อมูล `test_LYI` ตรงกับ `LYI` ทุกแถว | `0dd4ef8` |
+| 6 ต.ค. 2026 | หลังบ้าน: กดบันทึกแล้วอยู่ตำแหน่งเดิม (ไม่เด้งขึ้นบนสุด) · ข้อความยืนยันลอยมุมขวาบน 4 วินาที · ถ้ามีช่องผิด เลื่อนไปช่องนั้นให้ (ผู้ใช้ขอ) | (commit นี้) |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 

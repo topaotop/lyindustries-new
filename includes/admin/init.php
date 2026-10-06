@@ -118,7 +118,7 @@ function admin_page_start(string $title, string $active): void
 <div class="center">
 <?php endif; ?>
 <?php if ($f = flash()): ?>
-    <div class="flash flash-<?= e($f['type']) ?>"><?= e($f['message']) ?></div>
+    <div class="flash flash-<?= e($f['type']) ?>" data-flash><?= e($f['message']) ?></div>
 <?php endif;
 }
 

@@ -101,3 +101,7 @@ textarea.changed { border-color: var(--info); background: #f5f8ff; }
 .count { display: block; text-align: right; font-size: 12px; color: var(--muted); }
 @media (max-width: 860px) { .row { grid-template-columns: 1fr; } .row.head { display: none; } }
 [hidden] { display: none !important; }
+
+/* floating confirmation after a save (scroll position is kept, so the top flash would be off-screen) */
+.flash.toast { position: fixed; top: 66px; right: 20px; z-index: 50; max-width: min(420px, calc(100vw - 40px)); box-shadow: 0 10px 30px rgba(0,0,0,.15); transition: opacity .4s, transform .4s; }
+.flash.toast-hide { opacity: 0; transform: translateY(-8px); pointer-events: none; }
