@@ -65,6 +65,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
+├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API, ร่างรอตรวจ)
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
@@ -125,6 +126,7 @@ request → index.php / about.php / catalog.php / contact.php
 - **โค้ดต้องรันได้บน PHP 8.2** เพราะ production เป็น 8.2 ห้ามใช้ฟีเจอร์ที่มีเฉพาะ 8.3/8.4 (เช่น typed class constants, `#[\Override]`, `json_validate()`, property hooks, asymmetric visibility, `new` แบบไม่ใส่วงเล็บแล้ว chain) — ตรวจด้วยการรันกับ PHP 8.2 ก่อน deploy production
 - ต้องมีกฎทั้ง `.htaccess` (local + production LiteSpeed) และ `web.config` (company server IIS) ให้ตรงกันเสมอ
 - `connectgrp.php` เลือก environment จาก**โดเมนที่เข้าเว็บ** (`$_SERVER['HTTP_HOST']`, แก้ 6 ต.ค. 2026): `www.lyindustries.com` / `lyindustries.com` = `production` (DB `LYI` @ 183.89.245.21) · `lysystems.sytes.net` / `192.168.0.70` = `test` · อื่นๆ ทั้งหมดรวม CLI = `dev` (ทั้ง test/dev ใช้ `test_LYI` @ 192.168.0.22) — โดเมนที่ไม่รู้จักจะตกไป DB ทดสอบเสมอ ถ้าเพิ่มโดเมน production ใหม่ต้องเพิ่มใน `$PROD_HOSTS`
+- **SQL Server 2012 (v11), compatibility level 100** ทั้ง `LYI` และ `test_LYI` → ห้ามใช้ฟังก์ชัน JSON ของ SQL (`JSON_VALUE`, `OPENJSON`), `OFFSET…FETCH`, `STRING_AGG`, `TRY_CONVERT`/`IIF` ของ level 110+ — แบ่งหน้าด้วย `ROW_NUMBER()`, JSON parse ใน PHP
 - ตารางผู้ใช้ `sysmnuser` มีทั้งใน `LYI` และ `test_LYI` · ตารางใหม่ของเว็บให้ขึ้นต้น `web_` (เช็กแล้วยังไม่มีตารางชื่อ `web%`/`site%`/`cms%` ในทั้งสอง DB)
 ### Production ตอนนี้ = เว็บเวอร์ชันเดิม (สำรวจ 5 ต.ค. 2026)
 
