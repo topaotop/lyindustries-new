@@ -159,6 +159,21 @@ CREATE TABLE dbo.web_contact_requests (
 IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_web_contact_status' AND object_id = OBJECT_ID(N'dbo.web_contact_requests'))
 CREATE INDEX IX_web_contact_status ON dbo.web_contact_requests (status, created_at);
 
+/* ---------- นับคลิกช่องทางติดต่อ (อีเมล / LINE / โทร / ส่งฟอร์ม) ---------- */
+IF OBJECT_ID(N'dbo.web_channel_clicks', N'U') IS NULL
+CREATE TABLE dbo.web_channel_clicks (
+    id          BIGINT IDENTITY(1,1) NOT NULL CONSTRAINT PK_web_channel_clicks PRIMARY KEY,
+    channel     NVARCHAR(10)  NOT NULL CONSTRAINT CK_web_channel_clicks_channel CHECK (channel IN (N'email', N'line', N'tel', N'form')),
+    page        NVARCHAR(50)  NOT NULL,       -- home / about / catalog / contact
+    position    NVARCHAR(50)  NULL,           -- ปุ่มไหนในหน้า เช่น hero, contact-card, footer, side-menu
+    lang        CHAR(2)       NOT NULL CONSTRAINT DF_web_channel_clicks_lang DEFAULT 'th',
+    visitor     CHAR(16)      NULL,           -- hash ของ IP+วัน (นับคนไม่ซ้ำได้ โดยไม่เก็บ IP จริง)
+    is_bot      BIT           NOT NULL CONSTRAINT DF_web_channel_clicks_is_bot DEFAULT 0,
+    clicked_at  DATETIME      NOT NULL CONSTRAINT DF_web_channel_clicks_at DEFAULT GETDATE()
+);
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_web_channel_clicks_report' AND object_id = OBJECT_ID(N'dbo.web_channel_clicks'))
+CREATE INDEX IX_web_channel_clicks_report ON dbo.web_channel_clicks (clicked_at, channel, page);
+
 /* =====================================================================
    ข้อมูลตั้งต้น (เพิ่มเฉพาะที่ยังไม่มี)
    ===================================================================== */
