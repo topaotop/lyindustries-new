@@ -105,7 +105,7 @@ request → index.php / about.php / catalog.php / contact.php
 │  └─ js/home.js              JS หน้าแรก
 ├─ connectgrp.php       การเชื่อมต่อ SQL Server (sqlsrv) — มีรหัสผ่าน, อยู่ใน .gitignore (ไม่อยู่ใน git — สำรองเอง); `includes/lib/db.php` require เมื่อต้อง query — ถ้าไม่มีไฟล์นี้บน server เว็บยังขึ้นด้วย fallback
 ├─ .gitignore           connectgrp.php, /cache/, .DS_Store, Thumbs.db, desktop.ini, .vscode/, .idea/
-├─ .htaccess            Apache/LiteSpeed: DirectoryIndex, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก, บล็อก includes/ cache/ tools/ docs/
+├─ .htaccess            Apache/LiteSpeed: DirectoryIndex, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก, บล็อก includes/ cache/ tools/ docs/ และ connectgrp.php
 ├─ web.config           IIS: handler PHP 8.4, defaultDocument, MIME .woff2, hiddenSegments includes/cache/tools/docs, 301 *.html → *.php, 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)

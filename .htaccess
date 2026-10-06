@@ -14,4 +14,6 @@ DirectoryIndex index.php
 # Not web pages: PHP partials, content cache, CLI tools, docs/SQL
 <IfModule mod_alias.c>
   RedirectMatch 404 ^/(.*/)?(includes|cache|tools|docs)/
+  # DB credentials file — never reachable from the web
+  RedirectMatch 404 (?i)/connectgrp\.php$
 </IfModule>
