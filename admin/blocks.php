@@ -7,11 +7,11 @@ admin_require('content.translate');
 $canTh = can('content.edit');   // translators (content.translate only) may edit English only
 
 $pages = [
-    'home'    => ['หน้าแรก', 'index.php'],
-    'about'   => ['เกี่ยวกับเรา', 'about.php'],
-    'catalog' => ['แคตตาล็อกสินค้า', 'catalog.php'],
-    'contact' => ['ติดต่อเรา', 'contact.php'],
-    'footer'  => ['Footer (แคตตาล็อก + ติดต่อ)', 'catalog.php#footer'],
+    'home'    => ['หน้าแรก', 'index.php', 'home'],
+    'about'   => ['เกี่ยวกับเรา', 'about.php', 'factory'],
+    'catalog' => ['แคตตาล็อกสินค้า', 'catalog.php', 'tape'],
+    'contact' => ['ติดต่อเรา', 'contact.php', 'mail'],
+    'footer'  => ['Footer (แคตตาล็อก + ติดต่อ)', 'catalog.php#footer', 'footer'],
 ];
 $sectionNames = [
     'home'    => ['hero' => 'ส่วนบนสุด (Hero)', 'trust' => 'แถบความน่าเชื่อถือ + ตัวเลข', 'story' => 'จุดใช้งานบนเสื้อผ้า', 'why' => 'ทำไมต้องเรา',
@@ -135,8 +135,8 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
 ?>
 <h1>ข้อความหน้าเว็บ & SEO</h1>
 <nav class="tabs">
-<?php foreach ($pages as $s => [$label]): ?>
-  <a href="?page=<?= e($s) ?>"<?= $s === $slug ? ' class="on"' : '' ?>><?= e($label) ?></a>
+<?php foreach ($pages as $s => [$label, , $icon]): ?>
+  <a href="?page=<?= e($s) ?>"<?= $s === $slug ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><?= e($label) ?></span></a>
 <?php endforeach; ?>
 </nav>
 

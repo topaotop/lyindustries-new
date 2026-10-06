@@ -44,6 +44,11 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        // page tabs
+        'factory'  => '<path d="M3 17V9l4 2.5V9l4 2.5V6h3v3l3-1.5V17z"/><path d="M3 17h14M7 14h1.5M11 14h1.5"/>',
+        'tape'     => '<ellipse cx="8" cy="10" rx="5" ry="5"/><circle cx="8" cy="10" r="1.6"/><path d="M8 15h9v-3.2"/>',
+        'mail'     => '<rect x="3" y="5" width="14" height="10.5" rx="1.5"/><path d="m3.5 6 6.5 5 6.5-5"/>',
+        'footer'   => '<rect x="3.5" y="3.5" width="13" height="13" rx="1.5"/><path d="M3.5 12.5h13M6 14.5h3M11 14.5h3"/>',
     ];
 
     return '<svg class="ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'

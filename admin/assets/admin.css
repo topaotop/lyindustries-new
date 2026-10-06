@@ -123,3 +123,10 @@ textarea.changed { border-color: var(--info); background: #f5f8ff; }
 /* floating confirmation after a save (scroll position is kept, so the top flash would be off-screen) */
 .flash.toast { position: fixed; top: 66px; right: 20px; z-index: 50; max-width: min(420px, calc(100vw - 40px)); box-shadow: 0 10px 30px rgba(0,0,0,.15); transition: opacity .4s, transform .4s; }
 .flash.toast-hide { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+
+/* page tabs with icons */
+.tabs a { display: inline-flex; align-items: center; gap: 8px; transition: border-color .15s, background .15s; }
+.tabs a .ic { width: 18px; height: 18px; flex: none; color: var(--muted); }
+.tabs a:hover { border-color: #c7c7cc; }
+.tabs a.on .ic { color: #ff9a6b; }
+.tabs a:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
