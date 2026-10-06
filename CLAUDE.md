@@ -152,6 +152,7 @@ request → index.php / about.php / catalog.php / contact.php
 
 - โฟลเดอร์งาน: `C:\xampp\htdocs\lyindustries-new-dev` บนเครื่อง `COM-CPU-055` (192.168.0.125)
 - เปิดดู: http://localhost/lyindustries-new-dev/ (Apache ของ XAMPP รัน **PHP 8.4.12** ผ่าน fcgid)
+- ⚠️ `/tmp` ของ Git Bash ≠ `/tmp` ของ PHP/Windows (PHP อ่าน `C:	mp`) — ไฟล์ที่ส่งต่อให้ PHP ให้ใช้ path Windows (`cygpath -w`) หรือ scratchpad และ**ตรวจทุกครั้งว่าอ่านไฟล์ได้ก่อนเขียนทับ** (เคยทำให้ section หายจาก index.php)
 - PHP CLI: `php` ใน PATH = 8.4 (Laragon) ใช้เป็นหลัก · `C:\xampp\php\php.exe` = **8.2** ใช้เช็กความเข้ากันได้กับ production
 - ไม่มี automated test — วิธีตรวจหลังแก้:
   1. `php -l <file>` ทุกไฟล์ที่แก้
