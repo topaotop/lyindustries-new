@@ -23,12 +23,13 @@
 | 5 ต.ค. 2026 | เพิ่ม `.gitignore` (กัน `connectgrp.php` ที่มีรหัส DB + ไฟล์ขยะ OS/editor), เอา `.DS_Store` ออกจาก repo | `a1dd48b` |
 | 6 ต.ค. 2026 | `connectgrp.php` เลือก DB ตามโดเมน: เฉพาะ www.lyindustries.com → `LYI`, อื่นๆ (รวม .70 / lysystems.sytes.net) → `test_LYI` (ไฟล์อยู่ใน .gitignore — ไม่มี commit) | — |
 | 6 ต.ค. 2026 | รูป "Image pending" (`assets/img/placeholder.svg`) + `img_src()` แทนรูปที่ยังไม่มี: process ขั้น 03, gallery หน้าแรก 6, ตัวอย่างสินค้า catalog 6 | `1194b22` |
+| 6 ต.ค. 2026 | สร้างตาราง `lyiweb_*` 12 ตาราง + ข้อมูลตั้งต้น ทั้งใน `test_LYI` และ `LYI` (ผู้ใช้รัน `docs/sql/001_lyiweb_schema.sql` ผ่าน Navicat) — ตรวจแล้ว: คอลัมน์, constraint 39, index 5, roles 4, permissions 10, settings 2, pages 4 ครบ | `8c73d4d` (script) |
 | 6 ต.ค. 2026 | redirect 301 หน้าเว็บเก่า 8 หน้า (`innovation`, `shop`, `products_detail`, `braiding`, `crochet`, `finishing`, `needle_loom`, `raschel`) → หน้าแรก ใน `.htaccess` + `web.config` | `1194b22` |
 | 6 ต.ค. 2026 | แก้ภาพ process 5 ภาพ + วิดีโอ hero โหลดไม่ขึ้นเมื่อเปิดจากในบริษัท: เปลี่ยน URL จาก `lyindustries.com` เป็น `www.lyindustries.com` (สาเหตุ: DNS ของ AD ในบริษัท ชี้ `lyindustries.com` ไป DC1) | `5d3b8e4` |
 
 ## 🔄 งานที่กำลังทำ
 
-- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1:** สคริปต์สร้างตาราง [docs/sql/001_lyiweb_schema.sql](docs/sql/001_lyiweb_schema.sql) รอผู้ใช้อนุมัติก่อนรันใน `test_LYI`
+- **ออกแบบหลังบ้าน admin + เว็บ 2 ภาษา + API** — Pack อนุมัติแล้ว (6 ต.ค. 2026) → [docs/design/admin-i18n-api.md](docs/design/admin-i18n-api.md) ผู้ใช้ตอบคำถาม 5 ข้อแล้ว (ฟอร์ม = บันทึก DB + ดูในหลังบ้าน ไม่แจ้งเตือน · นับคลิกอีเมล/LINE/โทร/ฟอร์ม ด้วย `lyiweb_channel_clicks` · คำถามตอบครบแล้ว) · **ขั้นที่ 1 ✅** ตาราง `lyiweb_*` สร้างแล้ว · **ถัดไป ขั้นที่ 2:** seed เนื้อหาปัจจุบันลง DB + `Db`/`Content`/`I18n` ให้หน้าเว็บอ่านจาก DB (output ต้องเท่าเดิมทุกไบต์)
 - รอทดสอบหน้าเว็บบน dev ด้วยเบราว์เซอร์จริง (โดยเฉพาะ scroll animation หน้าแรก)
 
 ## 🐞 Bug / ปัญหาที่รู้อยู่
