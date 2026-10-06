@@ -152,8 +152,6 @@ CREATE TABLE dbo.web_contact_requests (
     user_agent    NVARCHAR(400) NULL,
     status        NVARCHAR(20)  NOT NULL CONSTRAINT DF_web_contact_status DEFAULT N'new'
                   CONSTRAINT CK_web_contact_status CHECK (status IN (N'new', N'read', N'done', N'spam')),
-    notify_email  NVARCHAR(20)  NULL,          -- sent / failed / skipped
-    notify_line   NVARCHAR(20)  NULL,
     created_at    DATETIME      NOT NULL CONSTRAINT DF_web_contact_created_at DEFAULT GETDATE(),
     handled_by    INT           NULL,
     handled_at    DATETIME      NULL
@@ -198,8 +196,6 @@ IF NOT EXISTS (SELECT 1 FROM dbo.web_settings WHERE setting_key = N'default_lang
     INSERT dbo.web_settings (setting_key, value) VALUES (N'default_lang', N'th');
 IF NOT EXISTS (SELECT 1 FROM dbo.web_settings WHERE setting_key = N'admin_min_level')
     INSERT dbo.web_settings (setting_key, value) VALUES (N'admin_min_level', N'5');   -- sysmnuser.level >= 5 = admin อัตโนมัติ
-IF NOT EXISTS (SELECT 1 FROM dbo.web_settings WHERE setting_key = N'notify_emails')
-    INSERT dbo.web_settings (setting_key, value) VALUES (N'notify_emails', N'sales@lyindustries.com');
 
 /* pages */
 INSERT dbo.web_pages (slug)

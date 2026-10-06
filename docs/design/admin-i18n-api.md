@@ -123,7 +123,7 @@ Role เริ่มต้น: `admin` (ทุกสิทธิ์), `editor` (
 
 **`web_contact_requests`** — `id` · `name` · `company` · `email` · `phone` · `product` · `message` · `lang` · `page` · `ip` · `user_agent` · `status` (`new`/`read`/`done`) · `created_at` · `handled_by`
 - กัน spam: honeypot field + จำกัด 5 ครั้ง/ชม./IP
-- แจ้งเตือนทีมขาย: อีเมล (ต้องมี SMTP ของ z.com) และ/หรือ LINE — **ยังต้องเลือก**
+- ไม่ส่งแจ้งเตือนอีเมล/LINE — ทีมขายดูข้อความในหลังบ้าน (dashboard แสดงจำนวนข้อความใหม่)
 
 ## 5. การแสดงผลหน้าเว็บ + cache
 
@@ -194,7 +194,7 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 | 2 | `Db`, `Content` (+cache, fallback), `I18n` — หน้าเว็บอ่านจาก DB | **diff HTML ก่อน/หลัง ต้องตรงทุกไบต์** ทั้ง 4 หน้า, ทดสอบตัด DB แล้วเว็บยังขึ้น |
 | 3 | `Auth`, `Perm`, หน้า login/dashboard, audit log | login ถูก/ผิด/ถูกล็อก/ไม่มีสิทธิ์ |
 | 4 | API + หน้าแก้ blocks/items/SEO, Media | แก้แล้วหน้าเว็บเปลี่ยน, cache ถูกล้าง |
-| 5 | ฟอร์มติดต่อ → DB + แจ้งเตือน | ส่งจริง, spam ถูกกัน |
+| 5 | ฟอร์มติดต่อ → DB + หน้าดูข้อความในหลังบ้าน | ส่งจริงแล้วเห็นในหลังบ้าน, spam ถูกกัน |
 | 6 | `/en/` + ปุ่มภาษา + hreflang + default lang | ทั้งสองภาษา, สลับ default แล้ว redirect ถูก |
 | 7 | SEO/AEO: sitemap, robots, FAQPage, OG, meta | Ahrefs Site Audit |
 
@@ -223,12 +223,8 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 - (แนะนำ) นับจำนวนคลิกแต่ละช่องทาง → รู้ว่าลูกค้าชอบช่องทางไหน ใช้วัดผล SEO/AEO ได้ — ตาราง `web_channel_clicks` (เพิ่มใน script ถัดไปถ้าผู้ใช้ต้องการ)
 - **ฟอร์ม** เป็นช่องทางเดียวที่เว็บต้องประมวลผลเอง: ส่งไม่สำเร็จก็ยังบันทึกลง DB เสมอ
 
-**การแจ้งเตือนทีมขายเมื่อมีฟอร์มเข้า** (รอผู้ใช้เลือก — ข้อ 12)
-- อีเมล: ผ่าน SMTP ของ z.com (PHPMailer วางไฟล์ใน `includes/vendor/`, ไม่ใช้ Composer) ไปที่ `web_settings.notify_emails`
-- LINE: LINE Messaging API (push) แบบ mm-systems — ~~LINE Notify~~ ปิดบริการแล้ว (มี.ค. 2025) · token เก็บใน config ที่อยู่ใน `.gitignore`
+**การแจ้งเตือนทีมขายเมื่อมีฟอร์มเข้า:** ✅ ผู้ใช้เลือก (6 ต.ค. 2026) = **บันทึกลง DB แล้วดูในหลังบ้านอย่างเดียว ไม่ส่งอีเมล/LINE** → ไม่ต้องใช้ SMTP, PHPMailer หรือ LINE token · หลังบ้านแสดงจำนวนข้อความใหม่ (status `new`) ที่ dashboard ให้เห็นทันทีที่ login · ถ้าอนาคตต้องการแจ้งเตือน เพิ่มทีหลังได้โดยไม่ต้องแก้ตาราง
+
 ## 12. ยังต้องถาม
 
-1. **ฟอร์มเข้าแล้วแจ้งทีมขายทางไหน:** (ก) อีเมลอย่างเดียว · (ข) อีเมล + LINE · (ค) ดูในหลังบ้านอย่างเดียว ไม่แจ้ง
-2. ถ้ามีอีเมล: มีบัญชีอีเมลบน z.com สำหรับส่ง (host, port, user) แล้วหรือยัง และส่งถึงใคร (เช่น sales@lyindustries.com)
-3. ถ้ามี LINE: ใช้ OA ไหน (`@lyindustries` หรือ OA ภายในที่ mm-systems ใช้) และส่งเข้ากลุ่มทีมขาย หรือส่งรายคน
-4. ต้องการนับคลิกช่องทาง อีเมล / LINE / โทร ไหม
+1. ต้องการนับคลิกช่องทาง อีเมล / LINE / โทร ไหม (ตาราง `web_channel_clicks` — ไม่บังคับ)
