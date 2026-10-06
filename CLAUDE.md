@@ -44,6 +44,7 @@ request → index.php / about.php / catalog.php / contact.php
 - ลำดับการอ่าน: cache สด (`cache/content.json`, อายุ 5 นาที) → DB → cache เก่า → ข้อมูลในโค้ด `includes/home-data.php` (fallback ราย list — list ที่ไม่มีแถวใน DB ก็ใช้ fallback)
 - DB ต่อไม่ได้ → เขียน `cache/db-unavailable` แล้วไม่ลองใหม่ 60 วินาที (กันหน้าเว็บรอ timeout) · env `LYIWEB_DB=off` = บังคับทางไม่มี DB (ใช้ทดสอบ)
 - ฟิลด์/ลำดับฟิลด์/แปลได้ไหม กำหนดที่ `includes/schema/lists.php` (หลังบ้านจะสร้างฟอร์มจากไฟล์นี้) — ลำดับสำคัญเพราะสี swatch ถูก `json_encode` ลง `data-swatch`
+- เครื่อง dev (local) กับ company server (.70) ใช้ `test_LYI` ร่วมกันแต่ cache แยกเครื่อง — แก้ในหลังบ้านของเครื่องหนึ่ง อีกเครื่องเห็นผลช้าสุด 5 นาที (หรือกด "ล้าง cache" ในแดชบอร์ดของเครื่องนั้น) · production ไม่มีปัญหานี้ (DB `LYI` + หลังบ้านอยู่เครื่องเดียวกับเว็บ)
 - แก้ข้อมูลใน DB แล้วต้องเรียก `content_cache_clear()` (หลังบ้านจะทำให้) — ถ้าแก้ตรงใน Navicat หน้าเว็บจะเปลี่ยนภายใน 5 นาที
 - **แก้ `includes/home-data.php` แล้วต้องรัน `php tools/build-seed-home.php`** ให้ `docs/sql/002_lyiweb_seed_home.sql` ตรงกันเสมอ (seed ใส่เฉพาะ list ที่ยังไม่มีแถว — ไม่ทับเนื้อหาที่แก้ในหลังบ้านแล้ว)
 - **ข้อความของหน้า (`lyiweb_blocks`):** ทุกข้อความในหน้าเขียนเป็น `<?= b('page.section.nn') ?>` (escape ให้แล้ว) — key เช่น `home.hero.04`; ค่าเริ่มต้น/fallback อยู่ที่ `includes/blocks/<page>.php` · ภาษาอังกฤษว่าง → ใช้ไทย · ยังไม่ย้าย: เมนู `<header>`/`<aside>` (ใช้ร่วมทุกหน้า), คำนำหน้าที่ติดกับค่า settings เช่น "โทร: ", `alt`/`aria-label`

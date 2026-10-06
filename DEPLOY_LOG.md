@@ -14,6 +14,20 @@
 
 ---
 
+## v1.1.0 — 2026-10-06 17:52 · dev
+
+- **Commit:** `aa5a4cd` · **Tag:** `v1.1.0` (ข้ามจาก v1.0.1 — มีฟีเจอร์ใหม่ = MINOR)
+- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - เนื้อหาทั้งเว็บอ่านจาก DB (`test_LYI`): รายการหน้าแรก, ข้อความ 272 ชิ้น, ข้อมูลติดต่อ, ชื่อหน้า/SEO — มี cache + fallback ในโค้ด
+  - **หลังบ้าน `/admin/`**: login ด้วย `sysmnuser`, สิทธิ์, แดชบอร์ด, แก้ข้อความ/SEO (เมนูย่อยรายส่วน), แก้ข้อมูลติดต่อ
+  - วิดีโอ YouTube หน้า About, รูป "Image pending", redirect 301 หน้าเว็บเก่า 8 หน้า → หน้าแรก
+  - รูปทั้งหมดเป็นไฟล์ในเว็บ จัดหมวดใน `assets/img/` (ขั้นตอนผลิตเป็นไฟล์จริงจาก FTP แทนลิงก์), CSS/JS มี `?v=` กัน cache
+  - บล็อก `includes/ cache/ tools/ docs/` และ `connectgrp.php` จากเว็บ
+- **Files:** เพิ่ม 44 · แก้ 11 · ลบ 22 (ไฟล์ `.md` 3, รูปที่ย้ายโฟลเดอร์ 19) · วาง `connectgrp.php` (manual, ไม่อยู่ใน git) — `.htaccess` + `web.config` deploy ซ้ำหลังพบว่า `connectgrp.php` เปิดจากเว็บได้
+- **Backup:** สำเนาโฟลเดอร์ server ก่อน deploy 63 ไฟล์ (17MB) เก็บใน scratchpad ของ session (ไม่ได้วางบน N: เพราะเปิดผ่านเว็บได้)
+- **Verify:** ✅ 4 หน้า + admin login 200 · `/admin/` → 302 login · `*.html` / หน้าเก่า → 301 · `includes/ cache/ tools/ docs/ connectgrp.php README.md` → 404 · `.woff2` = `font/woff2` · รูป/CSS/JS 45/45 โหลดได้ · HTML จาก server ตรงกับ local ทุกหน้า · IIS เขียน `cache/` ได้ · URL สาธารณะ 200
+- **Note:** server กับเครื่อง dev ใช้ `test_LYI` ร่วมกัน — แก้ในหลังบ้านเครื่องหนึ่ง cache อีกเครื่องไม่ถูกล้าง (เห็นผลช้าสุด 5 นาที)
 ## v1.0.1 — 2026-10-05 14:56 · dev
 
 - **Commit:** `c2db765` · **Tag:** `v1.0.1`
