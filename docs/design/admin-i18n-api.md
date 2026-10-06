@@ -47,27 +47,27 @@
 
 `includes/`, `cache/`, `uploads/*.php` ต้องบล็อกทั้งใน `.htaccess` และ `web.config`
 
-## 4. ฐานข้อมูล (ตารางใหม่ทั้งหมดขึ้นต้น `web_`)
+## 4. ฐานข้อมูล (ตารางใหม่ทั้งหมดขึ้นต้น `lyiweb_`)
 
-สร้างใน `test_LYI` ก่อน → ทดสอบ → สร้างใน `LYI` ด้วยสคริปต์เดียวกัน (`docs/sql/001_web_schema.sql`)
+สร้างใน `test_LYI` ก่อน → ทดสอบ → สร้างใน `LYI` ด้วยสคริปต์เดียวกัน (`docs/sql/001_lyiweb_schema.sql`)
 
 ### 4.1 เนื้อหา
 
-**`web_settings`** — ค่าตั้งของเว็บ
+**`lyiweb_settings`** — ค่าตั้งของเว็บ
 | คอลัมน์ | ชนิด | หมายเหตุ |
 |---|---|---|
 | `setting_key` | NVARCHAR(100) PK | เช่น `default_lang`, `site_phone`, `site_email`, `line_url`, `hours_th` |
 | `value` | NVARCHAR(MAX) | |
 | `updated_at` / `updated_by` | DATETIME / INT | `updated_by` = `sysmnuser.id` |
 
-**`web_pages`** — 1 แถวต่อหน้า × ข้อมูล SEO
+**`lyiweb_pages`** — 1 แถวต่อหน้า × ข้อมูล SEO
 | คอลัมน์ | ชนิด |
 |---|---|
 | `id` INT IDENTITY PK, `slug` NVARCHAR(50) UNIQUE (`home`, `about`, `catalog`, `contact`) |
 | `title_th`, `title_en` NVARCHAR(200) · `meta_desc_th`, `meta_desc_en` NVARCHAR(400) |
-| `og_image_id` INT (→ `web_media.id`) · `is_published` BIT · `updated_at`, `updated_by` |
+| `og_image_id` INT (→ `lyiweb_media.id`) · `is_published` BIT · `updated_at`, `updated_by` |
 
-**`web_blocks`** — ข้อความ/รูป "ชิ้นเดี่ยว" ในแต่ละหน้า (หัวข้อ hero, ย่อหน้า AEO, ปุ่ม ฯลฯ)
+**`lyiweb_blocks`** — ข้อความ/รูป "ชิ้นเดี่ยว" ในแต่ละหน้า (หัวข้อ hero, ย่อหน้า AEO, ปุ่ม ฯลฯ)
 | คอลัมน์ | ชนิด | หมายเหตุ |
 |---|---|---|
 | `id` INT IDENTITY PK | | |
@@ -76,7 +76,7 @@
 | `value_th`, `value_en` | NVARCHAR(MAX) | `value_en` ว่าง → แสดงภาษาไทยแทน (fallback) |
 | `updated_at`, `updated_by` | | |
 
-**`web_items`** — รายการที่วนซ้ำ (ไทล์ 8, process 6, สินค้า 6, gallery 6, FAQ 4, สี 5, marquee, หมวด catalog, Facilities …)
+**`lyiweb_items`** — รายการที่วนซ้ำ (ไทล์ 8, process 6, สินค้า 6, gallery 6, FAQ 4, สี 5, marquee, หมวด catalog, Facilities …)
 | คอลัมน์ | ชนิด | หมายเหตุ |
 |---|---|---|
 | `id` INT IDENTITY PK | | |
@@ -84,19 +84,19 @@
 | `sort_order` INT, `is_active` BIT | | ลากเรียง/ซ่อนได้ |
 | `data_th`, `data_en` | NVARCHAR(MAX) | JSON ของฟิลด์ที่แปลได้ (เช่น `{"title":…,"desc":…}`) — parse ใน PHP |
 | `data_common` | NVARCHAR(MAX) | JSON ของฟิลด์ที่ไม่ขึ้นกับภาษา (รหัสสินค้า, hex สี, dx/dy) |
-| `image_id` | INT NULL → `web_media.id` | |
+| `image_id` | INT NULL → `lyiweb_media.id` | |
 | `updated_at`, `updated_by` | | |
 
 ฟิลด์ของแต่ละ `list_key` กำหนดใน `includes/schema/*.php` (ชื่อ, ชนิด, แปลได้ไหม, จำเป็นไหม) — หลังบ้านสร้างฟอร์มจากไฟล์นี้ และ validate ก่อนบันทึก จึงเพิ่ม list ใหม่ได้โดยไม่แก้ตาราง
 
-**`web_media`** — รูปที่อัปโหลด
+**`lyiweb_media`** — รูปที่อัปโหลด
 | `id` PK · `file_path` NVARCHAR(300) (relative เช่น `uploads/2026/10/abc123.webp`) · `original_name` · `mime` · `width`, `height`, `bytes` · `alt_th`, `alt_en` · `uploaded_at`, `uploaded_by` |
 
 ### 4.2 ผู้ใช้และสิทธิ์ (ผูกกับ `sysmnuser` แบบอ่านอย่างเดียว)
 
-**`web_roles`** — `id` PK · `role_key` NVARCHAR(50) UNIQUE · `name_th` · `is_system` BIT
-**`web_role_permissions`** — `role_id` + `permission` NVARCHAR(50) (PK คู่)
-**`web_user_roles`** — `user_id` (= `sysmnuser.id`) + `role_id` (PK คู่) · `granted_at`, `granted_by`
+**`lyiweb_roles`** — `id` PK · `role_key` NVARCHAR(50) UNIQUE · `name_th` · `is_system` BIT
+**`lyiweb_role_permissions`** — `role_id` + `permission` NVARCHAR(50) (PK คู่)
+**`lyiweb_user_roles`** — `user_id` (= `sysmnuser.id`) + `role_id` (PK คู่) · `granted_at`, `granted_by`
 
 Permission ที่มี (กำหนดในโค้ด, ให้สิทธิ์ผ่าน role):
 | permission | ทำอะไรได้ |
@@ -112,16 +112,16 @@ Role เริ่มต้น: `admin` (ทุกสิทธิ์), `editor` (
 
 **กติกา login**
 - ทุกคนที่มีใน `sysmnuser` และ `locked <> 1` **login ได้** (ตามที่ผู้ใช้กำหนด) — แต่ถ้าไม่มี role เลยจะเห็นแค่หน้า "ยังไม่มีสิทธิ์ ติดต่อผู้ดูแล"
-- **bootstrap admin คนแรก:** ผู้ใช้ `sysmnuser.level >= 5` ได้สิทธิ์ `admin` อัตโนมัติ (ใช้เกณฑ์เดียวกับ price-quote) — ปรับตัวเลขได้ใน `web_settings.admin_min_level`
-- กันเดารหัส: ผิด 5 ครั้งใน 15 นาที → ล็อก username+IP 15 นาที (ตาราง **`web_login_attempts`**: `username`, `ip`, `attempted_at`, `success`)
+- **bootstrap admin คนแรก:** ผู้ใช้ `sysmnuser.level >= 5` ได้สิทธิ์ `admin` อัตโนมัติ (ใช้เกณฑ์เดียวกับ price-quote) — ปรับตัวเลขได้ใน `lyiweb_settings.admin_min_level`
+- กันเดารหัส: ผิด 5 ครั้งใน 15 นาที → ล็อก username+IP 15 นาที (ตาราง **`lyiweb_login_attempts`**: `username`, `ip`, `attempted_at`, `success`)
 - session: `session_regenerate_id()` หลัง login, cookie `HttpOnly` + `Secure` + `SameSite=Lax`, หมดอายุเมื่อไม่ใช้งาน 2 ชม.
 - ทุกฟอร์ม/คำขอที่เขียนข้อมูลต้องมี CSRF token
 
-**`web_audit_log`** — `id` · `user_id` · `action` (`update`/`create`/`delete`/`login`/`grant`) · `entity` · `entity_id` · `before_json`, `after_json` NVARCHAR(MAX) · `ip` · `created_at` — ดูย้อนหลังและกู้ค่าเดิมได้
+**`lyiweb_audit_log`** — `id` · `user_id` · `action` (`update`/`create`/`delete`/`login`/`grant`) · `entity` · `entity_id` · `before_json`, `after_json` NVARCHAR(MAX) · `ip` · `created_at` — ดูย้อนหลังและกู้ค่าเดิมได้
 
 ### 4.3 ฟอร์มติดต่อ
 
-**`web_contact_requests`** — `id` · `name` · `company` · `email` · `phone` · `product` · `message` · `lang` · `page` · `ip` · `user_agent` · `status` (`new`/`read`/`done`) · `created_at` · `handled_by`
+**`lyiweb_contact_requests`** — `id` · `name` · `company` · `email` · `phone` · `product` · `message` · `lang` · `page` · `ip` · `user_agent` · `status` (`new`/`read`/`done`) · `created_at` · `handled_by`
 - กัน spam: honeypot field + จำกัด 5 ครั้ง/ชม./IP
 - ไม่ส่งแจ้งเตือนอีเมล/LINE — ทีมขายดูข้อความในหลังบ้าน (dashboard แสดงจำนวนข้อความใหม่)
 
@@ -185,14 +185,14 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 
 ## 9. ย้ายข้อมูลระหว่าง environment
 
-- เครื่องมือ **Export/Import** ในหลังบ้าน (`settings.edit`): ส่งออก `web_pages/blocks/items/settings` เป็นไฟล์ JSON + zip รูป → นำเข้าอีก env
+- เครื่องมือ **Export/Import** ในหลังบ้าน (`settings.edit`): ส่งออก `lyiweb_pages/blocks/items/settings` เป็นไฟล์ JSON + zip รูป → นำเข้าอีก env
 - ใช้ครั้งแรกตอน launch: เตรียมเนื้อหาบน .70 (`test_LYI`) → export → import เข้า production (`LYI`)
 
 ## 10. ลำดับงาน (แตกจาก roadmap)
 
 | ขั้น | งาน | ตรวจยังไง |
 |---|---|---|
-| 1 | สคริปต์สร้างตาราง `web_*` + seed ข้อมูลปัจจุบัน (จาก home-data.php + ข้อความในหน้า) ลง `test_LYI` | นับแถว/เทียบค่ากับ array เดิม |
+| 1 | สคริปต์สร้างตาราง `lyiweb_*` + seed ข้อมูลปัจจุบัน (จาก home-data.php + ข้อความในหน้า) ลง `test_LYI` | นับแถว/เทียบค่ากับ array เดิม |
 | 2 | `Db`, `Content` (+cache, fallback), `I18n` — หน้าเว็บอ่านจาก DB | **diff HTML ก่อน/หลัง ต้องตรงทุกไบต์** ทั้ง 4 หน้า, ทดสอบตัด DB แล้วเว็บยังขึ้น |
 | 3 | `Auth`, `Perm`, หน้า login/dashboard, audit log | login ถูก/ผิด/ถูกล็อก/ไม่มีสิทธิ์ |
 | 4 | API + หน้าแก้ blocks/items/SEO, Media | แก้แล้วหน้าเว็บเปลี่ยน, cache ถูกล้าง |
@@ -216,13 +216,13 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 
 | ช่องทาง | บนเว็บตอนนี้ | หลังบ้านทำอะไร |
 |---|---|---|
-| **อีเมล** | ลิงก์ `mailto:sales@lyindustries.com` | แก้อีเมลปลายทางได้ (`web_settings.site_email`) |
-| **LINE** | ลิงก์ LINE OA `@lyindustries` | แก้ LINE ID / URL ได้ (`web_settings.line_url`) |
-| **โทร** | ลิงก์ `tel:025170768` + เบอร์ต่อ 120, 121 | แก้เบอร์/เบอร์ต่อได้ (`web_settings.site_phone*`) |
-| **ฟอร์ม** | ตอนนี้เป็น JS เปิด `mailto:` (ข้อมูลไม่ถูกเก็บที่ไหน) | **บันทึกลง `web_contact_requests`** + ดู/เปลี่ยนสถานะได้ในหลังบ้าน + แจ้งเตือนทีมขาย |
+| **อีเมล** | ลิงก์ `mailto:sales@lyindustries.com` | แก้อีเมลปลายทางได้ (`lyiweb_settings.site_email`) |
+| **LINE** | ลิงก์ LINE OA `@lyindustries` | แก้ LINE ID / URL ได้ (`lyiweb_settings.line_url`) |
+| **โทร** | ลิงก์ `tel:025170768` + เบอร์ต่อ 120, 121 | แก้เบอร์/เบอร์ต่อได้ (`lyiweb_settings.site_phone*`) |
+| **ฟอร์ม** | ตอนนี้เป็น JS เปิด `mailto:` (ข้อมูลไม่ถูกเก็บที่ไหน) | **บันทึกลง `lyiweb_contact_requests`** + ดู/เปลี่ยนสถานะได้ในหลังบ้าน + แจ้งเตือนทีมขาย |
 
-- อีเมล / LINE / โทร ลูกค้าติดต่อตรง เว็บแค่แสดงลิงก์ → ค่าทั้งหมดย้ายไปอยู่ใน `web_settings` (แก้จุดเดียว เปลี่ยนทุกหน้า รวม schema JSON-LD)
-- **นับคลิกแต่ละช่องทาง** ✅ ผู้ใช้ต้องการ (6 ต.ค. 2026) — ตาราง `web_channel_clicks`:
+- อีเมล / LINE / โทร ลูกค้าติดต่อตรง เว็บแค่แสดงลิงก์ → ค่าทั้งหมดย้ายไปอยู่ใน `lyiweb_settings` (แก้จุดเดียว เปลี่ยนทุกหน้า รวม schema JSON-LD)
+- **นับคลิกแต่ละช่องทาง** ✅ ผู้ใช้ต้องการ (6 ต.ค. 2026) — ตาราง `lyiweb_channel_clicks`:
   - ทุกลิงก์ อีเมล / LINE / โทร และปุ่มส่งฟอร์ม มี `data-channel` + `data-position` → JS ส่ง `navigator.sendBeacon()` ไป `POST /api/v1/track` ตอนคลิก (ไม่หน่วงการเปิดแอปอีเมล/LINE/โทร)
   - เก็บ: ช่องทาง, หน้า, ตำแหน่งปุ่ม, ภาษา, เวลา, `visitor` = hash ของ IP+วันที่ (นับคนไม่ซ้ำต่อวันได้ **โดยไม่เก็บ IP จริง**), `is_bot` จาก user agent
   - กันยิงซ้ำ: นับ 1 ครั้ง / visitor / ช่องทาง / หน้า / 10 วินาที
