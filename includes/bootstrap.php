@@ -7,14 +7,6 @@ declare(strict_types=1);
 
 define('APP_ROOT', dirname(__DIR__));
 
-const SITE_PHONE         = '02-517-0768';
-const SITE_PHONE_EXT     = '120, 121';
-const SITE_PHONE_TEL     = '025170768';
-const SITE_EMAIL         = 'sales@lyindustries.com';
-const SITE_LINE_URL      = 'https://line.me/R/ti/p/@lyindustries';
-const SITE_TRIMRITE_URL  = 'https://www.trimrite.com/';
-const SITE_INSPIRATION_URL = 'https://www.lyindustries.com/lyinspirationhub/';
-
 /** Shown wherever a real photo has not been uploaded yet. */
 const SITE_PLACEHOLDER_IMG = 'assets/img/placeholder.svg';
 
@@ -41,7 +33,7 @@ function site_nav(): array
         ['key' => 'home',     'label' => 'หน้าแรก',        'href' => 'index.php'],
         ['key' => 'process',  'label' => 'กระบวนการผลิต',   'href' => 'index.php#process'],
         ['key' => 'catalog',  'label' => 'แคตาล็อกสินค้า',   'href' => 'catalog.php'],
-        ['key' => 'trimrite', 'label' => 'TRIMRITE®',      'href' => SITE_TRIMRITE_URL, 'external' => true],
+        ['key' => 'trimrite', 'label' => 'TRIMRITE®',      'href' => site('trimrite_url'), 'external' => true],
         ['key' => 'about',    'label' => 'เกี่ยวกับเรา',      'href' => 'about.php'],
         ['key' => 'contact',  'label' => 'ติดต่อเรา',        'href' => 'contact.php'],
     ];
@@ -52,3 +44,6 @@ function external_attrs(array $link): string
 {
     return empty($link['external']) ? '' : ' target="_blank" rel="noopener"';
 }
+
+// Content layer: lists, site settings (contact data, links) and page SEO — see includes/lib/content.php
+require_once __DIR__ . '/lib/content.php';

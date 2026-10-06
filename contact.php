@@ -4,6 +4,7 @@ declare(strict_types=1);
 require __DIR__ . '/includes/bootstrap.php';
 
 $activeNav = 'contact';
+$meta = page_meta('contact');
 $quoteHref = '#form';
 ?>
 <!DOCTYPE html>
@@ -11,15 +12,15 @@ $quoteHref = '#form';
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ติดต่อ L.Y. Industries — ผู้ผลิต Narrow Fabric &amp; Trims กรุงเทพฯ</title>
+<title><?= e($meta['title']) ?></title>
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<meta name="description" content="ติดต่อ L.Y. Industries ผู้ผลิต Narrow Fabric และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือกรูด ขอบเอว) ที่ 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510 โทร 02-517-0768 ต่อ 120, 121 อีเมล sales@lyindustries.com LINE @lyindustries">
+<meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ContactPage","name":"ติดต่อ L.Y. Industries","mainEntity":{"@type":["Organization","LocalBusiness"],"name":"L.Y. Industries Co., Ltd.","alternateName":["LY Industries","บริษัท แอล วาย อินดัสตรีย์ จำกัด"],"foundingDate":"1978","url":"https://lyindustries.com","email":"sales@lyindustries.com","telephone":"+66-2-517-0768","faxNumber":"+66-2-517-4888","address":{"@type":"PostalAddress","streetAddress":"124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"hasMap":"https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:30","closes":"17:30"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"08:30","closes":"12:00"}],"contactPoint":{"@type":"ContactPoint","contactType":"sales","telephone":"+66-2-517-0768","email":"sales@lyindustries.com","availableLanguage":["th","en"]},"sameAs":["https://line.me/R/ti/p/@lyindustries"]}}
+{"@context":"https://schema.org","@type":"ContactPage","name":"ติดต่อ L.Y. Industries","mainEntity":{"@type":["Organization","LocalBusiness"],"name":"L.Y. Industries Co., Ltd.","alternateName":["LY Industries","บริษัท แอล วาย อินดัสตรีย์ จำกัด"],"foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","faxNumber":"<?= json_inner(phone_schema(site('fax'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"hasMap":"https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"<?= json_inner(site('hours_weekday_open')) ?>","closes":"<?= json_inner(site('hours_weekday_close')) ?>"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"<?= json_inner(site('hours_sat_open')) ?>","closes":"<?= json_inner(site('hours_sat_close')) ?>"}],"contactPoint":{"@type":"ContactPoint","contactType":"sales","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","email":"<?= json_inner(site('email')) ?>","availableLanguage":["th","en"]},"sameAs":["<?= json_inner(site('line_url')) ?>"]}}
 </script>
 <style>
 :root{--bg-primary:#08080a;--bg-secondary:#101014;--bg-card:rgba(22,22,28,.7);--brand-orange:#ff5a1f;--brand-orange-light:#ff7e47;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-light:rgba(255,255,255,.08);--border-glass:rgba(255,255,255,.12);--font-heading:'Kanit',-apple-system,sans-serif;--font-body:'Anuphan',-apple-system,sans-serif;--font-mono:'JetBrains Mono',Menlo,monospace}
@@ -185,15 +186,15 @@ section.block.light+section.block{padding-top:96px}
           </select></label>
         <label class="full">รายละเอียด (ขนาด สี จำนวน การใช้งาน) *<textarea name="msg" required></textarea></label>
         <button class="btn btn-o" type="submit">ส่งคำขอ →</button>
-        <span class="note full">มีรูปหรือไฟล์ tech pack? ส่งทาง LINE @lyindustries หรือแนบในอีเมลที่เปิดขึ้นได้เลย</span>
+        <span class="note full">มีรูปหรือไฟล์ tech pack? ส่งทาง LINE <?= e(site('line_id')) ?> หรือแนบในอีเมลที่เปิดขึ้นได้เลย</span>
       </form>
       <div class="info">
-        <div class="row"><span class="k">ADDRESS</span><span>บริษัท แอล วาย อินดัสตรีย์ จำกัด<br>124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510</span></div>
-        <div class="row"><span class="k">PHONE</span><a href="tel:+6625170768">02-517-0768 ต่อ 120, 121</a></div>
-        <div class="row"><span class="k">FAX</span><span>02-517-4888</span></div>
-        <div class="row"><span class="k">EMAIL</span><a href="mailto:sales@lyindustries.com">sales@lyindustries.com</a></div>
-        <div class="row"><span class="k">LINE</span><a href="https://line.me/R/ti/p/@lyindustries" target="_blank" rel="noopener">@lyindustries</a></div>
-        <div class="row"><span class="k">HOURS</span><span>จันทร์ – ศุกร์: 08:30 – 17:30 น.<br>เสาร์: 08:30 – 12:00 น.</span></div>
+        <div class="row"><span class="k">ADDRESS</span><span><?= e(site('company_th')) ?><br><?= address_th_html() ?></span></div>
+        <div class="row"><span class="k">PHONE</span><a href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a></div>
+        <div class="row"><span class="k">FAX</span><span><?= e(site('fax')) ?></span></div>
+        <div class="row"><span class="k">EMAIL</span><a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></div>
+        <div class="row"><span class="k">LINE</span><a href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener"><?= e(site('line_id')) ?></a></div>
+        <div class="row"><span class="k">HOURS</span><span><?= hours_th_html() ?></span></div>
       </div>
     </div>
   </div>
@@ -206,7 +207,7 @@ section.block.light+section.block{padding-top:96px}
       <h2>ที่อยู่ของเรา</h2>
     </div>
     <div class="map"><iframe title="แผนที่ L.Y. Industries" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=th&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-    <div class="maprow"><span>124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510</span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener">เปิดใน Google Maps ↗</a></div>
+    <div class="maprow"><span><?= address_th_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener">เปิดใน Google Maps ↗</a></div>
   </div>
 </section>
 
@@ -216,7 +217,7 @@ section.block.light+section.block{padding-top:96px}
 document.getElementById('qform').addEventListener('submit',function(e){
   e.preventDefault();var f=new FormData(this);
   var body='ชื่อ: '+f.get('name')+'\nบริษัท: '+f.get('company')+'\nอีเมล: '+f.get('email')+'\nโทร: '+f.get('phone')+'\nสินค้า: '+f.get('product')+'\n\nรายละเอียด:\n'+f.get('msg');
-  location.href='mailto:sales@lyindustries.com?subject='+encodeURIComponent('ขอใบเสนอราคา — '+f.get('product'))+'&body='+encodeURIComponent(body);
+  location.href='mailto:<?= e(site('email')) ?>?subject='+encodeURIComponent('ขอใบเสนอราคา — '+f.get('product'))+'&body='+encodeURIComponent(body);
 });
 </script>
 </body>

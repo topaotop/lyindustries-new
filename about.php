@@ -4,21 +4,22 @@ declare(strict_types=1);
 require __DIR__ . '/includes/bootstrap.php';
 
 $activeNav = 'about';
+$meta = page_meta('about');
 ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>เกี่ยวกับ L.Y. Industries — ผู้ผลิต Narrow Fabrics & Trims ตั้งแต่ปี 1978</title>
+<title><?= e($meta['title']) ?></title>
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<meta name="description" content="L.Y. Industries Co., Ltd. ผู้ผลิต Narrow Fabrics และ Trims ครบวงจรในกรุงเทพฯ ตั้งแต่ปี 1978 — ยางยืด เทปทอ เทปถัก เชือก ขอบเอว และงาน finishing สำหรับแบรนด์กีฬาและแฟชั่นระดับโลก">
+<meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"AboutPage","name":"เกี่ยวกับ L.Y. Industries","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"https://lyindustries.com","email":"sales@lyindustries.com","telephone":"+66-2-517-0768","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"ผู้ผลิต Narrow Fabrics และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือก ขอบเอว งาน finishing) สำหรับแบรนด์เสื้อผ้ากีฬาและแฟชั่น"}}
+{"@context":"https://schema.org","@type":"AboutPage","name":"เกี่ยวกับ L.Y. Industries","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"ผู้ผลิต Narrow Fabrics และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือก ขอบเอว งาน finishing) สำหรับแบรนด์เสื้อผ้ากีฬาและแฟชั่น"}}
 </script>
 <style>
 :root{--bg-primary:#08080a;--bg-secondary:#101014;--bg-card:rgba(22,22,28,.7);--brand-orange:#ff5a1f;--brand-orange-light:#ff7e47;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-light:rgba(255,255,255,.08);--border-glass:rgba(255,255,255,.12);--font-heading:'Kanit',-apple-system,sans-serif;--font-body:'Anuphan',-apple-system,sans-serif;--font-mono:'JetBrains Mono',Menlo,monospace}
@@ -179,10 +180,10 @@ section.video{padding-bottom:96px}
       <div class="facts">
         <div class="row"><span class="k">COMPANY</span><span class="v">L.Y. Industries Co., Ltd.</span></div>
         <div class="row"><span class="k">FOUNDED</span><span class="v">1978 · กรุงเทพมหานคร</span></div>
-        <div class="row"><span class="k">FACTORY</span><span class="v">124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510</span></div>
+        <div class="row"><span class="k">FACTORY</span><span class="v"><?= address_th_html() ?></span></div>
         <div class="row"><span class="k">PRODUCTS</span><span class="v">ยางยืด · เทปทอ · เทปถัก Raschel/Crochet · เชือก เชือกยางยืด · ขอบเอว · งาน finishing</span></div>
         <div class="row"><span class="k">MARKETS</span><span class="v">แบรนด์เสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น ทั้งในประเทศและส่งออก</span></div>
-        <div class="row"><span class="k">CONTACT</span><span class="v">02-517-0768 ต่อ 120, 121 · sales@lyindustries.com</span></div>
+        <div class="row"><span class="k">CONTACT</span><span class="v"><?= e(phone_display_th()) ?> · <?= e(site('email')) ?></span></div>
       </div>
     </div>
   </div>
@@ -214,8 +215,8 @@ section.video{padding-bottom:96px}
     <p>ทีม R&amp;D และฝ่ายขายพร้อมประเมินวัสดุ สี และตัวอย่างให้ตามการใช้งานจริงของคุณ</p>
     <div class="row">
       <a class="btn btn-o" href="contact.php#form">ขอใบเสนอราคา →</a>
-      <a class="btn btn-g" href="mailto:sales@lyindustries.com">sales@lyindustries.com</a>
-      <a class="btn btn-g" href="tel:+6625170768">02-517-0768 ต่อ 120, 121</a>
+      <a class="btn btn-g" href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a>
+      <a class="btn btn-g" href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a>
     </div>
   </div>
 </section>

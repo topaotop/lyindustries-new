@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 require __DIR__ . '/includes/bootstrap.php';
 require __DIR__ . '/includes/icons.php';
-require __DIR__ . '/includes/lib/content.php';
 
 $lang = 'th';
+$meta = page_meta('home', $lang);
 $partnerLogos = content_list('home.partners', $lang);
 $tiles        = content_list('home.tiles', $lang);
 $steps        = content_list('home.steps', $lang);
@@ -19,7 +19,7 @@ $activeSwatch = $swatches[0];
 $menuItems = [
     ['n' => '01', 'label' => 'หน้าแรก',                 'href' => '#hero'],
     ['n' => '02', 'label' => 'แคตาล็อกสินค้า',            'href' => 'catalog.php'],
-    ['n' => '03', 'label' => 'TRIMRITE® ↗',             'href' => SITE_TRIMRITE_URL, 'external' => true],
+    ['n' => '03', 'label' => 'TRIMRITE® ↗',             'href' => site('trimrite_url'), 'external' => true],
     ['n' => '04', 'label' => 'เกี่ยวกับเรา',               'href' => 'about.php'],
     ['n' => '05', 'label' => 'ติดต่อเรา / ขอใบเสนอราคา',   'href' => 'contact.php'],
 ];
@@ -29,7 +29,10 @@ $menuItems = [
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>L.Y. Industries (Hybrid) — Narrow Fabrics &amp; Trims ครบวงจร มาตรฐานระดับโลก</title>
+<title><?= e($meta['title']) ?></title>
+<?php if ($meta['meta_desc'] !== ''): ?>
+<meta name="description" content="<?= e($meta['meta_desc']) ?>">
+<?php endif; ?>
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="stylesheet" href="assets/css/fonts.css">
@@ -62,7 +65,7 @@ $menuItems = [
       <a class="hv-1" href="#hero" style="transition:color 0.25s">หน้าแรก</a>
       <a class="hv-1" href="#process" style="transition:color 0.25s">กระบวนการผลิต</a>
       <a class="hv-1" href="catalog.php" style="transition:color 0.25s">แคตาล็อกสินค้า</a>
-      <a class="hv-1" href="https://www.trimrite.com/" target="_blank" rel="noopener" style="transition:color 0.25s">TRIMRITE®</a>
+      <a class="hv-1" href="<?= e(site('trimrite_url')) ?>" target="_blank" rel="noopener" style="transition:color 0.25s">TRIMRITE®</a>
       <a class="hv-1" href="about.php" style="transition:color 0.25s">เกี่ยวกับเรา</a>
       <a class="hv-1" href="contact.php" style="transition:color 0.25s">ติดต่อเรา</a>
     </div>
@@ -100,7 +103,7 @@ $menuItems = [
     <?php endforeach; ?>
   </div>
   <div style="margin-top:auto;padding-top:24px;display:flex;flex-direction:column;gap:12px">
-    <div style="font-size:14px;line-height:1.7;color:var(--text-secondary)">โทร: <?= e(SITE_PHONE) ?> ต่อ <?= e(SITE_PHONE_EXT) ?><br>อีเมล: <?= e(SITE_EMAIL) ?></div>
+    <div style="font-size:14px;line-height:1.7;color:var(--text-secondary)">โทร: <?= e(phone_display_th()) ?><br>อีเมล: <?= e(site('email')) ?></div>
     <a href="#contact" data-menu-toggle style="background:var(--brand-orange);color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:15px">ติดต่อทีมฝ่ายขาย →</a>
   </div>
 </aside>
@@ -629,7 +632,7 @@ $menuItems = [
           ทุกชิ้นมีรหัสอ้างอิงเฉพาะ สั่งพัฒนาต่อยอด หรือขอตัวอย่างจริงเพื่อเทียบสัมผัสได้ทันที
         </p>
       </div>
-      <a class="hv-14" href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener" style="font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--text-primary);border:1px solid var(--border-glass);padding:12px 24px;border-radius:100px;backdrop-filter:blur(12px)">
+      <a class="hv-14" href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener" style="font-family:var(--font-heading);font-weight:600;font-size:14px;color:var(--text-primary);border:1px solid var(--border-glass);padding:12px 24px;border-radius:100px;backdrop-filter:blur(12px)">
         ดูแคตตาล็อกทั้งหมด →
       </a>
     </div>
@@ -667,7 +670,7 @@ $menuItems = [
       <p style="font-size:16px;line-height:1.75;color:var(--text-secondary)">
         ข้อมูลเกี่ยวกับขั้นต่ำในการผลิต (MOQ), กระบวนการทำตัวอย่าง, มาตรฐานการเทียบสี และระยะเวลาจัดส่ง — ทีมฝ่ายขายพร้อมตอบทุกข้อสงสัยภายใน 24 ชั่วโมงทำการ
       </p>
-      <a class="hv-15" href="mailto:sales@lyindustries.com" style="align-self:flex-start;background:rgba(0,0,0,0.04);border:1px solid var(--border-glass);color:var(--text-primary);padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;margin-top:6px;backdrop-filter:blur(12px)">
+      <a class="hv-15" href="mailto:<?= e(site('email')) ?>" style="align-self:flex-start;background:rgba(0,0,0,0.04);border:1px solid var(--border-glass);color:var(--text-primary);padding:12px 24px;border-radius:100px;font-size:14px;font-weight:500;margin-top:6px;backdrop-filter:blur(12px)">
         สอบถามคำถามอื่นเพิ่มเติม →
       </a>
     </div>
@@ -716,16 +719,16 @@ $menuItems = [
 
       <!-- Contact Actions -->
       <div style="display:flex;flex-direction:column;gap:12px;width:100%;max-width:440px;justify-self:end">
-        <a class="hv-12" href="mailto:sales@lyindustries.com" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 24px var(--brand-orange-glow);transition:transform 0.2s">
+        <a class="hv-12" href="mailto:<?= e(site('email')) ?>" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 24px var(--brand-orange-glow);transition:transform 0.2s">
           <span>ขอใบเสนอราคา / Request a Quote</span>
           <span style="font-size:18px">→</span>
         </a>
-        <a class="hv-16" href="https://line.me/R/ti/p/@lyindustries" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
-          <span>LINE Official: @lyindustries</span>
+        <a class="hv-16" href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
+          <span>LINE Official: <?= e(site('line_id')) ?></span>
           <span style="font-size:18px">→</span>
         </a>
-        <a class="hv-16" href="tel:025170768" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
-          <span>โทร: 02-517-0768 ต่อ 120, 121</span>
+        <a class="hv-16" href="<?= e(tel_href_local()) ?>" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
+          <span>โทร: <?= e(phone_display_th()) ?></span>
           <span style="font-size:18px">→</span>
         </a>
       </div>
@@ -736,12 +739,12 @@ $menuItems = [
       
       <div style="display:flex;flex-direction:column;gap:10px">
         <span style="font-family:var(--font-heading);font-weight:700;font-size:16px;letter-spacing:0.06em;color:#fff">L.Y. INDUSTRIES CO., LTD.</span>
-        <span>บริษัท แอล วาย อินดัสตรีย์ จำกัด<br>124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน<br>เขตคลองสามวา กรุงเทพฯ 10510</span>
+        <span><?= e(site('company_th')) ?><br><?= address_th_html('<br>') ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
         <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)">OPERATING HOURS</span>
-        <span>จันทร์ – ศุกร์: 08:30 – 17:30 น.<br>เสาร์: 08:30 – 12:00 น.<br>sales@lyindustries.com</span>
+        <span><?= hours_th_html() ?><br><?= e(site('email')) ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
@@ -749,7 +752,7 @@ $menuItems = [
         <div style="display:flex;flex-direction:column;gap:4px">
           <a class="hv-1" href="#hero" style="color:var(--text-secondary)">หน้าแรก</a>
           <a class="hv-1" href="catalog.php" style="color:var(--text-secondary)">แคตาล็อกสินค้า</a>
-          <a class="hv-1" href="https://www.trimrite.com/" target="_blank" rel="noopener" style="color:var(--text-secondary)">TRIMRITE®</a>
+          <a class="hv-1" href="<?= e(site('trimrite_url')) ?>" target="_blank" rel="noopener" style="color:var(--text-secondary)">TRIMRITE®</a>
           <a class="hv-1" href="about.php" style="color:var(--text-secondary)">เกี่ยวกับเรา</a>
           <a class="hv-1" href="contact.php" style="color:var(--text-secondary)">ติดต่อเรา</a>
           <a class="hv-1" href="#faq" style="color:var(--text-secondary)">คำถามพบบ่อย</a>

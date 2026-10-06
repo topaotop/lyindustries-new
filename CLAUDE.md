@@ -29,8 +29,8 @@
 
 ```
 request → index.php / about.php / catalog.php / contact.php
-            └─ includes/bootstrap.php   ค่าคงที่ของเว็บ (โทร, อีเมล, LINE, URL ภายนอก, SITE_PLACEHOLDER_IMG), site_nav(), e(), external_attrs(), img_src()
-            └─ includes/lib/content.php (เฉพาะ index.php) content_list('home.xxx', $lang) — อ่านรายการจาก DB
+            └─ includes/bootstrap.php   APP_ROOT, SITE_PLACEHOLDER_IMG, e(), img_src(), site_nav(), external_attrs() แล้ว require includes/lib/content.php ให้ทุกหน้า
+            └─ includes/lib/content.php content_list() รายการ · site() ค่าติดต่อ/ลิงก์ · page_meta() ชื่อหน้า+meta · helper รูปแบบเบอร์/ที่อยู่/เวลา
             └─ includes/icons.php       ไอคอนไทล์ (content เก็บแค่ key, template เรียก icon_uri())
             └─ includes/site-header.php (about/catalog/contact) ตั้ง $activeNav, $quoteHref ก่อน require
             └─ includes/site-footer.php (catalog/contact) footer 4 คอลัมน์ — about ใช้ footer สั้นของตัวเอง
@@ -64,9 +64,10 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ includes/            PHP partial/ข้อมูล (ห้ามเปิดตรงจากเว็บ — บล็อกทั้งใน .htaccess และ web.config)
 │  ├─ lib/db.php, lib/content.php   ชั้น DB + content (cache/fallback)
 │  ├─ schema/lists.php              นิยามฟิลด์ของแต่ละ list
-│  ├─ home-data.php                 ข้อมูลหน้าแรกในโค้ด = fallback + ต้นทางของ seed
+│  ├─ home-data.php                 ข้อมูลรายการหน้าแรกในโค้ด = fallback + ต้นทางของ seed 002
+│  ├─ site-defaults.php             ค่าติดต่อ/ลิงก์ + ชื่อหน้า/meta = fallback + ต้นทางของ seed 003
 │  └─ icons.php                     ไอคอน SVG ของไทล์
-├─ tools/               สคริปต์ CLI (build-seed-home.php) — บล็อกจากเว็บ, ไม่ deploy
+├─ tools/               สคริปต์ CLI (build-seed-home.php, build-seed-site.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
 ├─ assets/
 │  ├─ app-*.jpg, prod-*.jpg   ภาพประกอบเดิม 13 ไฟล์
@@ -81,7 +82,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql ← generated …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql ← generated …) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version
@@ -89,14 +90,21 @@ request → index.php / about.php / catalog.php / contact.php
 
 ## Key links & contact data
 
-| อะไร | ค่า | หมายเหตุ |
-|---|---|---|
-| TRIMRITE® | https://www.trimrite.com/ | เปิดแท็บใหม่ (`SITE_TRIMRITE_URL`) |
-| Inspiration Hub | https://www.lyindustries.com/lyinspirationhub/ | ปุ่ม "สินค้าเพิ่มเติม" / "ดูแคตตาล็อกทั้งหมด" (`SITE_INSPIRATION_URL`) |
-| LINE OA | https://line.me/R/ti/p/@lyindustries | `SITE_LINE_URL` — แต่ `index.php` และ `contact.php` ยัง hard-code URL นี้อยู่ |
-| อีเมล | sales@lyindustries.com | `SITE_EMAIL` — `mailto:` ใน about/contact/index ยัง hard-code |
-| โทร | 02-517-0768 ต่อ 120, 121 (tel: `025170768`) | `SITE_PHONE`, `SITE_PHONE_EXT`, `SITE_PHONE_TEL` |
-| ที่อยู่ | 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน เขตคลองสามวา กรุงเทพฯ 10510 | อยู่ใน footer partial + schema ของ about/contact |
+ทั้งหมดอยู่ในตาราง `lyiweb_settings` (แก้ได้ในหลังบ้าน) — ในโค้ดเรียก `site('key')` · ค่าเริ่มต้น/fallback อยู่ที่ `includes/site-defaults.php`
+
+| อะไร | key ใน settings | ค่าปัจจุบัน | ใช้ที่ไหน |
+|---|---|---|---|
+| โทร | `phone`, `phone_ext` | 02-517-0768 ต่อ 120, 121 | ข้อความ + `tel_href_local()` (`tel:025170768` หน้าแรก) / `tel_href_intl()` (`tel:+6625170768`) + `phone_schema()` (`+66-2-517-0768` ใน JSON-LD) — แก้เบอร์ครั้งเดียวเปลี่ยนทุกรูปแบบ |
+| แฟกซ์ | `fax` | 02-517-4888 | หน้า contact + schema |
+| อีเมล | `email` | sales@lyindustries.com | ลิงก์ `mailto:` ทุกหน้า, footer, schema, ฟอร์ม contact |
+| LINE OA | `line_id`, `line_url` | @lyindustries · https://line.me/R/ti/p/@lyindustries | ปุ่ม/ลิงก์ LINE, schema `sameAs` |
+| บริษัท/ที่อยู่ | `company_th`, `address1_th`, `address2_th` | บริษัท แอล วาย อินดัสตรีย์ จำกัด · 124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน · เขตคลองสามวา กรุงเทพฯ 10510 | `address_th_html($sep)` — หน้าแรกขึ้นบรรทัดใหม่ระหว่าง 2 บรรทัด ที่อื่นคั่นด้วยเว้นวรรค |
+| เวลาทำการ | `hours_weekday_open/close`, `hours_sat_open/close` | 08:30–17:30 · ส. 08:30–12:00 | `hours_th_html()` + schema OpeningHours |
+| TRIMRITE® | `trimrite_url` | https://www.trimrite.com/ | เมนู (เปิดแท็บใหม่) |
+| Inspiration Hub | `inspiration_url` | https://www.lyindustries.com/lyinspirationhub/ | ปุ่ม "สินค้าเพิ่มเติม" / "ดูแคตตาล็อกทั้งหมด" |
+
+- ชื่อหน้า `<title>` + meta description อยู่ในตาราง `lyiweb_pages` → `page_meta('slug')` · meta description ของหน้า contact มีเบอร์/อีเมลเขียนอยู่ในประโยค — **เปลี่ยนเบอร์ใน settings แล้วต้องแก้ meta description เองด้วย**
+- ที่อยู่ภาษาอังกฤษใน schema (JSON-LD) และลิงก์ Google Maps ยังเขียนตรงในหน้า (จะย้ายตอนทำ 2 ภาษา)
 
 - ลิงก์กลับหน้าแรกจากหน้าย่อย: `index.php` และ `index.php#process` (กระบวนการผลิตเป็น section ในหน้าแรก ไม่ใช่หน้าแยก)
 - **เมนูให้ยึด DESIGN-LOCK:** CONTENT-DRAFT ฉบับร่างมีหน้า `/sample` และ `/process` แยก — ไม่มีในเว็บจริง อย่าสร้างเพิ่มเอง
@@ -109,7 +117,7 @@ request → index.php / about.php / catalog.php / contact.php
 - template ใช้ alternative syntax: `<?php foreach (...): ?> … <?php endforeach; ?>`, `<?php if (...): ?> … <?php endif; ?>`
 - array ข้อมูลใช้ key ภาษาอังกฤษสั้นๆ ตามของเดิม (`th`, `en`, `img`, `code`, …) — ค่า `img` ว่าง `''` = ยังไม่มีรูป → ใช้ `img_src($img)` ซึ่งคืน `assets/img/placeholder.svg` ("Image pending") ให้คนเห็นว่าต้องอัปโหลด; ห้ามปล่อย `<img>` ชี้ไฟล์ที่ไม่มี
 - ลิงก์ออกนอกเว็บใช้ `'external' => true` + `external_attrs()` → `target="_blank" rel="noopener"`
-- ค่าที่ใช้หลายที่ (โทร, อีเมล, URL) ให้ใช้/เพิ่มเป็นค่าคงที่ `SITE_*` ใน `includes/bootstrap.php` ไม่ hard-code ซ้ำ
+- ค่าที่ใช้หลายที่ (โทร, อีเมล, LINE, ที่อยู่, เวลา, URL ภายนอก) **ห้าม hard-code** — ใช้ `site('key')` (เพิ่ม key ใหม่ใน `includes/site-defaults.php` แล้วรัน `php tools/build-seed-site.php`) · ใน JSON-LD ใช้ `json_inner()` แทน `e()`
 - ลิงก์ภายในใช้ path แบบ relative (`about.php`, `index.php#process`) — เว็บต้องทำงานได้ใต้ sub-folder (`/lyindustries-dev/`, `/lyindustries-new-dev/`)
 - JS: vanilla ES2017+, IIFE + `'use strict'`, เลือก element ด้วย `data-*` attribute; ไม่เพิ่ม library
 - CSS หน้าแรก: เก็บสไตล์แบบ inline ตามเดิม; hover/state ใหม่ให้เพิ่มเป็น class ใน `home.css`

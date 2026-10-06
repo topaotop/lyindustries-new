@@ -4,16 +4,17 @@ declare(strict_types=1);
 require __DIR__ . '/includes/bootstrap.php';
 
 $activeNav = 'catalog';
+$meta = page_meta('catalog');
 ?>
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>แคตตาล็อกสินค้า Narrow Fabric &amp; Trims — ยางยืด เทปทอ เทปถัก เชือก | L.Y. Industries</title>
+<title><?= e($meta['title']) ?></title>
 <link rel="icon" type="image/svg+xml" href="assets/img/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
-<meta name="description" content="แคตตาล็อกสินค้า L.Y. Industries ผู้ผลิต Narrow Fabric &amp; Trims ครบวงจรในกรุงเทพฯ — ยางยืด เทปทอ เทปถัก Raschel/Crochet เชือกรูด เชือกยางยืด ขอบเอว และงานพิมพ์โลโก้ สำหรับเสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น พร้อมรับพัฒนาตามสเปก">
+<meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -241,12 +242,12 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <h2>หมวดสินค้าหลัก</h2>
     </div>
     <div class="pcgrid">
-      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b>PROD-01</b></figure><div class="pc-b"><span>ELASTIC WEBBING</span><h3>ยางยืด / สายยืด (Elastic Webbing)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b>PROD-02</b></figure><div class="pc-b"><span>WOVEN TAPE</span><h3>เทปทอ (Woven Tape)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b>PROD-03</b></figure><div class="pc-b"><span>RASCHEL &amp; CROCHET</span><h3>เทปถัก Raschel / Crochet</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b>PROD-04</b></figure><div class="pc-b"><span>CORDS &amp; ELASTIC CORDS</span><h3>เชือก เชือกยางยืด (Cords &amp; Elastic Cords)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b>PROD-05</b></figure><div class="pc-b"><span>WAISTBANDS</span><h3>ขอบเอว (Engineered Waistbands)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b>PROD-06</b></figure><div class="pc-b"><span>FINISHING</span><h3>งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding)</h3><a href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b>PROD-01</b></figure><div class="pc-b"><span>ELASTIC WEBBING</span><h3>ยางยืด / สายยืด (Elastic Webbing)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b>PROD-02</b></figure><div class="pc-b"><span>WOVEN TAPE</span><h3>เทปทอ (Woven Tape)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b>PROD-03</b></figure><div class="pc-b"><span>RASCHEL &amp; CROCHET</span><h3>เทปถัก Raschel / Crochet</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b>PROD-04</b></figure><div class="pc-b"><span>CORDS &amp; ELASTIC CORDS</span><h3>เชือก เชือกยางยืด (Cords &amp; Elastic Cords)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b>PROD-05</b></figure><div class="pc-b"><span>WAISTBANDS</span><h3>ขอบเอว (Engineered Waistbands)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b>PROD-06</b></figure><div class="pc-b"><span>FINISHING</span><h3>งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
     </div>
   </div>
 </section>
@@ -277,7 +278,7 @@ body{background:var(--bg-primary);color:var(--text-primary)}
       <p>สำรวจแคตตาล็อกเต็มรูปแบบของเราบน Inspiration Hub หรือส่งสเปกมาให้ทีมช่วยเลือกวัสดุที่เหมาะกับงานของคุณ</p>
     </div>
     <div class="row">
-      <a class="btn btn-o" href="<?= e(SITE_INSPIRATION_URL) ?>" target="_blank" rel="noopener">ดูแคตตาล็อกทั้งหมด ↗</a>
+      <a class="btn btn-o" href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">ดูแคตตาล็อกทั้งหมด ↗</a>
       <a class="btn btn-g" href="contact.php#form">ขอตัวอย่าง / ใบเสนอราคา →</a>
     </div>
   </div>
