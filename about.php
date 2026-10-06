@@ -141,9 +141,9 @@ section.video{padding-bottom:96px}
 
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">ABOUT L.Y. INDUSTRIES · SINCE 1978</span>
-    <h1>โรงงาน Narrow Fabrics &amp; Trims<br>ที่แบรนด์กีฬาระดับโลก<span>ไว้วางใจ</span></h1>
-    <p class="lead">L.Y. Industries Co., Ltd. ผู้ผลิต Narrow Fabrics และ Trims ครบวงจรในกรุงเทพฯ ตั้งแต่ปี 1978 — ยางยืด เทปทอ เทปถัก เชือก ขอบเอว และงาน finishing ทุกขั้นตอนอยู่ใต้หลังคาเดียวกัน ตั้งแต่เส้นด้ายจนถึงชิ้นงานพร้อมเย็บ</p>
+    <span class="eyebrow"><?= b('about.hero.01') ?></span>
+    <h1><?= b('about.hero.02') ?><br><?= b('about.hero.03') ?><span><?= b('about.hero.04') ?></span></h1>
+    <p class="lead"><?= b('about.hero.05') ?></p>
   </div>
 </section>
 
@@ -152,38 +152,38 @@ section.video{padding-bottom:96px}
     <div class="video-frame">
       <iframe src="https://www.youtube-nocookie.com/embed/Lr59gy7RcWo?start=6&rel=0&modestbranding=1" title="L.Y. Industries — Inside the factory" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
     </div>
-    <div class="video-cap"><span>INSIDE THE FACTORY · BANGKOK</span><span>WEAVING · KNITTING · BRAIDING · DYEING · FINISHING</span></div>
+    <div class="video-cap"><span><?= b('about.video.01') ?></span><span><?= b('about.video.02') ?></span></div>
   </div>
 </section>
 
 <div class="band">
 <div class="wrap">
   <div class="stats">
-    <div class="stat"><b>1978</b><span>ก่อตั้งในกรุงเทพฯ</span></div>
-    <div class="stat"><b>45+</b><span>ปีในอุตสาหกรรม Narrow Fabrics</span></div>
-    <div class="stat"><b style="white-space:nowrap;font-size:clamp(22px,2.5vw,34px)">OEKO-TEX®</b><span>Standard 100 · ผ่านข้อกำหนด RSL ของแบรนด์ระดับโลก</span></div>
-    <div class="stat"><b>Color Lab</b><span>โรงย้อมในตัว + แล็บเทียบสี Pantone</span></div>
+    <div class="stat"><b><?= b('about.video.03') ?></b><span><?= b('about.video.04') ?></span></div>
+    <div class="stat"><b><?= b('about.video.05') ?></b><span><?= b('about.video.06') ?></span></div>
+    <div class="stat"><b style="white-space:nowrap;font-size:clamp(22px,2.5vw,34px)"><?= b('about.video.07') ?></b><span><?= b('about.video.08') ?></span></div>
+    <div class="stat"><b><?= b('about.video.09') ?></b><span><?= b('about.video.10') ?></span></div>
   </div>
 </div>
 
 <section class="block" id="story">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">01 — OUR STORY</span>
-      <h2>LYI สู่ผู้ผลิต Narrow Fabric &amp; Trims ครบวงจร</h2>
+      <span class="eyebrow"><?= b('about.story.01') ?></span>
+      <h2><?= b('about.story.02') ?></h2>
     </div>
     <div class="story">
       <div>
-        <p><strong>L.Y. Industries เริ่มต้นในปี 1978</strong> ในฐานะโรงทอผ้าแถบในกรุงเทพฯ ด้วยความเชื่อเดียวกับที่เรายึดถือมาจนวันนี้ — <em>Small parts bring great impact.</em></p>
-        <p>ตลอดกว่า 40 ปี L.Y. Industries เชี่ยวชาญการผลิต Narrow Fabric ทั้งงาน Weaving, Knitting และ Braiding แบบครบวงจร ตั้งแต่ย้อมเส้นด้ายในโรงย้อมของเราเอง จนถึงงาน finishing ภายในโรงงานเดียวที่กรุงเทพฯ เราผลิตยางยืด เทปทอ เทปถัก เชือกรูด และขอบเอว สำหรับเสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น ภายใต้มาตรฐาน OEKO-TEX® Standard 100 — ได้สีและคุณภาพสม่ำเสมอทุกล็อต</p>
+        <p><strong><?= b('about.story.03') ?></strong> <?= b('about.story.04') ?> <em><?= b('about.story.05') ?></em></p>
+        <p><?= b('about.story.06') ?></p>
       </div>
       <div class="facts">
-        <div class="row"><span class="k">COMPANY</span><span class="v">L.Y. Industries Co., Ltd.</span></div>
-        <div class="row"><span class="k">FOUNDED</span><span class="v">1978 · กรุงเทพมหานคร</span></div>
-        <div class="row"><span class="k">FACTORY</span><span class="v"><?= address_th_html() ?></span></div>
-        <div class="row"><span class="k">PRODUCTS</span><span class="v">ยางยืด · เทปทอ · เทปถัก Raschel/Crochet · เชือก เชือกยางยืด · ขอบเอว · งาน finishing</span></div>
-        <div class="row"><span class="k">MARKETS</span><span class="v">แบรนด์เสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น ทั้งในประเทศและส่งออก</span></div>
-        <div class="row"><span class="k">CONTACT</span><span class="v"><?= e(phone_display_th()) ?> · <?= e(site('email')) ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.07') ?></span><span class="v"><?= b('about.story.08') ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.09') ?></span><span class="v"><?= b('about.story.10') ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.11') ?></span><span class="v"><?= address_th_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.12') ?></span><span class="v"><?= b('about.story.13') ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.14') ?></span><span class="v"><?= b('about.story.15') ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.16') ?></span><span class="v"><?= e(phone_display_th()) ?> · <?= e(site('email')) ?></span></div>
       </div>
     </div>
   </div>
@@ -193,34 +193,34 @@ section.video{padding-bottom:96px}
 <section class="block light" id="facilities">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">02 — FACILITIES</span>
-      <h2>ทุกกระบวนการ อยู่ในโรงงานเดียว</h2>
-      <p>ตั้งแต่เส้นด้ายเข้าโรงงานจนถึงชิ้นงานพร้อมเย็บ เราควบคุมคุณภาพได้ทุกขั้นตอนด้วยตัวเอง</p>
+      <span class="eyebrow"><?= b('about.facilities.01') ?></span>
+      <h2><?= b('about.facilities.02') ?></h2>
+      <p><?= b('about.facilities.03') ?></p>
     </div>
     <div class="fac">
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div class="t"><span>R&amp;D</span><h3>ทีมพัฒนาสินค้า</h3></div></article>
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.3 6 11.1a6 6 0 0 1-12 0c0-4.8 6-11.1 6-11.1Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><div class="t"><span>DYEING</span><h3>ย้อมเส้นด้าย / ชิ้นงาน</h3></div></article>
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6.5L4.6 18.2A1.9 1.9 0 0 0 6.2 21h11.6a1.9 1.9 0 0 0 1.6-2.8L14 9.5V3"/><path d="M7.5 15h9"/></svg></div><div class="t"><span>QUALITY LAB</span><h3>Lab คุณภาพ</h3></div></article>
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v5M8 11v5M8 19v2M16 3v2M16 8v5M16 16v5"/><path d="M3 8h2M8 8h8M19 8h2M3 16h5M11 16h5M19 16h2" /><path d="M3 12h18" stroke-dasharray="3 3"/></svg></div><div class="t"><span>CONSTRUCTION</span><h3>งานโครงสร้าง ทอ ถัก เชือก</h3></div></article>
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg></div><div class="t"><span>FINISHING</span><h3>งาน Finish หลากหลายแบบ</h3></div></article>
-      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6Z"/><path d="m8.8 12 2.3 2.3 4.2-4.4"/></svg></div><div class="t"><span>QC</span><h3>QC ทุกล็อตการผลิต</h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div><div class="t"><span><?= b('about.facilities.04') ?></span><h3><?= b('about.facilities.05') ?></h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6 6.3 6 11.1a6 6 0 0 1-12 0c0-4.8 6-11.1 6-11.1Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></svg></div><div class="t"><span><?= b('about.facilities.06') ?></span><h3><?= b('about.facilities.07') ?></h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6.5L4.6 18.2A1.9 1.9 0 0 0 6.2 21h11.6a1.9 1.9 0 0 0 1.6-2.8L14 9.5V3"/><path d="M7.5 15h9"/></svg></div><div class="t"><span><?= b('about.facilities.08') ?></span><h3><?= b('about.facilities.09') ?></h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3v5M8 11v5M8 19v2M16 3v2M16 8v5M16 16v5"/><path d="M3 8h2M8 8h8M19 8h2M3 16h5M11 16h5M19 16h2" /><path d="M3 12h18" stroke-dasharray="3 3"/></svg></div><div class="t"><span><?= b('about.facilities.10') ?></span><h3><?= b('about.facilities.11') ?></h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.1 15.9M14.5 14.5 20 20M8.1 8.1 12 12"/></svg></div><div class="t"><span><?= b('about.facilities.12') ?></span><h3><?= b('about.facilities.13') ?></h3></div></article>
+      <article><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6Z"/><path d="m8.8 12 2.3 2.3 4.2-4.4"/></svg></div><div class="t"><span><?= b('about.facilities.14') ?></span><h3><?= b('about.facilities.15') ?></h3></div></article>
     </div>
   </div>
 </section>
 
 <section class="cta">
   <div class="wrap">
-    <span class="eyebrow">START A PROJECT</span>
-    <h2>มีแบบ ตัวอย่าง หรือแค่โจทย์การใช้งาน — ส่งมาคุยกันได้เลย</h2>
-    <p>ทีม R&amp;D และฝ่ายขายพร้อมประเมินวัสดุ สี และตัวอย่างให้ตามการใช้งานจริงของคุณ</p>
+    <span class="eyebrow"><?= b('about.cta.01') ?></span>
+    <h2><?= b('about.cta.02') ?></h2>
+    <p><?= b('about.cta.03') ?></p>
     <div class="row">
-      <a class="btn btn-o" href="contact.php#form">ขอใบเสนอราคา →</a>
+      <a class="btn btn-o" href="contact.php#form"><?= b('about.cta.04') ?></a>
       <a class="btn btn-g" href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a>
       <a class="btn btn-g" href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a>
     </div>
   </div>
 </section>
 
-<footer><div class="wrap"><span>© 2026 L.Y. INDUSTRIES CO., LTD.</span><span>BANGKOK, THAILAND · EST. 1978</span></div></footer>
+<footer><div class="wrap"><span><?= b('about.cta.05') ?></span><span><?= b('about.cta.06') ?></span></div></footer>
 </body>
 </html>

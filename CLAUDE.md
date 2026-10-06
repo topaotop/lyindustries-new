@@ -56,6 +56,7 @@ request → index.php / about.php / catalog.php / contact.php
 - section ธีมสว่างใช้ `data-theme="light"` + override CSS variables inline บน `<section>`
 
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
+- ข้อความทุกชิ้นเป็น `b('about|catalog|contact.<section>.nn')` และ footer ร่วมของ catalog/contact เป็น `b('footer.main.nn')` (`includes/site-footer.php`) — footer สั้นของ about อยู่ใน `about.cta.*`
 - แต่ละหน้ามี `<style>` ของตัวเองใน `<head>` (CSS ซ้ำกันบางส่วน เช่น `.nav`, `.brand .mark`) — แก้ส่วนที่ใช้ร่วมต้องแก้ทั้ง 3 หน้า
 - ฟอร์มขอใบเสนอราคาใน `contact.php` ยังเป็น JS เปิด `mailto:` (ยังไม่มี backend)
 
@@ -69,7 +70,7 @@ request → index.php / about.php / catalog.php / contact.php
 │  ├─ schema/lists.php              นิยามฟิลด์ของแต่ละ list
 │  ├─ home-data.php                 ข้อมูลรายการหน้าแรกในโค้ด = fallback + ต้นทางของ seed 002
 │  ├─ site-defaults.php             ค่าติดต่อ/ลิงก์ + ชื่อหน้า/meta = fallback + ต้นทางของ seed 003
-│  ├─ blocks/<page>.php             ข้อความแต่ละหน้า (home.php = 129 block) = fallback + ต้นทางของ seed 004
+│  ├─ blocks/<page>.php             ข้อความแต่ละหน้า (home 129, about 52, catalog 49, contact 28, footer 14 = footer ร่วมของ catalog/contact) = fallback + ต้นทางของ seed 004
 │  └─ icons.php                     ไอคอน SVG ของไทล์
 ├─ tools/               สคริปต์ CLI (build-seed-home/site/blocks.php, extract-blocks.php + lib-textnodes.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy

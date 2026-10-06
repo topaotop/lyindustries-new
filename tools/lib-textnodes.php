@@ -14,7 +14,9 @@ function find_text_nodes(string $src, array $skipRegions = []): array
     $mask = static fn(array $m): string => str_repeat("\x02", strlen($m[0]));
     $masked = preg_replace_callback('#<\?(?:php|=).*?\?>#s', static fn($m) => str_repeat("\x01", strlen($m[0])), $src);
     $bodyAt = strpos($masked, '<body');
-    $masked = str_repeat("\x02", $bodyAt) . substr($masked, $bodyAt);
+    if ($bodyAt !== false) {   // partials without <body> are scanned from the start
+        $masked = str_repeat("\x02", $bodyAt) . substr($masked, $bodyAt);
+    }
     foreach (array_merge(['#<script\b.*?</script>#s', '#<style\b.*?</style>#s', '#<!--.*?-->#s'], $skipRegions) as $re) {
         $masked = preg_replace_callback($re, $mask, $masked);
     }
@@ -29,6 +31,7 @@ function find_text_nodes(string $src, array $skipRegions = []): array
     $nodes = [];
     preg_match_all('#>([^<>]*)<#', $masked, $m, PREG_OFFSET_CAPTURE);
     foreach ($m[1] as [$text, $off]) {
+        $off = (int) $off;
         if ($text === '' || str_contains($text, "\x01") || str_contains($text, "\x02") || !preg_match('/[\p{L}\p{N}]/u', $text)) {
             continue;
         }

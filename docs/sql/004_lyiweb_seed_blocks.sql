@@ -11,6 +11,300 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 BEGIN TRANSACTION;
 
+/* about.php — 52 blocks */
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'hero.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'hero.01', N'text', N'ABOUT L.Y. INDUSTRIES · SINCE 1978');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'hero.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'hero.02', N'text', N'โรงงาน Narrow Fabrics & Trims');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'hero.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'hero.03', N'text', N'ที่แบรนด์กีฬาระดับโลก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'hero.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'hero.04', N'text', N'ไว้วางใจ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'hero.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'hero.05', N'text', N'L.Y. Industries Co., Ltd. ผู้ผลิต Narrow Fabrics และ Trims ครบวงจรในกรุงเทพฯ ตั้งแต่ปี 1978 — ยางยืด เทปทอ เทปถัก เชือก ขอบเอว และงาน finishing ทุกขั้นตอนอยู่ใต้หลังคาเดียวกัน ตั้งแต่เส้นด้ายจนถึงชิ้นงานพร้อมเย็บ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.01', N'text', N'INSIDE THE FACTORY · BANGKOK');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.02', N'text', N'WEAVING · KNITTING · BRAIDING · DYEING · FINISHING');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.03', N'text', N'1978');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.04', N'text', N'ก่อตั้งในกรุงเทพฯ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.05', N'text', N'45+');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.06', N'text', N'ปีในอุตสาหกรรม Narrow Fabrics');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.07', N'text', N'OEKO-TEX®');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.08', N'text', N'Standard 100 · ผ่านข้อกำหนด RSL ของแบรนด์ระดับโลก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.09', N'text', N'Color Lab');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'video.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'video.10', N'text', N'โรงย้อมในตัว + แล็บเทียบสี Pantone');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.01', N'text', N'01 — OUR STORY');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.02', N'text', N'LYI สู่ผู้ผลิต Narrow Fabric & Trims ครบวงจร');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.03', N'text', N'L.Y. Industries เริ่มต้นในปี 1978');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.04', N'text', N'ในฐานะโรงทอผ้าแถบในกรุงเทพฯ ด้วยความเชื่อเดียวกับที่เรายึดถือมาจนวันนี้ —');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.05', N'text', N'Small parts bring great impact.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.06', N'text', N'ตลอดกว่า 40 ปี L.Y. Industries เชี่ยวชาญการผลิต Narrow Fabric ทั้งงาน Weaving, Knitting และ Braiding แบบครบวงจร ตั้งแต่ย้อมเส้นด้ายในโรงย้อมของเราเอง จนถึงงาน finishing ภายในโรงงานเดียวที่กรุงเทพฯ เราผลิตยางยืด เทปทอ เทปถัก เชือกรูด และขอบเอว สำหรับเสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น ภายใต้มาตรฐาน OEKO-TEX® Standard 100 — ได้สีและคุณภาพสม่ำเสมอทุกล็อต');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.07', N'text', N'COMPANY');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.08', N'text', N'L.Y. Industries Co., Ltd.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.09', N'text', N'FOUNDED');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.10', N'text', N'1978 · กรุงเทพมหานคร');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.11', N'text', N'FACTORY');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.12', N'text', N'PRODUCTS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.13', N'text', N'ยางยืด · เทปทอ · เทปถัก Raschel/Crochet · เชือก เชือกยางยืด · ขอบเอว · งาน finishing');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.14', N'text', N'MARKETS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.15')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.15', N'text', N'แบรนด์เสื้อผ้ากีฬา ชุดชั้นใน และแฟชั่น ทั้งในประเทศและส่งออก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'story.16')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'story.16', N'text', N'CONTACT');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.01', N'text', N'02 — FACILITIES');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.02', N'text', N'ทุกกระบวนการ อยู่ในโรงงานเดียว');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.03', N'text', N'ตั้งแต่เส้นด้ายเข้าโรงงานจนถึงชิ้นงานพร้อมเย็บ เราควบคุมคุณภาพได้ทุกขั้นตอนด้วยตัวเอง');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.04', N'text', N'R&D');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.05', N'text', N'ทีมพัฒนาสินค้า');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.06', N'text', N'DYEING');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.07', N'text', N'ย้อมเส้นด้าย / ชิ้นงาน');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.08', N'text', N'QUALITY LAB');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.09', N'text', N'Lab คุณภาพ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.10', N'text', N'CONSTRUCTION');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.11', N'text', N'งานโครงสร้าง ทอ ถัก เชือก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.12', N'text', N'FINISHING');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.13', N'text', N'งาน Finish หลากหลายแบบ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.14', N'text', N'QC');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'facilities.15')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'facilities.15', N'text', N'QC ทุกล็อตการผลิต');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.01', N'text', N'START A PROJECT');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.02', N'text', N'มีแบบ ตัวอย่าง หรือแค่โจทย์การใช้งาน — ส่งมาคุยกันได้เลย');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.03', N'text', N'ทีม R&D และฝ่ายขายพร้อมประเมินวัสดุ สี และตัวอย่างให้ตามการใช้งานจริงของคุณ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.04', N'text', N'ขอใบเสนอราคา →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.05', N'text', N'© 2026 L.Y. INDUSTRIES CO., LTD.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'about' AND block_key = N'cta.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'about', N'cta.06', N'text', N'BANGKOK, THAILAND · EST. 1978');
+
+/* catalog.php — 49 blocks */
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'hero.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'hero.01', N'text', N'PRODUCT CATALOG');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'hero.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'hero.02', N'text', N'แคตตาล็อกสินค้า');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'hero.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'hero.03', N'text', N'Narrow Fabric & Trims ครบทุกประเภท ผลิตในโรงงานเดียวที่กรุงเทพฯ — ทุกรายการพัฒนาตามสเปกของแบรนด์ได้ ทั้งขนาด สี ความยืด และงาน finishing');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.01', N'text', N'01 — PRODUCT CATEGORIES');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.02', N'text', N'หมวดสินค้าหลัก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.03', N'text', N'PROD-01');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.04', N'text', N'ELASTIC WEBBING');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.05', N'text', N'ยางยืด / สายยืด (Elastic Webbing)');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.06', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.07', N'text', N'PROD-02');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.08', N'text', N'WOVEN TAPE');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.09', N'text', N'เทปทอ (Woven Tape)');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.10', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.11', N'text', N'PROD-03');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.12', N'text', N'RASCHEL & CROCHET');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.13', N'text', N'เทปถัก Raschel / Crochet');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.14', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.15')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.15', N'text', N'PROD-04');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.16')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.16', N'text', N'CORDS & ELASTIC CORDS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.17')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.17', N'text', N'เชือก เชือกยางยืด (Cords & Elastic Cords)');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.18')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.18', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.19')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.19', N'text', N'PROD-05');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.20')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.20', N'text', N'WAISTBANDS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.21')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.21', N'text', N'ขอบเอว (Engineered Waistbands)');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.22')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.22', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.23')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.23', N'text', N'PROD-06');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.24')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.24', N'text', N'FINISHING');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.25')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.25', N'text', N'งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing & Branding)');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'categories.26')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'categories.26', N'text', N'สินค้าเพิ่มเติม →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.01', N'text', N'02 — SAMPLE SPECIMENS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.02', N'text', N'ตัวอย่างสินค้าของเรา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.03', N'text', N'ทุกชิ้นมีรหัสอ้างอิงเฉพาะ ขอตัวอย่างจริงเพื่อเทียบสัมผัส หรือสั่งพัฒนาต่อยอดได้ทันที');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.04', N'text', N'LY2086');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.05', N'text', N'Elastic Jacquard');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.06', N'text', N'RLY1319');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.07', N'text', N'Raschel Knit Tape');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.08', N'text', N'RLY1452');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.09', N'text', N'Braided Cord Tipped');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.10', N'text', N'LY2101');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.11', N'text', N'Silicone Grip Tape');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.12', N'text', N'RLY1377');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.13', N'text', N'Engineered Waistband');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.14', N'text', N'LY2144');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.15')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.15', N'text', N'Woven High-Tensile');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.16')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.16', N'text', N'INSPIRATION HUB');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.17')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.17', N'text', N'ดูสินค้าทั้งหมดแบบ 3D');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.18')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.18', N'text', N'สำรวจแคตตาล็อกเต็มรูปแบบของเราบน Inspiration Hub หรือส่งสเปกมาให้ทีมช่วยเลือกวัสดุที่เหมาะกับงานของคุณ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.19')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.19', N'text', N'ดูแคตตาล็อกทั้งหมด ↗');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'samples.20')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'samples.20', N'text', N'ขอตัวอย่าง / ใบเสนอราคา →');
+
+/* contact.php — 28 blocks */
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'hero.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'hero.01', N'text', N'CONTACT L.Y. INDUSTRIES');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'hero.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'hero.02', N'text', N'ติดต่อเรา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.01', N'text', N'01 — SEND AN INQUIRY');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.02', N'text', N'ขอใบเสนอราคา / สอบถามข้อมูล');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.03', N'text', N'กรอกรายละเอียดคร่าว ๆ ทีมขายจะติดต่อกลับภายใน 24 ชั่วโมงทำการ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.04', N'text', N'ชื่อ-นามสกุล *');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.05', N'text', N'บริษัท / แบรนด์');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.06', N'text', N'อีเมล *');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.07', N'text', N'เบอร์โทร');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.08', N'text', N'สินค้าที่สนใจ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.09', N'text', N'ยางยืด / Elastic');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.10', N'text', N'เทปทอ / Woven Tape');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.11', N'text', N'เทปถัก Raschel / Crochet');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.12', N'text', N'เชือกรูด / Drawcord');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.13', N'text', N'ขอบเอว / Waistband');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.14', N'text', N'งานพิมพ์โลโก้ / Finishing');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.15')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.15', N'text', N'อื่น ๆ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.16')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.16', N'text', N'รายละเอียด (ขนาด สี จำนวน การใช้งาน) *');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.17')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.17', N'text', N'ส่งคำขอ →');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.18')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.18', N'text', N'ADDRESS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.19')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.19', N'text', N'PHONE');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.20')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.20', N'text', N'FAX');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.21')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.21', N'text', N'EMAIL');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.22')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.22', N'text', N'LINE');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.23')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.23', N'text', N'HOURS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'map.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'map.01', N'text', N'02 — LOCATION');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'map.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'map.02', N'text', N'ที่อยู่ของเรา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'map.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'map.03', N'text', N'เปิดใน Google Maps ↗');
+
+/* footer.php — 14 blocks */
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.01')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.01', N'text', N'L.Y. INDUSTRIES CO., LTD.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.02')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.02', N'text', N'OPERATING HOURS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.03')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.03', N'text', N'SITEMAP');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.04')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.04', N'text', N'หน้าแรก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.05')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.05', N'text', N'แคตาล็อกสินค้า');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.06')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.06', N'text', N'TRIMRITE®');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.07')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.07', N'text', N'เกี่ยวกับเรา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.08')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.08', N'text', N'ติดต่อเรา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.09')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.09', N'text', N'คำถามพบบ่อย');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.10')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.10', N'text', N'QUALITY STANDARDS');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.11')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.11', N'text', N'OEKO-TEX® Standard 100 Certified');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.12')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.12', N'text', N'สอดคล้องข้อกำหนด RSL ของแบรนด์กีฬาระดับโลก');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.13')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.13', N'text', N'© 2026 L.Y. INDUSTRIES CO., LTD. ALL RIGHTS RESERVED.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'footer' AND block_key = N'main.14')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'footer', N'main.14', N'text', N'BANGKOK, THAILAND · EST. 1978');
+
 /* home.php — 129 blocks */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'home' AND block_key = N'hero.01')
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'home', N'hero.01', N'text', N'ONE-STOP NARROW FABRICS & TRIMS · EST. 1978 · BANGKOK');

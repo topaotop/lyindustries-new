@@ -229,25 +229,25 @@ body{background:var(--bg-primary);color:var(--text-primary)}
 
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">PRODUCT CATALOG</span>
-    <h1>แคตตาล็อกสินค้า<span>.</span></h1>
-    <p class="lead">Narrow Fabric &amp; Trims ครบทุกประเภท ผลิตในโรงงานเดียวที่กรุงเทพฯ — ทุกรายการพัฒนาตามสเปกของแบรนด์ได้ ทั้งขนาด สี ความยืด และงาน finishing</p>
+    <span class="eyebrow"><?= b('catalog.hero.01') ?></span>
+    <h1><?= b('catalog.hero.02') ?><span>.</span></h1>
+    <p class="lead"><?= b('catalog.hero.03') ?></p>
   </div>
 </section>
 
 <section class="block" id="categories">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">01 — PRODUCT CATEGORIES</span>
-      <h2>หมวดสินค้าหลัก</h2>
+      <span class="eyebrow"><?= b('catalog.categories.01') ?></span>
+      <h2><?= b('catalog.categories.02') ?></h2>
     </div>
     <div class="pcgrid">
-      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b>PROD-01</b></figure><div class="pc-b"><span>ELASTIC WEBBING</span><h3>ยางยืด / สายยืด (Elastic Webbing)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b>PROD-02</b></figure><div class="pc-b"><span>WOVEN TAPE</span><h3>เทปทอ (Woven Tape)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b>PROD-03</b></figure><div class="pc-b"><span>RASCHEL &amp; CROCHET</span><h3>เทปถัก Raschel / Crochet</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b>PROD-04</b></figure><div class="pc-b"><span>CORDS &amp; ELASTIC CORDS</span><h3>เชือก เชือกยางยืด (Cords &amp; Elastic Cords)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b>PROD-05</b></figure><div class="pc-b"><span>WAISTBANDS</span><h3>ขอบเอว (Engineered Waistbands)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
-      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b>PROD-06</b></figure><div class="pc-b"><span>FINISHING</span><h3>งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding)</h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">สินค้าเพิ่มเติม →</a></div></article>
+      <article class="pc"><figure><img src="assets/prod-elastic.jpg?v=2" alt="ยางยืด / สายยืด (Elastic Webbing) — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.03') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.04') ?></span><h3><?= b('catalog.categories.05') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.06') ?></a></div></article>
+      <article class="pc"><figure><img src="assets/prod-woven.jpg" alt="เทปทอ (Woven Tape) — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.07') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.08') ?></span><h3><?= b('catalog.categories.09') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.10') ?></a></div></article>
+      <article class="pc"><figure><img src="assets/prod-knit.jpg" alt="เทปถัก Raschel / Crochet — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.11') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.12') ?></span><h3><?= b('catalog.categories.13') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.14') ?></a></div></article>
+      <article class="pc"><figure><img src="assets/prod-cord.jpg" alt="เชือก เชือกยางยืด (Cords &amp; Elastic Cords) — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.15') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.16') ?></span><h3><?= b('catalog.categories.17') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.18') ?></a></div></article>
+      <article class="pc"><figure><img src="assets/prod-waistband.jpg?v=2" alt="ขอบเอว (Engineered Waistbands) — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.19') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.20') ?></span><h3><?= b('catalog.categories.21') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.22') ?></a></div></article>
+      <article class="pc"><figure><img src="assets/prod-finishing.jpg" alt="งาน Finish ต่างๆ และพิมพ์โลโก้ (Finishing &amp; Branding) — L.Y. Industries" loading="lazy"><b><?= b('catalog.categories.23') ?></b></figure><div class="pc-b"><span><?= b('catalog.categories.24') ?></span><h3><?= b('catalog.categories.25') ?></h3><a href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.categories.26') ?></a></div></article>
     </div>
   </div>
 </section>
@@ -255,17 +255,17 @@ body{background:var(--bg-primary);color:var(--text-primary)}
 <section class="block" id="samples">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">02 — SAMPLE SPECIMENS</span>
-      <h2>ตัวอย่างสินค้าของเรา</h2>
-      <p>ทุกชิ้นมีรหัสอ้างอิงเฉพาะ ขอตัวอย่างจริงเพื่อเทียบสัมผัส หรือสั่งพัฒนาต่อยอดได้ทันที</p>
+      <span class="eyebrow"><?= b('catalog.samples.01') ?></span>
+      <h2><?= b('catalog.samples.02') ?></h2>
+      <p><?= b('catalog.samples.03') ?></p>
     </div>
     <div class="sqgrid">
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b>LY2086</b><span>Elastic Jacquard</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b>RLY1319</b><span>Raschel Knit Tape</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b>RLY1452</b><span>Braided Cord Tipped</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b>LY2101</b><span>Silicone Grip Tape</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b>RLY1377</b><span>Engineered Waistband</span></div></a>
-      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b>LY2144</b><span>Woven High-Tensile</span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2086 Elastic Jacquard — ยางยืดทอลาย Jacquard" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.04') ?></b><span><?= b('catalog.samples.05') ?></span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1319 Raschel Knit Tape — เทปถัก Raschel" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.06') ?></b><span><?= b('catalog.samples.07') ?></span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1452 Braided Cord Tipped — เชือกถักเปียพร้อมหัวเชือก" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.08') ?></b><span><?= b('catalog.samples.09') ?></span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2101 Silicone Grip Tape — เทปซิลิโคนกันลื่น" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.10') ?></b><span><?= b('catalog.samples.11') ?></span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="RLY1377 Engineered Waistband — ขอบเอวกางเกงกีฬา" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.12') ?></b><span><?= b('catalog.samples.13') ?></span></div></a>
+      <a class="sq" href="contact.php#form"><figure><img src="<?= e(SITE_PLACEHOLDER_IMG) ?>" alt="LY2144 Woven High-Tensile — เทปทอรับแรงดึงสูง" loading="lazy"></figure><div class="sq-row"><b><?= b('catalog.samples.14') ?></b><span><?= b('catalog.samples.15') ?></span></div></a>
     </div>
   </div>
 </section>
@@ -273,13 +273,13 @@ body{background:var(--bg-primary);color:var(--text-primary)}
 <div class="wrap">
   <div class="hub">
     <div>
-      <span class="eyebrow">INSPIRATION HUB</span>
-      <h2>ดูสินค้าทั้งหมดแบบ 3D</h2>
-      <p>สำรวจแคตตาล็อกเต็มรูปแบบของเราบน Inspiration Hub หรือส่งสเปกมาให้ทีมช่วยเลือกวัสดุที่เหมาะกับงานของคุณ</p>
+      <span class="eyebrow"><?= b('catalog.samples.16') ?></span>
+      <h2><?= b('catalog.samples.17') ?></h2>
+      <p><?= b('catalog.samples.18') ?></p>
     </div>
     <div class="row">
-      <a class="btn btn-o" href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener">ดูแคตตาล็อกทั้งหมด ↗</a>
-      <a class="btn btn-g" href="contact.php#form">ขอตัวอย่าง / ใบเสนอราคา →</a>
+      <a class="btn btn-o" href="<?= e(site('inspiration_url')) ?>" target="_blank" rel="noopener"><?= b('catalog.samples.19') ?></a>
+      <a class="btn btn-g" href="contact.php#form"><?= b('catalog.samples.20') ?></a>
     </div>
   </div>
 </div>

@@ -160,8 +160,8 @@ section.block.light+section.block{padding-top:96px}
 
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow">CONTACT L.Y. INDUSTRIES</span>
-    <h1>ติดต่อเรา<span>.</span></h1>
+    <span class="eyebrow"><?= b('contact.hero.01') ?></span>
+    <h1><?= b('contact.hero.02') ?><span>.</span></h1>
   </div>
 </section>
 
@@ -169,32 +169,33 @@ section.block.light+section.block{padding-top:96px}
 <section class="block light" id="form">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">01 — SEND AN INQUIRY</span>
-      <h2>ขอใบเสนอราคา / สอบถามข้อมูล</h2>
-      <p>กรอกรายละเอียดคร่าว ๆ ทีมขายจะติดต่อกลับภายใน 24 ชั่วโมงทำการ</p>
+      <span class="eyebrow"><?= b('contact.form.01') ?></span>
+      <h2><?= b('contact.form.02') ?></h2>
+      <p><?= b('contact.form.03') ?></p>
     </div>
     <div class="cgrid">
       <form class="card" id="qform">
-        <label>ชื่อ-นามสกุล *<input name="name" required></label>
-        <label>บริษัท / แบรนด์<input name="company"></label>
-        <label>อีเมล *<input name="email" type="email" required></label>
-        <label>เบอร์โทร<input name="phone" type="tel"></label>
-        <label class="full">สินค้าที่สนใจ
+        <label><?= b('contact.form.04') ?><input name="name" required></label>
+        <label><?= b('contact.form.05') ?><input name="company"></label>
+        <label><?= b('contact.form.06') ?><input name="email" type="email" required></label>
+        <label><?= b('contact.form.07') ?><input name="phone" type="tel"></label>
+        <label class="full"><?= b('contact.form.08') ?>
+
           <select name="product">
-            <option>ยางยืด / Elastic</option><option>เทปทอ / Woven Tape</option><option>เทปถัก Raschel / Crochet</option>
-            <option>เชือกรูด / Drawcord</option><option>ขอบเอว / Waistband</option><option>งานพิมพ์โลโก้ / Finishing</option><option>อื่น ๆ</option>
+            <option><?= b('contact.form.09') ?></option><option><?= b('contact.form.10') ?></option><option><?= b('contact.form.11') ?></option>
+            <option><?= b('contact.form.12') ?></option><option><?= b('contact.form.13') ?></option><option><?= b('contact.form.14') ?></option><option><?= b('contact.form.15') ?></option>
           </select></label>
-        <label class="full">รายละเอียด (ขนาด สี จำนวน การใช้งาน) *<textarea name="msg" required></textarea></label>
-        <button class="btn btn-o" type="submit">ส่งคำขอ →</button>
+        <label class="full"><?= b('contact.form.16') ?><textarea name="msg" required></textarea></label>
+        <button class="btn btn-o" type="submit"><?= b('contact.form.17') ?></button>
         <span class="note full">มีรูปหรือไฟล์ tech pack? ส่งทาง LINE <?= e(site('line_id')) ?> หรือแนบในอีเมลที่เปิดขึ้นได้เลย</span>
       </form>
       <div class="info">
-        <div class="row"><span class="k">ADDRESS</span><span><?= e(site('company_th')) ?><br><?= address_th_html() ?></span></div>
-        <div class="row"><span class="k">PHONE</span><a href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a></div>
-        <div class="row"><span class="k">FAX</span><span><?= e(site('fax')) ?></span></div>
-        <div class="row"><span class="k">EMAIL</span><a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></div>
-        <div class="row"><span class="k">LINE</span><a href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener"><?= e(site('line_id')) ?></a></div>
-        <div class="row"><span class="k">HOURS</span><span><?= hours_th_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('contact.form.18') ?></span><span><?= e(site('company_th')) ?><br><?= address_th_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('contact.form.19') ?></span><a href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a></div>
+        <div class="row"><span class="k"><?= b('contact.form.20') ?></span><span><?= e(site('fax')) ?></span></div>
+        <div class="row"><span class="k"><?= b('contact.form.21') ?></span><a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></div>
+        <div class="row"><span class="k"><?= b('contact.form.22') ?></span><a href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener"><?= e(site('line_id')) ?></a></div>
+        <div class="row"><span class="k"><?= b('contact.form.23') ?></span><span><?= hours_th_html() ?></span></div>
       </div>
     </div>
   </div>
@@ -203,11 +204,11 @@ section.block.light+section.block{padding-top:96px}
 <section class="block" id="map">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">02 — LOCATION</span>
-      <h2>ที่อยู่ของเรา</h2>
+      <span class="eyebrow"><?= b('contact.map.01') ?></span>
+      <h2><?= b('contact.map.02') ?></h2>
     </div>
     <div class="map"><iframe title="แผนที่ L.Y. Industries" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=th&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-    <div class="maprow"><span><?= address_th_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener">เปิดใน Google Maps ↗</a></div>
+    <div class="maprow"><span><?= address_th_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener"><?= b('contact.map.03') ?></a></div>
   </div>
 </section>
 
