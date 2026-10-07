@@ -157,7 +157,7 @@ function admin_page_start(string $title, string $active): void
     $env = $user ? admin_env() : null;
     ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th"<?= ($_COOKIE['lyiweb_side'] ?? '') === 'hidden' ? ' class="side-hidden"' : '' ?>>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -170,7 +170,7 @@ function admin_page_start(string $title, string $active): void
 <body>
 <?php if ($user): ?>
 <header class="topbar">
-  <button class="nav-toggle" type="button" data-nav-toggle aria-controls="admin-nav" aria-expanded="false" aria-label="เมนู"><?= admin_icon('menu') ?></button>
+  <button class="nav-toggle" type="button" data-nav-toggle aria-controls="admin-nav" aria-expanded="false" aria-label="เมนู" title="ซ่อน/แสดงเมนู"><?= admin_icon('menu') ?></button>
   <a class="brand" href="index.php"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="30" height="30"><span>LYI <span class="brand-web">Website </span><b>Admin</b></span></a>
   <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : '<span class="env-note"> · ทดสอบ</span>' ?></span>
   <span class="spacer"></span>

@@ -178,16 +178,27 @@
     }
   }
 
-  // phone/tablet: ☰ opens the sidebar as a drawer; backdrop, Esc or picking a page closes it
+  // ☰ — desktop: hide/show the sidebar (cookie so the next page renders the same way);
+  // phone/tablet: opens the sidebar as a drawer; backdrop, Esc or picking a page closes it
   const navBtn = document.querySelector('[data-nav-toggle]');
   if (navBtn) {
     const root = document.documentElement;
+    const narrow = window.matchMedia('(max-width: 1023px)');
+    const syncBtn = () => navBtn.setAttribute('aria-expanded', String(narrow.matches ? root.classList.contains('nav-open') : !root.classList.contains('side-hidden')));
+    const setSide = hidden => {
+      root.classList.toggle('side-hidden', hidden);
+      document.cookie = 'lyiweb_side=' + (hidden ? 'hidden' : 'shown') + '; path=' + location.pathname.replace(/[^/]*$/, '') + '; max-age=31536000; SameSite=Lax';
+      syncBtn();
+      window.dispatchEvent(new Event('resize'));   // previews and sticky panes re-measure
+    };
     const setNav = open => {
       root.classList.toggle('nav-open', open);
-      navBtn.setAttribute('aria-expanded', String(open));
+      syncBtn();
       if (open) document.getElementById('admin-nav')?.focus({ preventScroll: true });   // keyboard starts inside the drawer
     };
-    navBtn.addEventListener('click', () => setNav(!root.classList.contains('nav-open')));
+    navBtn.addEventListener('click', () => narrow.matches ? setNav(!root.classList.contains('nav-open')) : setSide(!root.classList.contains('side-hidden')));
+    narrow.addEventListener('change', () => { if (!narrow.matches) setNav(false); syncBtn(); });
+    syncBtn();
     document.querySelector('[data-nav-close]')?.addEventListener('click', () => setNav(false));
     document.querySelectorAll('#admin-nav a').forEach(a => a.addEventListener('click', () => setNav(false)));
     document.addEventListener('keydown', e => {
