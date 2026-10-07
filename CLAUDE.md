@@ -76,7 +76,7 @@ request → index.php / about.php / catalog.php / contact.php
 - UX: หลังบันทึกต้องกลับมาตำแหน่งเดิม (เก็บ scroll ใน sessionStorage ตอน submit, `admin.js`) — **ห้ามทำให้หน้าเด้งขึ้นบนสุด** (ผู้ใช้ไม่ชอบ) · ข้อความผลการบันทึก (`flash()` → `[data-flash]`) แสดงเป็น toast มุมขวาบน · มี error → เลื่อนไปช่องแรกที่ผิด
 - แถบด้านบนแสดง DB ที่ต่ออยู่ (`test_LYI` เขียว / `LYI` แดง = PRODUCTION) กันแก้ผิดที่
 - ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/admin/access.php` (ป้ายสิทธิ์, หน้า/ส่วน, `admin_roles()`, สรุป scope), `includes/lib/auth.php`
-- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์) · ผู้ใช้ & สิทธิ์ (`users.php` ค้นหาจาก sysmnuser, ให้/ถอน role = เลือกคนที่ login ได้) · บทบาท (`roles.php` สร้าง/แก้/ลบ role: สิทธิ์ + ติ๊กหน้า/ส่วนที่แก้ได้)
+- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์) · ผู้ใช้ & สิทธิ์ (`users.php` dropdown ค้นหาผู้ใช้ sysmnuser ที่ไม่ถูกล็อก จัดกลุ่มตามแผนก เรียง A→Z — ไทยเรียงแบบพจนานุกรม (สระหน้า เ แ โ ใ ไ นับตามพยัญชนะ), `-` = ไม่ระบุแผนก ไว้ท้าย · ให้/ถอน role = เลือกคนที่ login ได้) · บทบาท (`roles.php` สร้าง/แก้/ลบ role: สิทธิ์ + ติ๊กหน้า/ส่วนที่แก้ได้)
 - ทดสอบหน้าที่ต้อง login โดยไม่มีรหัสจริง: จำลอง session ใน CLI (ตั้ง `$_SESSION['lyiweb_user']` + `lyiweb_csrf` แล้ว require หน้า) — เขียนได้เฉพาะ `test_LYI` และต้องคืนค่าหลังทดสอบ
 
 ## Folder structure

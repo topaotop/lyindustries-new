@@ -113,6 +113,68 @@
     if (!tree.disabled) syncTree();
   }
 
+  // user picker: searchable dropdown grouped by department (A→Z), pick → that user's permissions page
+  const picker = document.querySelector('[data-user-picker]');
+  if (picker) {
+    const input = picker.querySelector('[role=combobox]');
+    const list = picker.querySelector('[role=listbox]');
+    let users = [];
+    try { users = JSON.parse(picker.querySelector('[data-user-list]').textContent); } catch (err) { /* keep the plain search form */ }
+    let options = [];
+    let active = -1;
+    const norm = v => v.toLocaleLowerCase('th');
+    const esc = v => v.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const setActive = i => {
+      options.forEach(o => o.classList.remove('on'));
+      active = i;
+      if (options[i]) {
+        options[i].classList.add('on');
+        options[i].scrollIntoView({ block: 'nearest' });
+        input.setAttribute('aria-activedescendant', options[i].id);
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    };
+    const render = () => {
+      const q = norm(input.value.trim());
+      const hits = users.filter(u => q === '' || norm(`${u.name} ${u.user} ${u.dept}`).includes(q));
+      let html = '';
+      let dept = null;
+      hits.forEach(u => {
+        if (u.dept !== dept) {
+          dept = u.dept;
+          html += `<div class="picker-group" role="presentation">${esc(dept)}<small>${hits.filter(h => h.dept === dept).length}</small></div>`;
+        }
+        html += `<a class="picker-opt" id="pick-${u.id}" role="option" href="?id=${u.id}"><span>${esc(u.name)}</span>`
+              + `<small>${esc(u.user)}</small>${u.ok ? '<em>login ได้</em>' : ''}</a>`;
+      });
+      list.innerHTML = html || '<div class="picker-empty">ไม่พบผู้ใช้</div>';
+      options = [...list.querySelectorAll('.picker-opt')];
+      setActive(q === '' ? -1 : 0);
+    };
+    const open = () => { render(); list.hidden = false; input.setAttribute('aria-expanded', 'true'); };
+    const close = () => { list.hidden = true; input.setAttribute('aria-expanded', 'false'); setActive(-1); };
+    if (users.length) {
+      input.addEventListener('focus', open);
+      input.addEventListener('click', open);
+      input.addEventListener('input', open);
+      input.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (list.hidden) open();
+          const n = options.length;
+          if (n) setActive(e.key === 'ArrowDown' ? (active + 1) % n : (active - 1 + n) % n);
+        } else if (e.key === 'Enter' && !list.hidden && options[active]) {
+          e.preventDefault();
+          location.href = options[active].href;
+        } else if (e.key === 'Escape') {
+          close();
+        }
+      });
+      document.addEventListener('click', e => { if (!picker.contains(e.target)) close(); });
+    }
+  }
+
   // destructive buttons ask first
   document.querySelectorAll('[data-confirm]').forEach(btn => btn.addEventListener('click', e => {
     if (!window.confirm(btn.dataset.confirm)) e.preventDefault();

@@ -99,6 +99,22 @@ foreach (db_rows('SELECT ur.user_id, ur.role_id, u.username, u.name, u.departmen
     $granted[(int) $r['user_id']] ??= $r + ['roles' => []];
     $granted[(int) $r['user_id']]['roles'][] = $roles[(int) $r['role_id']]['name_th'] ?? '?';
 }
+// everyone who could be picked (not locked), grouped by department then name — A→Z
+$pickList = [];
+// placeholders such as '-' count as empty; users without a department go last
+$blank = static fn(mixed $v): string => in_array(trim((string) $v), ['', '-', '.'], true) ? '' : trim((string) $v);
+foreach (db_rows("SELECT id, username, name, department FROM dbo.sysmnuser WHERE ISNULL(locked, 0) <> 1") as $u) {
+    $pickList[] = ['id' => (int) $u['id'], 'name' => preg_replace('/\s+/u', ' ', $blank($u['name'])) ?: (string) $u['username'], 'user' => (string) $u['username'],
+                   'dept' => $blank($u['department']), 'ok' => isset($granted[(int) $u['id']])];
+}
+// A→Z, Thai in dictionary order: a leading vowel (เ แ โ ใ ไ) sorts by the consonant after it
+$sortKey = static fn(string $v): string => preg_replace('/(?<!\p{Thai})([เแโใไ])(\p{Thai})/u', '$2$1', mb_strtolower(preg_replace('/\s+/u', ' ', $v)));
+usort($pickList, static fn(array $a, array $b): int =>
+    [$a['dept'] === '', $sortKey($a['dept']), $sortKey($a['name'])] <=> [$b['dept'] === '', $sortKey($b['dept']), $sortKey($b['name'])]);
+foreach ($pickList as &$p) {
+    $p['dept'] = $p['dept'] ?: 'ไม่ระบุแผนก';
+}
+unset($p);
 $admins = $minLevel > 0 ? db_rows(
     'SELECT id, username, name, department, [level] FROM dbo.sysmnuser WHERE [level] >= ? AND ISNULL(locked, 0) <> 1 ORDER BY name',
     [$minLevel]
@@ -107,11 +123,16 @@ $admins = $minLevel > 0 ? db_rows(
 admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 ?>
 <h1>ผู้ใช้ & สิทธิ์</h1>
-<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — <b>login หลังบ้านได้เฉพาะคนที่ได้ role</b> · ค้นหาแล้วกด "กำหนดสิทธิ์" เพื่อเลือกคน · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a></p>
+<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — <b>login หลังบ้านได้เฉพาะคนที่ได้ role</b> · เลือกคนจากรายการแล้วติ๊ก role · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a></p>
 
-<form method="get" class="card search-user">
-  <label class="field" style="margin:0"><span>ค้นหาผู้ใช้เพื่อให้สิทธิ์</span>
-    <input type="search" name="q" value="<?= e($q) ?>" placeholder="ชื่อผู้ใช้ ชื่อ หรือแผนก" autofocus></label>
+<form method="get" class="card search-user" data-user-picker>
+  <div class="field picker" style="margin:0">
+    <label for="pick-q">เลือกผู้ใช้เพื่อกำหนดสิทธิ์</label>
+    <input type="search" id="pick-q" name="q" value="<?= e($q) ?>" placeholder="พิมพ์ชื่อ ชื่อผู้ใช้ หรือแผนก — หรือคลิกเพื่อดูทั้งหมด" autocomplete="off"
+           role="combobox" aria-expanded="false" aria-controls="pick-list" aria-autocomplete="list">
+    <div class="picker-list" id="pick-list" role="listbox" hidden></div>
+    <script type="application/json" data-user-list><?= json_encode($pickList, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>
+  </div>
   <button class="btn btn-primary" type="submit">ค้นหา</button>
 </form>
 
