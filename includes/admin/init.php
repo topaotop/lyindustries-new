@@ -49,6 +49,7 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'user'     => '<circle cx="10" cy="7" r="3.2"/><path d="M4 17a6 6 0 0 1 12 0"/>',
         'users'    => '<circle cx="8" cy="7" r="3"/><path d="M2.5 16.5a5.5 5.5 0 0 1 11 0"/><path d="M13 4.3a3 3 0 0 1 0 5.4M15 12a5.5 5.5 0 0 1 2.5 4.5"/>',
         'shield'   => '<path d="M10 2.8 16 5v4.6c0 3.7-2.5 6.4-6 7.6-3.5-1.2-6-3.9-6-7.6V5z"/><path d="m7.3 10 2 2 3.6-3.8"/>',
         // page tabs
@@ -142,8 +143,7 @@ function admin_page_start(string $title, string $active): void
   <a class="brand" href="index.php"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="30" height="30"><span>LYI Website <b>Admin</b></span></a>
   <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : ' · ทดสอบ' ?></span>
   <span class="spacer"></span>
-  <span class="who"><?= e($user['name']) ?></span>
-  <form method="post" action="logout.php"><?= csrf_field() ?><button class="btn btn-ghost" type="submit">ออกจากระบบ</button></form>
+  <a class="btn btn-ghost top-site" href="../index.php" target="_blank" rel="noopener"><?= admin_icon('external') ?><span>ดูหน้าเว็บไซต์</span></a>
 </header>
 <div class="shell">
   <nav class="side" aria-label="เมนูหลังบ้าน">
@@ -161,7 +161,10 @@ function admin_page_start(string $title, string $active): void
 <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
-    <a class="side-site" href="../index.php" target="_blank" rel="noopener"><?= admin_icon('external') ?><span>ดูหน้าเว็บไซต์</span></a>
+    <div class="side-user">
+      <span class="who"><?= admin_icon('user') ?><span><?= e($user['name']) ?></span></span>
+      <form method="post" action="logout.php"><?= csrf_field() ?><button class="btn btn-ghost" type="submit">ออกจากระบบ</button></form>
+    </div>
   </nav>
   <main class="main">
 <?php else: ?>
