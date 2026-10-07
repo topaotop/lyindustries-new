@@ -17,7 +17,7 @@
 ## v1.2.0 — 2026-10-07 09:37 · dev
 
 - **Commit:** `c7fb7e7` · **Tag:** `v1.2.0`
-- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
 - **Changes:**
   - หลังบ้าน: หน้า **ผู้ใช้ & สิทธิ์** (ค้นหาผู้ใช้จาก sysmnuser, ให้/ถอน role) และ **บทบาท (Role)** (สร้าง/แก้/ลบ role, ติ๊กหน้า/ส่วนที่แก้ได้)
   - หน้าแก้ข้อความแสดงและรับเฉพาะส่วนที่ผู้ใช้มีสิทธิ์ · POST ไปหน้าที่ไม่มีสิทธิ์ = 403 · แดชบอร์ดแสดงส่วนที่ดูแล
@@ -30,7 +30,7 @@
 ## v1.1.0 — 2026-10-06 17:52 · dev
 
 - **Commit:** `aa5a4cd` · **Tag:** `v1.1.0` (ข้ามจาก v1.0.1 — มีฟีเจอร์ใหม่ = MINOR)
-- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
 - **Changes:**
   - เนื้อหาทั้งเว็บอ่านจาก DB (`test_LYI`): รายการหน้าแรก, ข้อความ 272 ชิ้น, ข้อมูลติดต่อ, ชื่อหน้า/SEO — มี cache + fallback ในโค้ด
   - **หลังบ้าน `/admin/`**: login ด้วย `sysmnuser`, สิทธิ์, แดชบอร์ด, แก้ข้อความ/SEO (เมนูย่อยรายส่วน), แก้ข้อมูลติดต่อ
