@@ -14,6 +14,16 @@
 
 ---
 
+## v1.4.0 — 2026-10-07 10:41 · dev
+
+- **Commit:** `3ef2413` · **Tag:** `v1.4.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:** หลังบ้านรองรับมือถือ/แท็บเล็ต — < 1024px เมนูเป็น drawer เปิดจากปุ่ม ☰ · มือถือ: แถบบนย่อ, ตารางเป็นการ์ด, แท็บเลื่อนแนวนอน, toolbar ไม่ค้างบังจอ, ช่องกรอก 16px กัน iPhone ซูม · แก้หน้าเนื้อหาสั้นถูกดันลงล่างบนจอแคบ
+- **Files:** แก้ 6 (`admin/assets/admin.css`, `admin/assets/admin.js`, `admin/index.php`, `admin/roles.php`, `admin/users.php`, `includes/admin/init.php`) · DB ไม่เปลี่ยน
+- **Backup:** 6 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 4 หน้า + login 200 · หน้า admin → 302 login · `*.html` / หน้าเก่า → 301 · `includes/` และ `connectgrp.php` → 404 · HTML จาก server ตรงกับ local ทุกหน้า · `admin.css` บน server เป็นชุดใหม่ · ไฟล์ admin ชุดที่ deploy รันด้วย session จำลอง 5 หน้า มีปุ่ม ☰ ไม่มี error · URL สาธารณะผลเหมือนกัน
+- **Note:** ตรวจหน้าตาด้วย headless Chrome ที่ 390 / 820 / 1400px — การแตะเปิด/ปิด drawer บนมือถือจริงให้ผู้ใช้ลอง
+
 ## v1.3.1 — 2026-10-07 10:31 · dev
 
 - **Commit:** `82da73e` · **Tag:** `v1.3.1`
