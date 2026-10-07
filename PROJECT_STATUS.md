@@ -1,6 +1,6 @@
 # PROJECT_STATUS.md — L.Y. Industries website
 
-อัปเดตล่าสุด: 6 ต.ค. 2026 · branch `main` · dev: https://lysystems.sytes.net/lyindustries-dev/ (ภายใน http://192.168.0.70/lyindustries-dev/) · **version บน dev: v1.1.0** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
+อัปเดตล่าสุด: 6 ต.ค. 2026 · branch `main` · dev: https://lysystems.sytes.net/lyindustries-dev/ (ภายใน http://192.168.0.70/lyindustries-dev/) · **version บน dev: v1.7.0** (ดู [DEPLOY_LOG.md](DEPLOY_LOG.md))
 
 ## ✅ งานที่ทำเสร็จแล้ว
 
@@ -44,7 +44,8 @@
 | 7 ต.ค. 2026 | จัดรูปเป็นหมวดใน `assets/img/`: brand / applications / products / process / rnd / colorlab (ย้าย `app-*`, `prod-*` จาก `assets/` เข้ามาด้วย, ชื่อไฟล์เดิม) · แก้ path ในโค้ด 9 ไฟล์ + `007_lyiweb_image_folders.sql` (รัน `test_LYI` แล้ว) · ตรวจ: รูปทุก URL ทั้ง 4 หน้า + หน้า login หลังบ้านโหลดได้ 39/39 | `9b960ed` |
 | 7 ต.ค. 2026 | `LYI`: `006` (ขั้นตอนผลิต) และ `007` (path หลังจัดโฟลเดอร์) มีผลแล้ว — ตรวจ: ไม่เหลือ path เก่า, ไทล์ 7 / สินค้า 6 / ขั้นตอนผลิต 5 รูปชี้ `assets/img/…`, `lyiweb_items` ตรงกับ `test_LYI` ทุกแถว | — |
 | 7 ต.ค. 2026 | **หลังบ้าน: ผู้ใช้ & สิทธิ์ + บทบาท (Role)** — `users.php` ค้นหาผู้ใช้จาก sysmnuser แล้วให้/ถอน role, `roles.php` สร้าง/แก้/ลบ role พร้อม**ขอบเขตรายหน้า/รายส่วน** (ผู้ใช้เลือกแบบ ข.) ตาราง `lyiweb_role_scopes` (`008`, รัน `test_LYI` แล้ว) · หน้าแก้ข้อความแสดง/รับเฉพาะส่วนที่มีสิทธิ์ (ไทยแก้ได้เฉพาะส่วนที่มี "แก้เนื้อหา") · แดชบอร์ดแสดงส่วนที่ดูแล · ทดสอบ session จำลองบน `test_LYI`: สร้าง role/ให้สิทธิ์/แสดงผล/บันทึกนอกขอบเขตถูกเพิกเฉย/POST หน้าที่ไม่มีสิทธิ์ = 403 (พบและแก้บั๊ก fallback ระหว่างทดสอบ)/ถอน/ลบ แล้วคืนค่า DB | `8c1c97f` |
-| 7 ต.ค. 2026 | **หลังบ้าน: เมนู SEO & AEO** (`admin/seo.php`, ผู้ใช้ขอเป็นเมนูเฉพาะ) — 5 แท็บ: ภาพรวม (สถานะทุกหน้า/ภาษา), ชื่อหน้า & คำอธิบาย (ตัวอย่าง Google + ตัวนับ, ย้ายมาจากหน้าข้อความ), รูปแชร์ลิงก์ (ทั้งเว็บ/รายหน้า ครอป 1200×630 JPEG), ข้อมูลธุรกิจสำหรับ Google (ชื่ออื่น/ปีก่อตั้ง/ที่อยู่/พิกัด/โซเชียล → schema ทุกหน้า), FAQ (ตัวอย่าง FAQPage) · settings ใหม่ 14 key → `003` regenerate (รันใน `test_LYI` แล้ว — **`LYI` ยังไม่ได้รัน**) · schema about เพิ่ม "Soi Ram Inthra 109" ให้ตรงกับ contact · ทดสอบ: ทุกแท็บ 0 error, บันทึก/validate/อัปโหลด, schema เปลี่ยนตามค่า แล้วคืนค่า `test_LYI` ตรงเดิม | `d41e13f` |
+| 7 ต.ค. 2026 | **Deploy v1.7.0** ขึ้น .70 (เมนู SEO & AEO) — ดู DEPLOY_LOG · seed 003 รันใน `LYI` แล้ว (settings 34) | `588c3d2` (tag `v1.7.0`) |
+| 7 ต.ค. 2026 | **หลังบ้าน: เมนู SEO & AEO** (`admin/seo.php`, ผู้ใช้ขอเป็นเมนูเฉพาะ) — 5 แท็บ: ภาพรวม (สถานะทุกหน้า/ภาษา), ชื่อหน้า & คำอธิบาย (ตัวอย่าง Google + ตัวนับ, ย้ายมาจากหน้าข้อความ), รูปแชร์ลิงก์ (ทั้งเว็บ/รายหน้า ครอป 1200×630 JPEG), ข้อมูลธุรกิจสำหรับ Google (ชื่ออื่น/ปีก่อตั้ง/ที่อยู่/พิกัด/โซเชียล → schema ทุกหน้า), FAQ (ตัวอย่าง FAQPage) · settings ใหม่ 14 key → `003` regenerate (รันแล้วทั้ง `test_LYI` และ `LYI`) · schema about เพิ่ม "Soi Ram Inthra 109" ให้ตรงกับ contact · ทดสอบ: ทุกแท็บ 0 error, บันทึก/validate/อัปโหลด, schema เปลี่ยนตามค่า แล้วคืนค่า `test_LYI` ตรงเดิม | `d41e13f` |
 | 7 ต.ค. 2026 | **Deploy v1.6.0** ขึ้น .70 (3c ฟอร์ม/สถิติ + Phase 3 เว็บอังกฤษ + Phase 4 SEO/AEO) — ดู DEPLOY_LOG · ส่งฟอร์มจริงผ่าน IIS ผ่าน | `795b357` (tag `v1.6.0`) |
 | 7 ต.ค. 2026 | **Phase 4 — SEO/AEO ชุดแรก:** เว็บ dev/test ส่ง noindex + robots.txt ปิดทั้งหมด (production เปิด) · `/robots.txt` + `/sitemap.xml` สร้างอัตโนมัติ (8 URL ไทย+อังกฤษ, hreflang, lastmod) · canonical + Open Graph/twitter card ทุกหน้า (รูปพรีวิวลิงก์ `og-image.jpg` — ร่าง รอ Pack) · หน้าแรก: schema Organization + WebSite + **FAQPage** จาก FAQ ในหลังบ้าน (ไทย/อังกฤษ) · URL ใน schema → `https://www.lyindustries.com` · รูป Color Lab 13.8MB → 190KB, R&D 497KB → 39KB (WebP + lazy) · ผู้ใช้ตัดสิน: ไม่ทำ "เปลี่ยนภาษา default" (เสีย SEO ทุกครั้งที่สลับ) | `b8ea51f` |
 | 7 ต.ค. 2026 | **Phase 3 ขั้น 3-4 — ร่างคำแปลภาษาอังกฤษ** (ผู้ใช้เลือก: ผมร่าง แล้วให้ทีมตรวจแก้ในหลังบ้าน): ข้อความ 191 + ชื่อ/คำอธิบาย SEO 4 หน้า + รายการ 24 (FAQ, ขั้นตอนผลิต, หมวดสินค้า, ไทล์) → `010_lyiweb_en_draft.sql` (รัน `test_LYI` แล้ว — รันใน `LYI` แล้ว (ตรวจ 7 ต.ค. 2026); ใส่เฉพาะช่องที่ว่าง) · ป้ายที่เป็นภาษาอังกฤษอยู่แล้ว 133 ชิ้นนับว่าแปลแล้ว → แดชบอร์ด 100%, ทั้ง 4 หน้าอังกฤษไม่มี noindex + มี hreflang · `word_gap()` เว้นวรรคระหว่างหัวข้อกับคำสีส้มเฉพาะภาษาอังกฤษ · **แก้บั๊กจาก 3c: กล่อง "ส่งคำขอเรียบร้อยแล้ว" โผล่ในหน้าติดต่อตั้งแต่ยังไม่ส่ง** (CSS display:flex ทับ hidden) · ⚠️ คำแปลเป็นร่าง — รอผู้รับผิดชอบเนื้อหา/Pack ตรวจ (ชื่อหน้าแรกภาษาไทยมี "(Hybrid)" — ฉบับอังกฤษตัดออก) · หัวข้อ About ภาษาอังกฤษยาวเป็น 4 บรรทัดบนคอม | `17972a9` |
@@ -97,7 +98,7 @@
 **งานย่อย**
 - หน้าย่อยโหลดฟอนต์จาก Google Fonts ส่วนหน้าแรก self-host — พิจารณาให้เหมือนกัน
 - SEO: ใช้ `https://www.lyindustries.com` เป็น URL หลัก (canonical) ให้ทั้งเว็บ — schema JSON-LD ของ about/catalog/contact ยังใช้ `https://lyindustries.com` (ไม่มี www) ให้ปรับใน Phase 4 · ตอน launch เพิ่ม 301 `lyindustries.com` → `www.lyindustries.com` บน production
-- **ผู้ใช้รัน `docs/sql/003_lyiweb_seed_site.sql` ใน `LYI`** (settings SEO & AEO ใหม่ 14 key — ถ้าไม่รัน หน้าเว็บใช้ค่าเริ่มต้นในโค้ดแทน ไม่พัง แต่แก้ในหลังบ้าน production ไม่ได้จนกว่าจะรัน)
+- **ผู้ใช้รัน `docs/sql/003_lyiweb_seed_site.sql` ใน `LYI`** ✅ รันแล้ว 7 ต.ค. 2026 (ตรวจ 34 แถว)
 - รูปขั้นตอนผลิต: ขั้น 03 ยังรอรูปจริง
 - รัน Ahrefs Site Audit ครั้งแรกที่ https://lysystems.sytes.net/lyindustries-dev/ เก็บคะแนนตั้งต้น (ผู้ใช้ทำ)
 

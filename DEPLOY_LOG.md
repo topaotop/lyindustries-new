@@ -14,6 +14,22 @@
 
 ---
 
+## v1.7.0 — 2026-10-07 · dev
+
+- **Commit:** `588c3d2` · **Tag:** `v1.7.0`
+- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - หลังบ้าน: เมนูใหม่ **SEO & AEO** (`admin/seo.php`) — ภาพรวม, ชื่อหน้า & คำอธิบาย (ตัวอย่าง Google + ตัวนับ), รูปแชร์ลิงก์ (ทั้งเว็บ/รายหน้า ครอป 1200×630), ข้อมูลธุรกิจสำหรับ Google, ตัวอย่าง FAQ
+  - ชื่อหน้า/คำอธิบายย้ายออกจากหน้า "ข้อความหน้าเว็บ" (เปลี่ยนชื่อเมนูจาก "ข้อความหน้าเว็บ & SEO")
+  - schema ทุกหน้าอ่านข้อมูลธุรกิจจาก settings · about เพิ่ม "Soi Ram Inthra 109" ในที่อยู่
+- **DB:** seed 003 (settings 34 แถว รวม 14 ใหม่) รันแล้วทั้ง `test_LYI` และ `LYI` (ตรวจแล้ว)
+- **Files:** เพิ่ม 1 · แก้ 12 · ลบ 0
+- **Backup:** 12 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 8 หน้า (ไทย+อังกฤษ) 200 · robots.txt / sitemap.xml 200 · admin (รวม seo.php) → 302 login · `index.html` → 301 · `includes/…`, `connectgrp.php` → 404 · HTML จาก server ตรงกับ local (ต่างเฉพาะ host/path, `?v=`, เวลาในฟอร์ม และรูปโรงย้อมที่อัปโหลดไว้เฉพาะเครื่อง local) · URL สาธารณะ 200
+- **Note:** รูปโรงย้อมที่ผู้ใช้อัปโหลดบนเครื่อง local แสดงเป็น Image pending บน .70 (uploads แยกต่อ server — ต้องอัปโหลดซ้ำในหลังบ้านของ .70 ถ้าต้องการให้เห็น)
+
+---
+
 ## v1.6.0 — 2026-10-07 13:19 · dev
 
 - **Commit:** `795b357` · **Tag:** `v1.6.0`
