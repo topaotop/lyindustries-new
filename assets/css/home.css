@@ -168,6 +168,7 @@ p {
 .hv-6:hover { background:rgba(255,255,255,0.12) !important; border-color:rgba(255,255,255,0.3) !important; }
 .hv-7:hover { opacity:1 !important; filter:grayscale(0) brightness(1) !important; }
 .hv-8:hover { transform:scale(1.06) !important; }
+@media (max-width: 600px), (max-height: 700px) { .scroll-cue { display: none !important; } }
 .hv-9:hover { background:rgba(0,0,0,0.06) !important; border-color:var(--text-primary) !important; }
 .hv-10:hover { transform:scale(1.08) !important; }
 .hv-11:hover { text-decoration:underline !important; }

@@ -38,6 +38,11 @@ h1,h2,h3{font-family:var(--font-heading);line-height:1.2}
 .brand small{font:500 9px var(--font-mono);letter-spacing:.12em;color:var(--text-secondary)}
 .nav nav{display:flex;gap:26px;font-size:15px;color:var(--text-secondary)}
 .nav nav a:hover,.nav nav a.on{color:#fff}
+/* header never wraps (English labels are longer): tighter menu, then logo without the name */
+.nav nav a,.brand b,.brand small,.nav .btn{white-space:nowrap}
+@media(max-width:1240px){.nav nav{gap:18px;font-size:14px}}
+@media(min-width:961px) and (max-width:1100px),(max-width:480px){.brand span{display:none}}
+@media(max-width:600px){.nav .btn{padding:10px 16px;font-size:13px}}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:100px;font-weight:600;font-size:14.5px;transition:transform .2s,box-shadow .2s}
 .btn-o{background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;box-shadow:0 8px 24px rgba(255,90,31,.25)}
 .lang-switch:hover{border-color:var(--brand-orange)!important}

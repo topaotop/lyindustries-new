@@ -128,7 +128,7 @@ function lang_switch_html(): string
     return '<a class="lang-switch hv-3" href="' . e(page_url($to, $file)) . '" hreflang="' . $to . '" lang="' . $to . '"'
          . ' aria-label="' . $name . '" title="' . $name . '"'
          . ' style="width:38px;height:38px;flex:none;border-radius:50%;border:1px solid var(--border-light);background:rgba(255,255,255,0.05);'
-         . 'display:inline-grid;place-items:center;font-family:var(--font-mono);font-size:11.5px;font-weight:700;letter-spacing:0.06em;color:#fff;transition:border-color 0.2s">'
+         . 'display:inline-grid;place-items:center;font-family:var(--font-mono);font-size:11.5px;font-weight:700;letter-spacing:0.06em;color:var(--text-primary,#fff);transition:border-color 0.2s">'
          . strtoupper($to) . '</a>';
 }
 
