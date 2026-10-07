@@ -14,6 +14,19 @@
 
 ---
 
+## v1.2.0 — 2026-10-07 09:37 · dev
+
+- **Commit:** `c7fb7e7` · **Tag:** `v1.2.0`
+- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - หลังบ้าน: หน้า **ผู้ใช้ & สิทธิ์** (ค้นหาผู้ใช้จาก sysmnuser, ให้/ถอน role) และ **บทบาท (Role)** (สร้าง/แก้/ลบ role, ติ๊กหน้า/ส่วนที่แก้ได้)
+  - หน้าแก้ข้อความแสดงและรับเฉพาะส่วนที่ผู้ใช้มีสิทธิ์ · POST ไปหน้าที่ไม่มีสิทธิ์ = 403 · แดชบอร์ดแสดงส่วนที่ดูแล
+- **DB:** `008_lyiweb_role_scopes.sql` — รันแล้วทั้ง `test_LYI` (agent) และ `LYI` (ผู้ใช้ผ่าน Navicat, ตรวจแล้ว: admin/editor/translator = `*`)
+- **Files:** เพิ่ม 3 (`admin/roles.php`, `admin/users.php`, `includes/admin/access.php`) · แก้ 6 (`admin/assets/admin.css`, `admin/assets/admin.js`, `admin/blocks.php`, `admin/index.php`, `includes/admin/init.php`, `includes/lib/auth.php`) · ลบ 0
+- **Backup:** 6 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 4 หน้า + login 200 · หน้า admin (รวม users/roles) → 302 login เมื่อยังไม่ login · `*.html` / หน้าเก่า → 301 · `includes/ docs/ connectgrp.php` → 404 · HTML จาก server ตรงกับ local ทุกหน้า · รันไฟล์ admin ชุดที่ deploy ด้วย session จำลอง (users/roles/blocks/dashboard) ไม่มี error · URL สาธารณะผลเหมือนกัน
+- **Note:** หน้า admin ที่ต้อง login ยังไม่ได้ทดสอบผ่าน IIS ด้วยบัญชีจริง — ผู้ใช้ควรเข้าลองที่ `/admin/users.php`
+
 ## v1.1.0 — 2026-10-06 17:52 · dev
 
 - **Commit:** `aa5a4cd` · **Tag:** `v1.1.0` (ข้ามจาก v1.0.1 — มีฟีเจอร์ใหม่ = MINOR)
