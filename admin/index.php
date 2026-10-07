@@ -71,11 +71,11 @@ admin_page_start('แดชบอร์ด', 'index.php');
 <?php if ($recent === []): ?>
     <p class="muted">ยังไม่มีการแก้ไข</p>
 <?php else: ?>
-    <table class="table">
+    <table class="table rtable">
       <thead><tr><th>เวลา</th><th>ผู้แก้</th><th>อะไร</th></tr></thead>
       <tbody>
 <?php foreach ($recent as $r): ?>
-        <tr><td class="nowrap"><?= e($r['created_at'] instanceof DateTimeInterface ? $r['created_at']->format('d/m/Y H:i') : (string) $r['created_at']) ?></td><td><?= e($r['name'] ?: $r['username'] ?: '—') ?></td><td><?= e($r['action'] . ' · ' . $r['entity'] . ($r['entity_id'] ? ' · ' . $r['entity_id'] : '')) ?></td></tr>
+        <tr><td class="nowrap muted small"><?= e($r['created_at'] instanceof DateTimeInterface ? $r['created_at']->format('d/m/Y H:i') : (string) $r['created_at']) ?></td><td><b><?= e($r['name'] ?: $r['username'] ?: '—') ?></b></td><td data-label="อะไร"><?= e($r['action'] . ' · ' . $r['entity'] . ($r['entity_id'] ? ' · ' . $r['entity_id'] : '')) ?></td></tr>
 <?php endforeach; ?>
       </tbody>
     </table>

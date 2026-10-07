@@ -102,16 +102,16 @@ if ($role === null) {
 <p class="muted">role = ชุดสิทธิ์ + หน้า/ส่วนที่แก้ได้ แล้วนำไปให้ผู้ใช้ที่หน้า <a href="users.php">ผู้ใช้ & สิทธิ์</a> · ผู้ใช้ที่ไม่มี role เลย login ไม่ได้<?= auth_admin_min_level() > 0 ? ' · ผู้ใช้ที่ level ≥ ' . auth_admin_min_level() . ' ในระบบบริษัทได้ทุกสิทธิ์อัตโนมัติ' : '' ?></p>
 <div class="actions" style="justify-content:flex-start;margin:14px 0"><a class="btn btn-primary" href="?new=1">+ เพิ่ม role</a></div>
 <div class="card">
-  <table class="table">
+  <table class="table rtable">
     <thead><tr><th>Role</th><th>สิทธิ์</th><th>หน้า/ส่วนที่แก้ได้</th><th class="nowrap">ผู้ใช้</th><th></th></tr></thead>
     <tbody>
 <?php foreach ($roles as $r): ?>
       <tr>
         <td><b><?= e($r['name_th']) ?></b><?= $r['is_system'] ? ' <span class="chip chip-dim">ระบบ</span>' : '' ?></td>
-        <td><?php foreach ($r['perms'] as $p): ?><span class="chip"><?= e($labels[$p][0] ?? $p) ?></span><?php endforeach; ?><?= $r['perms'] === [] ? '<span class="muted">—</span>' : '' ?></td>
-        <td class="small"><?= array_intersect($r['perms'], $contentPerms) === [] ? '<span class="muted">—</span>' : e(admin_scope_summary($r['scopes'])) ?></td>
-        <td><?= $r['members'] ?></td>
-        <td class="nowrap"><a href="?id=<?= $r['id'] ?>"><?= $r['role_key'] === 'admin' ? 'ดู' : 'แก้ไข' ?></a></td>
+        <td data-label="สิทธิ์"><?php foreach ($r['perms'] as $p): ?><span class="chip"><?= e($labels[$p][0] ?? $p) ?></span><?php endforeach; ?><?= $r['perms'] === [] ? '<span class="muted">—</span>' : '' ?></td>
+        <td class="small" data-label="หน้า/ส่วนที่แก้ได้"><?= array_intersect($r['perms'], $contentPerms) === [] ? '<span class="muted">—</span>' : e(admin_scope_summary($r['scopes'])) ?></td>
+        <td data-label="ผู้ใช้"><?= $r['members'] ?></td>
+        <td class="nowrap act"><a href="?id=<?= $r['id'] ?>"><?= $r['role_key'] === 'admin' ? 'ดู' : 'แก้ไข' ?></a></td>
       </tr>
 <?php endforeach; ?>
     </tbody>

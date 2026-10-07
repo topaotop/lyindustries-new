@@ -147,14 +147,14 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <?php if ($found === []): ?>
   <p class="muted">ไม่พบ</p>
 <?php else: ?>
-  <table class="table">
+  <table class="table rtable">
     <thead><tr><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>แผนก</th><th>level</th><th>สิทธิ์ในเว็บ</th><th></th></tr></thead>
     <tbody>
 <?php foreach ($found as $u): $uid = (int) $u['id']; ?>
       <tr<?= (int) $u['locked'] === 1 ? ' class="muted"' : '' ?>>
-        <td><?= e($u['name'] ?: '—') ?></td><td><?= e($u['username']) ?></td><td><?= e((string) $u['department']) ?></td><td><?= (int) $u['level'] ?></td>
-        <td class="small"><?= (int) $u['locked'] === 1 ? 'ถูกล็อก' : ($minLevel > 0 && (int) $u['level'] >= $minLevel ? 'ทุกสิทธิ์ (level)' : (e(implode(', ', $granted[$uid]['roles'] ?? [])) ?: '<span class="muted">login ไม่ได้</span>')) ?></td>
-        <td class="nowrap"><a href="?id=<?= $uid ?>">กำหนดสิทธิ์</a></td>
+        <td><b><?= e($u['name'] ?: '—') ?></b></td><td data-label="ชื่อผู้ใช้"><?= e($u['username']) ?></td><td data-label="แผนก"><?= e((string) $u['department']) ?></td><td data-label="level"><?= (int) $u['level'] ?></td>
+        <td class="small" data-label="สิทธิ์ในเว็บ"><?= (int) $u['locked'] === 1 ? 'ถูกล็อก' : ($minLevel > 0 && (int) $u['level'] >= $minLevel ? 'ทุกสิทธิ์ (level)' : (e(implode(', ', $granted[$uid]['roles'] ?? [])) ?: '<span class="muted">login ไม่ได้</span>')) ?></td>
+        <td class="nowrap act"><a href="?id=<?= $uid ?>">กำหนดสิทธิ์</a></td>
       </tr>
 <?php endforeach; ?>
     </tbody>
@@ -169,12 +169,12 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <?php if ($granted === []): ?>
     <p class="muted">ยังไม่มี — ค้นหาผู้ใช้ด้านบนแล้วกด "กำหนดสิทธิ์"</p>
 <?php else: ?>
-    <table class="table">
+    <table class="table rtable">
       <thead><tr><th>ชื่อ</th><th>Role</th><th></th></tr></thead>
       <tbody>
 <?php foreach ($granted as $uid => $g): ?>
         <tr><td><?= e($g['name'] ?: $g['username']) ?><br><span class="muted small"><?= e($g['username']) ?><?= $g['department'] ? ' · ' . e($g['department']) : '' ?><?= (int) $g['locked'] === 1 ? ' · ถูกล็อก' : '' ?></span></td>
-          <td class="small"><?= e(implode(', ', $g['roles'])) ?></td><td class="nowrap"><a href="?id=<?= $uid ?>">แก้ไข</a></td></tr>
+          <td class="small" data-label="Role"><?= e(implode(', ', $g['roles'])) ?></td><td class="nowrap act"><a href="?id=<?= $uid ?>">แก้ไข</a></td></tr>
 <?php endforeach; ?>
       </tbody>
     </table>

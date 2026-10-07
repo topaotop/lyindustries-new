@@ -49,6 +49,7 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'menu'     => '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
         'back'     => '<path d="M12 4.5 6.5 10l5.5 5.5"/>',
         'user'     => '<circle cx="10" cy="7" r="3.2"/><path d="M4 17a6 6 0 0 1 12 0"/>',
         'users'    => '<circle cx="8" cy="7" r="3"/><path d="M2.5 16.5a5.5 5.5 0 0 1 11 0"/><path d="M13 4.3a3 3 0 0 1 0 5.4M15 12a5.5 5.5 0 0 1 2.5 4.5"/>',
@@ -141,13 +142,15 @@ function admin_page_start(string $title, string $active): void
 <body>
 <?php if ($user): ?>
 <header class="topbar">
-  <a class="brand" href="index.php"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="30" height="30"><span>LYI Website <b>Admin</b></span></a>
-  <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : ' · ทดสอบ' ?></span>
+  <button class="nav-toggle" type="button" data-nav-toggle aria-controls="admin-nav" aria-expanded="false" aria-label="เมนู"><?= admin_icon('menu') ?></button>
+  <a class="brand" href="index.php"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="30" height="30"><span>LYI <span class="brand-web">Website </span><b>Admin</b></span></a>
+  <span class="env <?= $env['is_prod'] ? 'env-prod' : 'env-test' ?>">DB: <?= e($env['db']) ?><?= $env['is_prod'] ? ' · PRODUCTION' : '<span class="env-note"> · ทดสอบ</span>' ?></span>
   <span class="spacer"></span>
   <a class="btn btn-ghost top-site" href="../index.php" target="_blank" rel="noopener"><?= admin_icon('external') ?><span>ดูหน้าเว็บไซต์</span></a>
 </header>
 <div class="shell">
-  <nav class="side" aria-label="เมนูหลังบ้าน">
+  <div class="nav-backdrop" data-nav-close></div>
+  <nav class="side" id="admin-nav" tabindex="-1" aria-label="เมนูหลังบ้าน">
 <?php foreach (admin_menu() as $group => $links):
         $visible = array_filter($links, static fn(array $l): bool => admin_can_see($l[3]));
         if ($visible === []) {

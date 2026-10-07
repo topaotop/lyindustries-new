@@ -176,6 +176,23 @@
     }
   }
 
+  // phone/tablet: ☰ opens the sidebar as a drawer; backdrop, Esc or picking a page closes it
+  const navBtn = document.querySelector('[data-nav-toggle]');
+  if (navBtn) {
+    const root = document.documentElement;
+    const setNav = open => {
+      root.classList.toggle('nav-open', open);
+      navBtn.setAttribute('aria-expanded', String(open));
+      if (open) document.getElementById('admin-nav')?.focus({ preventScroll: true });   // keyboard starts inside the drawer
+    };
+    navBtn.addEventListener('click', () => setNav(!root.classList.contains('nav-open')));
+    document.querySelector('[data-nav-close]')?.addEventListener('click', () => setNav(false));
+    document.querySelectorAll('#admin-nav a').forEach(a => a.addEventListener('click', () => setNav(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && root.classList.contains('nav-open')) { setNav(false); navBtn.focus(); }
+    });
+  }
+
   // destructive buttons ask first
   document.querySelectorAll('[data-confirm]').forEach(btn => btn.addEventListener('click', e => {
     if (!window.confirm(btn.dataset.confirm)) e.preventDefault();
