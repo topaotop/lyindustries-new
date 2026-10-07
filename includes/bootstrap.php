@@ -59,3 +59,7 @@ function external_attrs(array $link): string
 
 // Content layer: lists, site settings (contact data, links) and page SEO — see includes/lib/content.php
 require_once __DIR__ . '/lib/content.php';
+
+// Language from the URL (/en/... → lang=en via rewrite) — see includes/lib/i18n.php
+require_once __DIR__ . '/lib/i18n.php';
+i18n_init();

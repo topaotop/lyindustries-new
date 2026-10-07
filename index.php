@@ -4,7 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/includes/icons.php';
 
-$lang = 'th';
+$lang = lang();
 $meta = page_meta('home', $lang);
 $partnerLogos = content_list('home.partners', $lang);
 $tiles        = content_list('home.tiles', $lang);
@@ -25,11 +25,12 @@ $menuItems = [
 ];
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="<?= e(lang()) ?>">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($meta['title']) ?></title>
+<?= lang_head_tags('home') ?>
 <?php if ($meta['meta_desc'] !== ''): ?>
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">
 <?php endif; ?>

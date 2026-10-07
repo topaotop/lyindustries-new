@@ -4,14 +4,15 @@ declare(strict_types=1);
 require_once __DIR__ . '/includes/bootstrap.php';
 
 $activeNav = 'catalog';
-$meta = page_meta('catalog');
+$meta = page_meta('catalog', lang());
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="<?= e(lang()) ?>">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($meta['title']) ?></title>
+<?= lang_head_tags('catalog') ?>
 <link rel="icon" type="image/svg+xml" href="assets/img/brand/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">

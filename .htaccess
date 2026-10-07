@@ -6,6 +6,14 @@ DirectoryIndex index.php
   RewriteCond %{REQUEST_URI} ^(.*/)(index|about|catalog|contact)\.html$
   RewriteRule \.html$ %1%2.php [R=301,L,QSA]
 
+  # English site: /en/... → the same pages with lang=en (no copies); files under /en/ come from
+  # the site root so relative links (assets, uploads, api) work in both languages
+  RewriteCond %{REQUEST_URI} ^(.*/)en$
+  RewriteRule ^en$ %1en/ [R=301,L]
+  RewriteRule ^en/$ index.php?lang=en [QSA,L]
+  RewriteRule ^en/(index|about|catalog|contact)\.php$ $1.php?lang=en [QSA,L]
+  RewriteRule ^en/((?:assets|uploads|api)/.+)$ $1 [L]
+
   # Pages of the previous www.lyindustries.com site → homepage (query string dropped)
   RewriteCond %{REQUEST_URI} ^(.*/)(innovation|shop|products_detail|braiding|crochet|finishing|needle_loom|raschel)\.php$
   RewriteRule \.php$ %1? [R=301,L]

@@ -15,6 +15,7 @@ require_once APP_ROOT . '/includes/lib/visitor.php';
 const CONTACT_MAX_PER_IP = 5;
 const CONTACT_WINDOW_MIN = 10;
 
+lang(($_POST['lang'] ?? '') === 'en' ? 'en' : 'th');
 $wantsJson = str_contains((string) ($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
 $reply = static function (bool $ok, string $error = '', int $code = 200) use ($wantsJson): never {
     if ($wantsJson) {

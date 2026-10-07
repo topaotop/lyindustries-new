@@ -59,6 +59,11 @@ request → index.php / about.php / catalog.php / contact.php
 - **Section 03 Process pipeline = ดีไซน์เดิมของ Pack** (รูปเต็มจอเป็นพื้นหลัง `[data-step-bg]` object-fit: cover + เงามืด) — **ห้ามเปลี่ยนรูปแบบการแสดงผลส่วนนี้จนกว่าผู้ใช้สั่ง** (เคยลองแบบกรอบรูป 4:5 แล้วผู้ใช้ให้คืนแบบเดิม 6 ต.ค. 2026) · รูปเป็นไฟล์จริงจาก source เว็บ (FTP) ที่ `assets/img/process/` (bgvideo1, nl, BRAIDING, FINISHING, CROCHET .jpg) แทนการลิงก์ไป lyindustries.com · ขั้น 03 ยังไม่มีรูป (`dye-yarn-machine.png` ไม่มีในทุก source) → Image pending
 - section ธีมสว่างใช้ `data-theme="light"` + override CSS variables inline บน `<section>`
 
+**สองภาษา (`includes/lib/i18n.php`, Phase 3)**
+- `/about.php` = ไทย, `/en/about.php` = อังกฤษ — **ไม่มีโฟลเดอร์ en จริง**: `.htaccess` + `web.config` rewrite `/en/<หน้า>` → หน้าเดิม `?lang=en` และ `/en/assets|uploads|api/...` → ไฟล์จริงที่ root (ลิงก์ relative จึงใช้ได้ทั้งสองภาษา) · `/en` → 301 `/en/` · `i18n_init()` ใน bootstrap ตั้ง `lang()` · หน้าใช้ `page_meta(slug, lang())`, `content_list(..., lang())`, `<html lang>` ตามภาษา
+- `lang_head_tags(slug)` ใน `<head>`: หน้าอังกฤษที่ยังแปลไม่ครบ (ข้อความหน้า + ชื่อ/คำอธิบาย SEO + รายการ i18n ของหน้าแรก — `page_translated()`) → `noindex` · แปลครบแล้ว → `hreflang` th/en/x-default ทั้งสองภาษา · หน้าไทยที่ยังไม่มีอังกฤษครบ output เท่าเดิม
+- **ยังไม่ทำ (Phase 3 ขั้นถัดไป):** ข้อความที่ยังเขียนตรงใน template (เมนู header/aside, alt/aria, "โทร:", ที่อยู่/เวลาทำการไทย, JSON-LD), ปุ่มเปลี่ยนภาษา (ต้องส่งภาพให้ดูก่อน), เปลี่ยนภาษา default
+
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
 - ข้อความทุกชิ้นเป็น `b('about|catalog|contact.<section>.nn')` และ footer ร่วมของ catalog/contact เป็น `b('footer.main.nn')` (`includes/site-footer.php`) — footer สั้นของ about อยู่ใน `about.cta.*`
 - แต่ละหน้ามี `<style>` ของตัวเองใน `<head>` (CSS ซ้ำกันบางส่วน เช่น `.nav`, `.brand .mark`) — แก้ส่วนที่ใช้ร่วมต้องแก้ทั้ง 3 หน้า

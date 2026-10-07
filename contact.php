@@ -5,15 +5,16 @@ require_once __DIR__ . '/includes/bootstrap.php';
 require_once __DIR__ . '/includes/lib/visitor.php';
 
 $activeNav = 'contact';
-$meta = page_meta('contact');
+$meta = page_meta('contact', lang());
 $quoteHref = '#form';
 ?>
 <!DOCTYPE html>
-<html lang="th">
+<html lang="<?= e(lang()) ?>">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($meta['title']) ?></title>
+<?= lang_head_tags('contact') ?>
 <link rel="icon" type="image/svg+xml" href="assets/img/brand/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">
@@ -185,6 +186,7 @@ section.block.light+section.block{padding-top:96px}
       <form class="card" id="qform" method="post" action="api/v1/contact.php"<?= isset($_GET['sent']) ? ' data-sent' : '' ?>>
         <div class="sent full" role="status"<?= isset($_GET['sent']) ? '' : ' hidden' ?>><strong><?= b('contact.form.24') ?></strong><span><?= b('contact.form.25') ?></span></div>
         <input type="hidden" name="t" value="<?= e(form_stamp()) ?>">
+        <input type="hidden" name="lang" value="<?= e(lang()) ?>">
         <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <label><?= b('contact.form.04') ?><input name="name" required></label>
         <label><?= b('contact.form.05') ?><input name="company"></label>
