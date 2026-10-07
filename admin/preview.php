@@ -68,14 +68,31 @@ $inject = <<<'HTML'
     });
   };
 
+  // where to scroll so the element is really on screen: scroll-driven scenes of the homepage
+  // (process steps, flying tiles) only show an item at one scroll position
+  const targetY = el => {
+    const stepEl = el.closest('[data-step-text],[data-step-node],[data-step-bg],[data-step-media]');
+    const proc = document.getElementById('processContainer');
+    if (stepEl && proc) {
+      const i = parseInt(stepEl.dataset.stepText ?? stepEl.dataset.stepNode ?? stepEl.dataset.stepBg ?? stepEl.dataset.stepMedia, 10) || 0;
+      const count = document.querySelectorAll('[data-step-text]').length || 1;
+      const top = proc.getBoundingClientRect().top + scrollY;
+      return top + ((i + 0.5) / count) * (proc.offsetHeight - innerHeight);
+    }
+    const asm = el.closest('#assembleContainer');
+    if (asm) return asm.getBoundingClientRect().top + scrollY + 0.75 * (asm.offsetHeight - innerHeight);
+    const r = el.getBoundingClientRect();
+    if (r.top >= 40 && r.bottom <= innerHeight - 40) return null;   // already on screen
+    return r.top + scrollY - (innerHeight - r.height) / 2;
+  };
   const highlight = (els, scroll) => {
     document.querySelectorAll('.lyiweb-on').forEach(el => el.classList.remove('lyiweb-on'));
     els.forEach(el => el.classList.add('lyiweb-on'));
-    const el = els.find(x => x.getClientRects().length) || els[0];
+    const el = els.find(x => x.getClientRects().length && !x.closest('[data-step-node]')) || els[0];
     // scroll this page only — scrollIntoView would also scroll the admin page around the frame
     if (el && scroll !== false) {
-      const r = el.getBoundingClientRect();
-      window.scrollTo(0, Math.max(0, r.top + window.scrollY - (innerHeight - r.height) / 2));
+      const y = targetY(el);
+      if (y !== null) window.scrollTo(0, Math.max(0, y));
     }
   };
 
@@ -103,7 +120,9 @@ $inject = <<<'HTML'
     } else if (d.type === 'text') {
       document.querySelectorAll(`[data-lyiweb-b="${CSS.escape(d.key || '')}"]`).forEach(el => { el.textContent = d.value; });
     } else if (d.type === 'focusItem') {
-      highlight([...document.querySelectorAll(`[data-lyiweb-item="${CSS.escape(d.ref || '')}"]`)], d.scroll);
+      const all = [...document.querySelectorAll(`[data-lyiweb-item="${CSS.escape(d.ref || '')}"]`)];
+      const exact = d.field ? all.filter(el => el.dataset.lyiwebField === d.field) : [];
+      highlight(exact.length ? exact : all, d.scroll);
     } else if (d.type === 'itemText') {
       (texts[`${d.ref}.${d.field}`] || []).forEach(n => { n.nodeValue = d.value; });
     }

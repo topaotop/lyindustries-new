@@ -550,15 +550,17 @@
       const card = e.target.closest('[data-ref]');
       if (card && e.target.matches('[data-live]')) post({ type: 'itemText', ref: card.dataset.ref, field: e.target.dataset.live, value: e.target.value });
     });
+    // any field clicked on the right → that item (and that field, when shown) is selected on the page
     lform.addEventListener('focusin', e => {
       const card = e.target.closest('[data-items] [data-ref]');
-      if (!card || card.classList.contains('is-picked')) return;
+      if (!card) return;
       mark(card);
-      post({ type: 'focusItem', ref: card.dataset.ref, scroll: true });
+      post({ type: 'focusItem', ref: card.dataset.ref, field: e.target.dataset.live || null, scroll: true });
     });
     lform.querySelector('[data-items]').addEventListener('toggle', e => {
       const card = e.target;
-      if (card.matches && card.matches('[data-ref]') && card.open) { mark(card); post({ type: 'focusItem', ref: card.dataset.ref, scroll: true }); }
+      // skip when a field inside already took the cursor (its own focusin selected the exact field)
+      if (card.matches && card.matches('[data-ref]') && card.open && !card.contains(document.activeElement)) { mark(card); post({ type: 'focusItem', ref: card.dataset.ref, scroll: true }); }
     }, true);
     const paneKey = 'lyiweb-lists-pane:' + list;
     lform.addEventListener('submit', () => store(paneKey, String(pane.scrollTop)));
