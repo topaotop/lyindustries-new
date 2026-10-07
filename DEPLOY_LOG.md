@@ -17,7 +17,7 @@
 ## v1.8.0 — 2026-10-07 · dev
 
 - **Commit:** `981c3e0` · **Tag:** `v1.8.0`
-- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
 - **Changes:**
   - หลังบ้าน: ซ่อน/แสดง sidebar (☰) และ **ย่อเหลือไอคอน** (ปุ่ม "ย่อเมนู") บนจอคอม — จำค่าข้ามหน้า
   - SEO & AEO: ป้ายมีคำอังกฤษในวงเล็บ (Title tag, Description, Preview, Keyword …), แถบความยาว, **คำค้นหาหลัก (Keyword)** + ตรวจว่าอยู่ใน title/description/H1/เนื้อหา, แท็บ **เชื่อมต่อ Google (Search Console)** โค้ดยืนยัน Google/Bing (ใส่เฉพาะหน้าแรก production)
