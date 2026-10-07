@@ -71,9 +71,9 @@ END
 /* home.gallery — หน้าแรก · ตัวอย่างสินค้า (รหัส LY…) (6 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.gallery')
 BEGIN
-    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 10, NULL, NULL, N'{"code":"LY2086","type":"Elastic Jacquard","img":""}');
-    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 20, NULL, NULL, N'{"code":"RLY1319","type":"Raschel Knit Tape","img":""}');
-    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 30, NULL, NULL, N'{"code":"RLY1452","type":"Braided Cord Tipped","img":""}');
+    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 10, NULL, NULL, N'{"code":"LY2086","type":"Elastic Jacquard","img":"assets/img/gallery/ly2086.webp"}');
+    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 20, NULL, NULL, N'{"code":"RLY1319","type":"Raschel Knit Tape","img":"assets/img/gallery/rly1319.webp"}');
+    INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 30, NULL, NULL, N'{"code":"RLY1452","type":"Braided Cord Tipped","img":"assets/img/gallery/rly1452.webp"}');
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 40, NULL, NULL, N'{"code":"LY2101","type":"Silicone Grip Tape","img":""}');
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 50, NULL, NULL, N'{"code":"RLY1377","type":"Engineered Waistband","img":""}');
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 60, NULL, NULL, N'{"code":"LY2144","type":"Woven High-Tensile","img":""}');

@@ -123,6 +123,7 @@ request → index.php / about.php / catalog.php / contact.php
 │  │  ├─ applications/        app-*.jpg — ไทล์จุดใช้งานบนเสื้อผ้า (home.tiles)
 │  │  ├─ products/            prod-*.jpg — หมวดสินค้า (home.products + catalog.php)
 │  │  ├─ process/             bgvideo1, nl, BRAIDING, FINISHING, CROCHET .jpg — ขั้นตอนผลิต (home.steps)
+│  │  ├─ gallery/             ly2086, rly1319, rly1452 .webp (600px) — ตัวอย่างสินค้าหน้าแรก (home.gallery) จาก Inspiration Hub (ตาราง `lyh_items` ใน `LYI` → `thumbnail_path`) · รูปชั่วคราว ผู้ใช้เปลี่ยนในหลังบ้านได้
 │  │  ├─ rnd/                 rnd-team.webp — ส่วน R&D หน้าแรก
 │  │  └─ colorlab/            dye-dispenser, spectrophotometer, lab-dip .webp — ส่วนโรงย้อม/Color Lab หน้าแรก (เดิม PNG 14MB → WebP 190KB)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
@@ -135,7 +136,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต, 007 ย้ายโฟลเดอร์รูป, 008 ขอบเขต role …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต, 007 ย้ายโฟลเดอร์รูป, 008 ขอบเขต role, 009 login เฉพาะคนที่เลือก, 010 ร่างคำแปล, 011 รูปตัวอย่างสินค้า …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version

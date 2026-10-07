@@ -58,11 +58,12 @@ return [
         ['title' => 'ขอบเอว (Engineered Waistbands)', 'label' => 'WAISTBANDS', 'desc' => 'จุดที่ผู้สวมใส่รู้สึกในทุกวินาที ควบคุมทั้งความนุ่มนวลต่อผิวและแรงกระชับที่พอดีตัวสำหรับกางเกงกีฬา', 'spec' => 'Jacquard / Brushed Soft Finish', 'code' => 'PROD-05', 'img' => 'assets/img/products/prod-waistband.jpg?v=2'],
         ['title' => 'งาน Finish หลากหลายแบบ (Finishing & Branding)', 'label' => 'FINISHING', 'desc' => 'ต่อยอดเทปให้ครบทั้งฟังก์ชันและแบรนด์ — ซิลิโคนกันลื่น พิมพ์ลาย heat transfer ปั๊มนูน เลเซอร์ ตัดร้อน/ตัดเย็น ไปจนถึงงานป้ายเลเบล เลือกผสมได้ตามการใช้งาน', 'spec' => 'Silicone / Print / Emboss / Laser / Labels', 'code' => 'PROD-06', 'img' => 'assets/img/products/prod-finishing.jpg'],
     ],
-    // Inspiration Hub samples; empty img shows placeholder.svg until photos are uploaded.
+    // Inspiration Hub samples (photos from the Hub, 7 Oct 2026 — placeholders until replaced in the admin);
+    // empty img shows placeholder.svg until photos are uploaded.
     'home.gallery' => [
-        ['code' => 'LY2086', 'type' => 'Elastic Jacquard', 'img' => ''],
-        ['code' => 'RLY1319', 'type' => 'Raschel Knit Tape', 'img' => ''],
-        ['code' => 'RLY1452', 'type' => 'Braided Cord Tipped', 'img' => ''],
+        ['code' => 'LY2086', 'type' => 'Elastic Jacquard', 'img' => 'assets/img/gallery/ly2086.webp'],
+        ['code' => 'RLY1319', 'type' => 'Raschel Knit Tape', 'img' => 'assets/img/gallery/rly1319.webp'],
+        ['code' => 'RLY1452', 'type' => 'Braided Cord Tipped', 'img' => 'assets/img/gallery/rly1452.webp'],
         ['code' => 'LY2101', 'type' => 'Silicone Grip Tape', 'img' => ''],
         ['code' => 'RLY1377', 'type' => 'Engineered Waistband', 'img' => ''],
         ['code' => 'LY2144', 'type' => 'Woven High-Tensile', 'img' => ''],

@@ -665,7 +665,7 @@ $menuItems = [
       <?php foreach ($galleryItems as $g): ?>
         <div class="apple-card" style="padding:14px;display:flex;flex-direction:column;gap:12px">
           <div style="aspect-ratio:1;border-radius:14px;overflow:hidden;background:#e8e8ed;position:relative">
-            <img src="<?= e(img_src($g['img'])) ?>" alt="<?= e($g['code'] . ' ' . $g['type']) ?>" style="width:100%;height:100%;object-fit:cover;display:block">
+            <img src="<?= e(img_src($g['img'])) ?>" alt="<?= e($g['code'] . ' ' . $g['type']) ?>" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block">
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:0 4px">
             <span style="font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:0.06em;color:var(--text-primary)"><?= e($g['code']) ?></span>
