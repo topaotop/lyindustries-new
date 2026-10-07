@@ -142,3 +142,33 @@ textarea.changed { border-color: var(--info); background: #f5f8ff; }
 .subnav button.on small { background: #ffe0d1; color: var(--brand-dark); }
 .subnav button:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .toolbar { box-shadow: 0 1px 0 var(--line); }
+
+/* users & roles */
+.chip { display: inline-block; margin: 0 4px 4px 0; padding: 2px 9px; border-radius: 99px; background: #fff1ea; color: var(--brand-dark); font-size: 12.5px; white-space: nowrap; }
+.chip-dim { background: var(--bg); color: var(--muted); }
+.plain { list-style: none; margin: 0; padding: 0; }
+.plain li { padding: 6px 0; border-bottom: 1px solid #f0f0f3; }
+.btn-danger { color: var(--err); border-color: #f3b9b9; }
+.btn-danger:hover { background: #fdecec; border-color: var(--err); }
+.actions .spacer { flex: 1; }
+.search-user { display: flex; align-items: flex-end; gap: 10px; }
+.search-user .field { flex: 1; }
+.perm-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 8px; }
+.perm { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.perm:hover { border-color: #c7c7cc; }
+.perm:has(input:checked) { border-color: #ffc7ad; background: #fffaf7; }
+.perm input, .scope-head input, .scope-secs input { width: auto; margin-top: 4px; accent-color: var(--brand); }
+.perm span { display: flex; flex-direction: column; }
+.perm small { font-size: 12.5px; }
+.scope-all { margin-bottom: 12px; }
+.scope-pages { display: grid; gap: 10px; }
+.scope-page { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.scope-head { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.scope-head input { margin-top: 0; }
+.scope-head .ic { width: 18px; height: 18px; color: var(--muted); }
+.scope-head small { margin-left: 4px; }
+.scope-secs { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 8px 0 2px 26px; }
+.scope-secs .check { white-space: normal; }
+.scope-secs .check:has(input:disabled) { color: var(--muted); }
+[data-scope-tree].is-off .scope-pages, [data-scope-tree].is-off .scope-all { opacity: .45; }
+fieldset[disabled] { opacity: .75; }

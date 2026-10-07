@@ -68,13 +68,14 @@ request → index.php / about.php / catalog.php / contact.php
 - Login ด้วยบัญชี `sysmnuser` (อ่านอย่างเดียว ห้ามเขียนตารางนี้) — ตรวจรหัสแบบเดียวกับระบบอื่นของบริษัท (plaintext `pass`/`password` ด้วย `hash_equals` หรือ `password_verify`), `locked = 1` เข้าไม่ได้ · session ชื่อ `LYIWEBADMIN` cookie จำกัด path `/…/admin/`, HttpOnly, SameSite=Lax, Secure เมื่อเป็น HTTPS · ไม่ใช้งาน 2 ชม. หลุด
 - กันเดารหัส: ผิด 5 ครั้ง/username หรือ 20 ครั้ง/IP ใน 15 นาที → ล็อก (IP ตั้งสูงเพราะทั้งออฟฟิศออก internet ด้วย IP เดียว)
 - สิทธิ์: `sysmnuser.level >= lyiweb_settings.admin_min_level` (5) = ทุกสิทธิ์ · คนอื่นตาม role ใน `lyiweb_user_roles` · permission: `content.edit` (แก้ไทย+อังกฤษ), `content.translate` (แก้อังกฤษอย่างเดียว), `media.upload`, `contact.view`, `settings.edit`, `users.manage` — อ่านใหม่ทุก request (ถอนสิทธิ์มีผลทันที)
+- **ขอบเขตรายหน้า/รายส่วน** (`lyiweb_role_scopes`, SQL 008): `content.edit`/`content.translate` ใช้ได้เฉพาะ scope ของ role เดียวกัน — `*` ทุกส่วน · `home` ทั้งหน้า (รวมส่วนที่เพิ่มในอนาคต) · `home.hero` ส่วนเดียว · `home.seo` ชื่อหน้า/meta · role ที่มีสิทธิ์เนื้อหาแต่ไม่มี scope = แก้ไม่ได้สักส่วน · ตรวจด้วย `can_content('th'|'en', $page, $section)` (`auth.php`) — **ทุกหน้าที่แก้เนื้อหา (รวม 3b แก้รายการ) ต้องเช็กทั้งตอนแสดงและตอน POST** และ POST ไปหน้าที่ไม่มีสิทธิ์ต้อง 403 ห้าม fallback ไปหน้าอื่น · รายการหน้า/ส่วน + ชื่อไทยอยู่ที่ `admin_content_pages()` (`includes/admin/access.php`, ส่วนอ่านจาก `includes/blocks/<page>.php` อัตโนมัติ) · role `admin` แก้ไม่ได้, role ระบบลบไม่ได้, แก้สิทธิ์ตัวเองไม่ได้
 - ทุกฟอร์ม POST ต้องมี CSRF (`csrf_field()` / `admin_check_post()`), ทุกการบันทึก → `audit_log()` + `content_cache_clear()`, header no-store / X-Frame-Options DENY / noindex
 - หน้ายาว (แก้ข้อความ) ใช้ **เมนูย่อยรายส่วน** (`[data-subnav]` + fieldset `data-section-key`) แสดงทีละส่วน — หน้าใหม่ที่มีหลายกลุ่ม (เช่น แก้รายการ 3b) ให้ใช้แบบเดียวกัน แทนการให้เลื่อนยาว
 - เมนู sidebar กำหนดที่ `admin_menu()` ใน `includes/admin/init.php` (จัดกลุ่ม + ไอคอนจาก `admin_icon()` + permission) — หน้าใหม่ให้เพิ่มที่นี่ · ดีไซน์: พื้นเข้มต่อแถบบน, เมนูที่เลือกมีแถบลายเทปถัก (`--tape`) — ไม่ใช้ตัวพิมพ์ใหญ่ทั้งคำ/ลูกศรท้ายเมนู
 - UX: หลังบันทึกต้องกลับมาตำแหน่งเดิม (เก็บ scroll ใน sessionStorage ตอน submit, `admin.js`) — **ห้ามทำให้หน้าเด้งขึ้นบนสุด** (ผู้ใช้ไม่ชอบ) · ข้อความผลการบันทึก (`flash()` → `[data-flash]`) แสดงเป็น toast มุมขวาบน · มี error → เลื่อนไปช่องแรกที่ผิด
 - แถบด้านบนแสดง DB ที่ต่ออยู่ (`test_LYI` เขียว / `LYI` แดง = PRODUCTION) กันแก้ผิดที่
-- ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/lib/auth.php`
-- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์)
+- ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/admin/access.php` (ป้ายสิทธิ์, หน้า/ส่วน, `admin_roles()`, สรุป scope), `includes/lib/auth.php`
+- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์) · ผู้ใช้ & สิทธิ์ (`users.php` ค้นหาจาก sysmnuser, ให้/ถอน role, รายชื่อผู้ดูแลอัตโนมัติ level ≥ 5) · บทบาท (`roles.php` สร้าง/แก้/ลบ role: สิทธิ์ + ติ๊กหน้า/ส่วนที่แก้ได้)
 - ทดสอบหน้าที่ต้อง login โดยไม่มีรหัสจริง: จำลอง session ใน CLI (ตั้ง `$_SESSION['lyiweb_user']` + `lyiweb_csrf` แล้ว require หน้า) — เขียนได้เฉพาะ `test_LYI` และต้องคืนค่าหลังทดสอบ
 
 ## Folder structure
@@ -111,7 +112,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ DESIGN-LOCK.md       สเปกดีไซน์ที่ล็อก — แหล่งอ้างอิงหลัก
 ├─ CONTENT-DRAFT.md     ร่างเนื้อหาก่อนล็อก (อ้างอิงเท่านั้น ขัดกับ DESIGN-LOCK ให้ยึด DESIGN-LOCK)
 ├─ docs/design/         เอกสารออกแบบ — admin-i18n-api.md (หลังบ้าน + 2 ภาษา + API)
-├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต, 007 ย้ายโฟลเดอร์รูป …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
+├─ docs/sql/            สคริปต์ SQL Server เรียงเลข (001_lyiweb_schema.sql, 002_lyiweb_seed_home.sql, 003_lyiweb_seed_site.sql, 004_lyiweb_seed_blocks.sql ← generated, 005/006 รูปขั้นตอนผลิต, 007 ย้ายโฟลเดอร์รูป, 008 ขอบเขต role …) · **ในคอมเมนต์ SQL ห้ามมี `/*` ซ้อน** (SQL Server นับเป็น comment ซ้อน) — รันใน test_LYI ก่อนเสมอ แล้วค่อย LYI; ทุกไฟล์ต้องรันซ้ำได้ปลอดภัย
 ├─ CLAUDE.md            ไฟล์นี้
 ├─ PROJECT_STATUS.md    สถานะงาน
 └─ DEPLOY_LOG.md        ประวัติ deploy พร้อม version

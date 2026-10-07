@@ -94,6 +94,30 @@
       setTimeout(() => el.classList.add('toast-hide'), 4000);
     });
   }
+  // role scopes: "all" covers every page, "whole page" covers its sections → grey out what is already included
+  const tree = document.querySelector('[data-scope-tree]');
+  if (tree) {
+    const allBox = tree.querySelector('[data-scope-all]');
+    const contentPerms = [...document.querySelectorAll('[data-content-perm]')];
+    const syncTree = () => {
+      const all = !!allBox?.checked;
+      tree.querySelectorAll('[data-scope-page]').forEach(page => {
+        const whole = page.querySelector('[data-scope-whole]');
+        whole.disabled = all;
+        page.querySelectorAll('.scope-secs input').forEach(i => { i.disabled = all || whole.checked; });
+      });
+      tree.classList.toggle('is-off', contentPerms.length > 0 && !contentPerms.some(c => c.checked));
+    };
+    tree.addEventListener('change', syncTree);
+    contentPerms.forEach(c => c.addEventListener('change', syncTree));
+    if (!tree.disabled) syncTree();
+  }
+
+  // destructive buttons ask first
+  document.querySelectorAll('[data-confirm]').forEach(btn => btn.addEventListener('click', e => {
+    if (!window.confirm(btn.dataset.confirm)) e.preventDefault();
+  }));
+
   window.addEventListener('beforeunload', e => {
     if (dirty) { e.preventDefault(); e.returnValue = ''; }
   });

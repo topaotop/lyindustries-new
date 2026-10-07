@@ -108,6 +108,8 @@ Permission ที่มี (กำหนดในโค้ด, ให้สิ�
 | `settings.edit` | ตั้งค่าเว็บ รวมถึงเปลี่ยนภาษา default |
 | `users.manage` | ให้/ถอนสิทธิ์ผู้ใช้ |
 
+**`lyiweb_role_scopes`** (เพิ่ม 7 ต.ค. 2026, SQL 008) — `role_id` + `scope` NVARCHAR(100) (PK คู่) · scope = `*` ทุกส่วน / `home` ทั้งหน้า / `home.hero` ส่วนเดียว / `home.seo` ชื่อหน้า+meta — จำกัด `content.edit`/`content.translate` ของ role นั้นให้แก้ได้เฉพาะหน้า/ส่วนที่ติ๊ก (ผู้ใช้เลือกแบบ "รายส่วนในหน้า") · ผู้ใช้มีหลาย role: scope นับคู่กับสิทธิ์ของ role เดียวกัน (ไม่ข้าม role)
+
 Role เริ่มต้น: `admin` (ทุกสิทธิ์), `editor` (content.edit, media.upload), `translator` (content.translate), `sales` (contact.view)
 
 **กติกา login**

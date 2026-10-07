@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../lib/auth.php';
+require_once __DIR__ . '/access.php';
 
 header('Cache-Control: no-store, max-age=0');
 header('X-Frame-Options: DENY');
@@ -33,6 +34,10 @@ function admin_menu(): array
         'ตั้งค่าเว็บไซต์' => [
             ['settings.php', 'ข้อมูลติดต่อ & ลิงก์', 'phone', 'settings.edit'],
         ],
+        'ผู้ใช้งาน' => [
+            ['users.php', 'ผู้ใช้ & สิทธิ์', 'users', 'users.manage'],
+            ['roles.php', 'บทบาท (Role)', 'shield', 'users.manage'],
+        ],
     ];
 }
 
@@ -44,6 +49,8 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'users'    => '<circle cx="8" cy="7" r="3"/><path d="M2.5 16.5a5.5 5.5 0 0 1 11 0"/><path d="M13 4.3a3 3 0 0 1 0 5.4M15 12a5.5 5.5 0 0 1 2.5 4.5"/>',
+        'shield'   => '<path d="M10 2.8 16 5v4.6c0 3.7-2.5 6.4-6 7.6-3.5-1.2-6-3.9-6-7.6V5z"/><path d="m7.3 10 2 2 3.6-3.8"/>',
         // page tabs
         'factory'  => '<path d="M3 17V9l4 2.5V9l4 2.5V6h3v3l3-1.5V17z"/><path d="M3 17h14M7 14h1.5M11 14h1.5"/>',
         'tape'     => '<ellipse cx="8" cy="10" rx="5" ry="5"/><circle cx="8" cy="10" r="1.6"/><path d="M8 15h9v-3.2"/>',

@@ -141,8 +141,7 @@ function auth_permissions(): array
     if ($user === null) {
         return $perms = [];
     }
-    $minLevel = (int) (db_rows("SELECT value FROM dbo.lyiweb_settings WHERE setting_key = 'admin_min_level'")[0]['value'] ?? 5);
-    if ($minLevel > 0 && $user['level'] >= $minLevel) {
+    if (auth_is_full_admin($user['level'])) {
         return $perms = AUTH_ALL_PERMISSIONS;
     }
     $rows = db_rows(
@@ -158,6 +157,69 @@ function auth_permissions(): array
 function can(string $permission): bool
 {
     return in_array($permission, auth_permissions(), true);
+}
+
+/** sysmnuser.level at or above setting admin_min_level (0 = off) gets every permission on every section. */
+function auth_admin_min_level(): int
+{
+    static $min = null;
+
+    return $min ??= (int) (db_rows("SELECT value FROM dbo.lyiweb_settings WHERE setting_key = 'admin_min_level'")[0]['value'] ?? 5);
+}
+
+function auth_is_full_admin(int $level): bool
+{
+    $min = auth_admin_min_level();
+
+    return $min > 0 && $level >= $min;
+}
+
+/**
+ * Where the logged-in user may edit content, per permission (from lyiweb_role_scopes).
+ * Scope = '*' (everything) | 'page' | 'page.section' — scopes only count together with the
+ * content permission of the same role, so mixing roles never widens either one.
+ *
+ * @return array{edit: list<string>, translate: list<string>}
+ */
+function auth_content_scopes(): array
+{
+    static $scopes = null;
+    if ($scopes !== null) {
+        return $scopes;
+    }
+    $user = auth_user();
+    if ($user === null) {
+        return $scopes = ['edit' => [], 'translate' => []];
+    }
+    if (auth_is_full_admin($user['level'])) {
+        return $scopes = ['edit' => ['*'], 'translate' => ['*']];
+    }
+    $scopes = ['edit' => [], 'translate' => []];
+    $rows = db_rows(
+        "SELECT DISTINCT rp.permission, s.scope FROM dbo.lyiweb_user_roles ur
+           JOIN dbo.lyiweb_role_permissions rp ON rp.role_id = ur.role_id AND rp.permission IN ('content.edit', 'content.translate')
+           JOIN dbo.lyiweb_role_scopes s ON s.role_id = ur.role_id
+          WHERE ur.user_id = ?",
+        [$user['id']]
+    );
+    foreach ($rows as $r) {
+        $scopes[$r['permission'] === 'content.edit' ? 'edit' : 'translate'][] = (string) $r['scope'];
+    }
+
+    return $scopes;
+}
+
+function scope_covers(array $scopes, string $page, string $section): bool
+{
+    return in_array('*', $scopes, true) || in_array($page, $scopes, true) || in_array("$page.$section", $scopes, true);
+}
+
+/** May the user edit $lang ('th' | 'en') text of this page section? Editing implies translating. */
+function can_content(string $lang, string $page, string $section): bool
+{
+    $s = auth_content_scopes();
+
+    return scope_covers($s['edit'], $page, $section) || ($lang === 'en' && scope_covers($s['translate'], $page, $section));
 }
 
 /* ---- CSRF ---- */

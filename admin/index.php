@@ -34,8 +34,8 @@ $recent = db_rows(
 $cacheFile = content_cache_file();
 $cacheAge = is_file($cacheFile) ? time() - filemtime($cacheFile) : null;
 $enPct = $stats['blocks'] > 0 ? (int) round($stats['blocks_en'] * 100 / $stats['blocks']) : 0;
-$labels = ['content.edit' => 'แก้เนื้อหา', 'content.translate' => 'แปลภาษาอังกฤษ', 'media.upload' => 'อัปโหลดรูป',
-           'contact.view' => 'ดูข้อความติดต่อ', 'settings.edit' => 'ตั้งค่าเว็บ', 'users.manage' => 'จัดการสิทธิ์'];
+$labels = array_map(static fn(array $l): string => $l[0], admin_permission_labels());
+$scopes = auth_content_scopes();
 
 admin_page_start('แดชบอร์ด', 'index.php');
 ?>
@@ -47,6 +47,12 @@ admin_page_start('แดชบอร์ด', 'index.php');
   <?= e(implode(' · ', array_map(fn($p) => $labels[$p] ?? $p, auth_permissions()))) ?>
 <?php endif; ?>
 </p>
+<?php if ($scopes['edit'] !== [] && !in_array('*', $scopes['edit'], true)): ?>
+<p class="muted small">แก้เนื้อหาได้ที่: <?= e(admin_scope_summary($scopes['edit'])) ?></p>
+<?php endif; ?>
+<?php if (array_diff($scopes['translate'], $scopes['edit']) !== [] && !in_array('*', $scopes['translate'], true)): ?>
+<p class="muted small">แปลภาษาอังกฤษได้ที่: <?= e(admin_scope_summary($scopes['translate'])) ?></p>
+<?php endif; ?>
 
 <div class="stats">
   <div class="stat"><b><?= (int) $stats['new_requests'] ?></b><span>ข้อความขอใบเสนอราคาใหม่</span></div>
