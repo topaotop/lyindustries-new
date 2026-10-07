@@ -44,6 +44,7 @@ h1,h2,h3{font-family:var(--font-heading);line-height:1.2}
 .nav nav a:hover,.nav nav a.on{color:#fff}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:100px;font-weight:600;font-size:14.5px;transition:transform .2s,box-shadow .2s}
 .btn-o{background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;box-shadow:0 8px 24px rgba(255,90,31,.25)}
+.lang-switch:hover{border-color:var(--brand-orange)!important}
 .btn-o:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(255,90,31,.35)}
 .btn-g{border:1px solid var(--border-glass);color:var(--text-primary);background:rgba(255,255,255,.03)}
 /* hero */

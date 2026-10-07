@@ -15,6 +15,9 @@ $quoteHref ??= 'contact.php#form';
       <a<?= $link['key'] === ($activeNav ?? '') ? ' class="on"' : '' ?> href="<?= e($link['href']) ?>"<?= external_attrs($link) ?>><?= isset($link['b']) ? b($link['b']) : e($link['label']) ?></a>
 <?php endforeach; ?>
     </nav>
-    <a class="btn btn-o" href="<?= e($quoteHref) ?>"><?= b('site.nav.06') ?> →</a>
+    <div style="display:flex;align-items:center;gap:12px">
+      <?= lang_switch_html() ?>
+      <a class="btn btn-o" href="<?= e($quoteHref) ?>"><?= b('site.nav.06') ?> →</a>
+    </div>
   </div>
 </header>

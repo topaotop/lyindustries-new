@@ -73,6 +73,7 @@ $menuItems = [
 
     <!-- Actions -->
     <div style="display:flex;align-items:center;gap:12px">
+      <?= lang_switch_html() ?>
       <a href="#contact" class="nav-cta hv-2" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:9px 20px;border-radius:100px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 4px 18px var(--brand-orange-glow);transition:transform 0.2s,box-shadow 0.2s">
         <span><?= b('site.nav.06') ?></span>
         <span style="font-size:14px">→</span>
