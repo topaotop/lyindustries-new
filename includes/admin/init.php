@@ -61,6 +61,8 @@ function admin_icon(string $key): string
         'list'     => '<rect x="3.5" y="4" width="4" height="4" rx="1"/><rect x="3.5" y="12" width="4" height="4" rx="1"/><path d="M10.5 6h6M10.5 14h6"/>',
         'menu'     => '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
         'back'     => '<path d="M12 4.5 6.5 10l5.5 5.5"/>',
+        'collapse' => '<path d="M10 5 5 10l5 5M15 5l-5 5 5 5"/>',
+        'logout'   => '<path d="M8 4H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M12 6.5 15.5 10 12 13.5M15.5 10H8"/>',
         'user'     => '<circle cx="10" cy="7" r="3.2"/><path d="M4 17a6 6 0 0 1 12 0"/>',
         'users'    => '<circle cx="8" cy="7" r="3"/><path d="M2.5 16.5a5.5 5.5 0 0 1 11 0"/><path d="M13 4.3a3 3 0 0 1 0 5.4M15 12a5.5 5.5 0 0 1 2.5 4.5"/>',
         'shield'   => '<path d="M10 2.8 16 5v4.6c0 3.7-2.5 6.4-6 7.6-3.5-1.2-6-3.9-6-7.6V5z"/><path d="m7.3 10 2 2 3.6-3.8"/>',
@@ -157,7 +159,8 @@ function admin_page_start(string $title, string $active): void
     $env = $user ? admin_env() : null;
     ?>
 <!DOCTYPE html>
-<html lang="th"<?= ($_COOKIE['lyiweb_side'] ?? '') === 'hidden' ? ' class="side-hidden"' : '' ?>>
+<?php $sideClass = trim((($_COOKIE['lyiweb_side'] ?? '') === 'hidden' ? 'side-hidden ' : '') . (($_COOKIE['lyiweb_side_mini'] ?? '') === '1' ? 'side-mini' : '')); ?>
+<html lang="th"<?= $sideClass !== '' ? ' class="' . $sideClass . '"' : '' ?>>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -190,13 +193,14 @@ function admin_page_start(string $title, string $active): void
 <?php endif; ?>
 <?php foreach ($visible as [$file, $label, $icon]):
         $badge = $file === 'contacts.php' ? admin_new_requests() : 0; ?>
-      <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><?= e($label) ?></span><?php if ($badge > 0): ?><small class="side-badge" title="คำขอใหม่ที่ยังไม่ได้เปิดอ่าน"><?= $badge ?></small><?php endif; ?></a>
+      <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on" aria-current="page"' : '' ?> data-tip="<?= e($label) ?>"><?= admin_icon($icon) ?><span><?= e($label) ?></span><?php if ($badge > 0): ?><small class="side-badge" title="คำขอใหม่ที่ยังไม่ได้เปิดอ่าน"><?= $badge ?></small><?php endif; ?></a>
 <?php endforeach; ?>
     </div>
 <?php endforeach; ?>
     <div class="side-user">
-      <span class="who"><?= admin_icon('user') ?><span><?= e($user['name']) ?></span></span>
-      <form method="post" action="logout.php"><?= csrf_field() ?><button class="btn btn-ghost" type="submit">ออกจากระบบ</button></form>
+      <button class="side-mini-btn" type="button" data-side-mini aria-pressed="false" data-tip="ขยายเมนู"><?= admin_icon('collapse') ?><span>ย่อเมนู</span></button>
+      <span class="who" data-tip="<?= e($user['name']) ?>"><?= admin_icon('user') ?><span><?= e($user['name']) ?></span></span>
+      <form method="post" action="logout.php"><?= csrf_field() ?><button class="btn btn-ghost" type="submit" data-tip="ออกจากระบบ"><?= admin_icon('logout') ?><span>ออกจากระบบ</span></button></form>
     </div>
   </nav>
   <main class="main">

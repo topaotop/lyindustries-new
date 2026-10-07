@@ -197,6 +197,21 @@
       if (open) document.getElementById('admin-nav')?.focus({ preventScroll: true });   // keyboard starts inside the drawer
     };
     navBtn.addEventListener('click', () => narrow.matches ? setNav(!root.classList.contains('nav-open')) : setSide(!root.classList.contains('side-hidden')));
+    // desktop: collapse the sidebar to icons (separate from hiding it, remembered the same way)
+    const miniBtn = document.querySelector('[data-side-mini]');
+    const syncMini = () => {
+      const mini = root.classList.contains('side-mini');
+      miniBtn.setAttribute('aria-pressed', String(mini));
+      miniBtn.querySelector('span').textContent = mini ? 'ขยายเมนู' : 'ย่อเมนู';
+    };
+    miniBtn?.addEventListener('click', () => {
+      const mini = !root.classList.contains('side-mini');
+      root.classList.toggle('side-mini', mini);
+      document.cookie = 'lyiweb_side_mini=' + (mini ? '1' : '0') + '; path=' + location.pathname.replace(/[^/]*$/, '') + '; max-age=31536000; SameSite=Lax';
+      syncMini();
+      window.dispatchEvent(new Event('resize'));
+    });
+    if (miniBtn) syncMini();
     narrow.addEventListener('change', () => { if (!narrow.matches) setNav(false); syncBtn(); });
     syncBtn();
     document.querySelector('[data-nav-close]')?.addEventListener('click', () => setNav(false));
