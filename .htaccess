@@ -17,3 +17,8 @@ DirectoryIndex index.php
   # DB credentials file — never reachable from the web
   RedirectMatch 404 (?i)/connectgrp\.php$
 </IfModule>
+
+# Uploaded images (admin) — never run anything from uploads/, only serve images
+<IfModule mod_alias.c>
+  RedirectMatch 404 (?i)^/(.*/)?uploads/.*\.(php\d?|phtml|phar|pl|py|cgi|asp|aspx|exe|sh|html?|svg)$
+</IfModule>

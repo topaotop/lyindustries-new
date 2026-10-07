@@ -12,3 +12,6 @@ desktop.ini
 # Editor
 .vscode/
 .idea/
+
+# Images uploaded in the admin (per server, like cache/) — never commit or deploy over them
+/uploads/

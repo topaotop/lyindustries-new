@@ -193,6 +193,136 @@
     });
   }
 
+  // list editor (lists.php): reorder, show/hide, add, delete, image pick — all saved with one button
+  const listForm = document.querySelector('[data-list-form]');
+  if (listForm) {
+    const box = listForm.querySelector('[data-items]');
+    const tpl = listForm.querySelector('template[data-item-template]');
+    let seq = 0;
+    const renumber = () => {
+      box.querySelectorAll('[data-item]').forEach((item, i) => {
+        item.querySelector('[data-item-n]').textContent = String(i + 1);
+        item.querySelector('[data-order]').value = String((i + 1) * 10);
+      });
+    };
+    const titleOf = item => {
+      const src = [...item.querySelectorAll('[data-title-src]')].find(el => el.value.trim() !== '');
+      item.querySelector('[data-item-title]').textContent = src ? src.value.trim().slice(0, 70) : '(รายการใหม่)';
+    };
+    box.addEventListener('click', e => {
+      const item = e.target.closest('[data-item]');
+      if (!item) return;
+      const move = e.target.closest('[data-move]');
+      if (move) {
+        e.preventDefault();   // buttons sit in <summary>: do not open/close the card
+        const sib = move.dataset.move === '-1' ? item.previousElementSibling : item.nextElementSibling;
+        if (sib) {
+          move.dataset.move === '-1' ? box.insertBefore(item, sib) : box.insertBefore(sib, item);
+          renumber();
+          dirty = true;
+          move.focus();
+        }
+      } else if (e.target.closest('[data-remove]')) {
+        if (!/^\d+$/.test(item.dataset.key)) { item.remove(); renumber(); return; }   // never saved: just drop it
+        item.classList.add('is-deleted');
+        item.querySelector('[data-delete]').value = '1';
+        item.open = false;
+        dirty = true;
+      } else if (e.target.closest('[data-undo]')) {
+        item.classList.remove('is-deleted');
+        item.querySelector('[data-delete]').value = '0';
+      }
+    });
+    box.addEventListener('change', e => {
+      const item = e.target.closest('[data-item]');
+      if (e.target.matches('[data-active]')) item.classList.toggle('is-hidden', !e.target.checked);
+      if (e.target.matches('[data-color-pick]')) {
+        const t = e.target.parentElement.querySelector('[data-color-text]');
+        t.value = e.target.value;
+        dirty = true;
+      }
+      if (e.target.matches('[data-img-input]')) shrinkImage(e.target);
+    });
+    box.addEventListener('input', e => {
+      const item = e.target.closest('[data-item]');
+      if (e.target.matches('[data-title-src]')) titleOf(item);
+      if (e.target.matches('[data-color-text]') && /^#([0-9a-f]{3}){1,2}$/i.test(e.target.value)) {
+        const v = e.target.value.toLowerCase();
+        e.target.parentElement.querySelector('[data-color-pick]').value = v.length === 4 ? '#' + [...v.slice(1)].map(c => c + c).join('') : v;
+      }
+      dirty = true;
+    });
+    listForm.querySelector('[data-add-item]')?.addEventListener('click', () => {
+      seq += 1;
+      const html = tpl.innerHTML.replaceAll('__KEY__', 'n' + seq);
+      box.insertAdjacentHTML('beforeend', html);
+      const item = box.lastElementChild;
+      item.open = true;
+      renumber();
+      dirty = true;
+      item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      item.querySelector('input:not([type=hidden]):not([type=checkbox]), textarea')?.focus({ preventScroll: true });
+    });
+
+    // filter by text / untranslated
+    const lf = listForm.querySelector('[data-filter]');
+    const lm = listForm.querySelector('[data-only-missing]');
+    const applyListFilter = () => {
+      const q = (lf?.value || '').trim().toLowerCase();
+      box.querySelectorAll('[data-item]').forEach(item => {
+        const text = [...item.querySelectorAll('input, textarea, select')].map(el => el.value).join(' ').toLowerCase();
+        item.hidden = (q !== '' && !text.includes(q)) || (!!lm?.checked && !item.querySelector('[data-missing]'));
+        if (q !== '' && !item.hidden) item.open = true;
+      });
+    };
+    lf?.addEventListener('input', applyListFilter);
+    lm?.addEventListener('change', applyListFilter);
+
+    // shrink photos in the browser before upload (servers may accept only ~2 MB), WebP when supported
+    const MAX_SIDE = 2400;
+    const shrinkImage = async input => {
+      const file = input.files && input.files[0];
+      const field = input.closest('[data-img-field]');
+      const note = field.querySelector('[data-img-note]');
+      if (!file) return;
+      const showPreview = blob => {
+        const url = URL.createObjectURL(blob);
+        let img = field.querySelector('img[data-img-preview]');
+        if (!img) {
+          img = document.createElement('img');
+          img.dataset.imgPreview = '';
+          field.querySelector('[data-img-preview]')?.replaceWith(img);
+        }
+        img.src = url;
+      };
+      const kb = n => (n / 1024 / 1024 >= 1 ? (n / 1024 / 1024).toFixed(1) + ' MB' : Math.round(n / 1024) + ' KB');
+      try {
+        const bmp = await createImageBitmap(file);
+        const scale = Math.min(1, MAX_SIDE / Math.max(bmp.width, bmp.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(bmp.width * scale);
+        canvas.height = Math.round(bmp.height * scale);
+        canvas.getContext('2d').drawImage(bmp, 0, 0, canvas.width, canvas.height);
+        let blob = await new Promise(r => canvas.toBlob(r, 'image/webp', 0.86));
+        if (!blob || blob.type !== 'image/webp') blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.86));
+        if (blob && blob.size < file.size) {
+          const ext = blob.type === 'image/webp' ? 'webp' : 'jpg';
+          const dt = new DataTransfer();
+          dt.items.add(new File([blob], file.name.replace(/\.[^.]+$/, '') + '.' + ext, { type: blob.type }));
+          input.files = dt.files;
+          note.textContent = `ย่อแล้ว ${kb(file.size)} → ${kb(blob.size)} (${canvas.width}×${canvas.height}) — จะอัปโหลดเมื่อกดบันทึก`;
+        } else {
+          note.textContent = `${kb(file.size)} — จะอัปโหลดเมื่อกดบันทึก`;
+        }
+        showPreview(input.files[0]);
+      } catch (err) {
+        note.textContent = 'ย่อรูปในเบราว์เซอร์ไม่ได้ — จะส่งไฟล์เดิม (' + kb(file.size) + ')';
+        showPreview(file);
+      }
+      dirty = true;
+    };
+  }
+
   // destructive buttons ask first
   document.querySelectorAll('[data-confirm]').forEach(btn => btn.addEventListener('click', e => {
     if (!window.confirm(btn.dataset.confirm)) e.preventDefault();

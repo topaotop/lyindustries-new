@@ -43,7 +43,9 @@ request → index.php / about.php / catalog.php / contact.php
 **Content layer (`includes/lib/content.php`) — ข้อมูลรายการอยู่ใน DB ตาราง `lyiweb_items`**
 - ลำดับการอ่าน: cache สด (`cache/content.json`, อายุ 5 นาที) → DB → cache เก่า → ข้อมูลในโค้ด `includes/home-data.php` (fallback ราย list — list ที่ไม่มีแถวใน DB ก็ใช้ fallback)
 - DB ต่อไม่ได้ → เขียน `cache/db-unavailable` แล้วไม่ลองใหม่ 60 วินาที (กันหน้าเว็บรอ timeout) · env `LYIWEB_DB=off` = บังคับทางไม่มี DB (ใช้ทดสอบ)
-- ฟิลด์/ลำดับฟิลด์/แปลได้ไหม กำหนดที่ `includes/schema/lists.php` (หลังบ้านจะสร้างฟอร์มจากไฟล์นี้) — ลำดับสำคัญเพราะสี swatch ถูก `json_encode` ลง `data-swatch`
+- ฟิลด์/ลำดับฟิลด์/แปลได้ไหม/ส่วนของหน้า (`scope` เช่น `home.faq` — ใช้กำหนดสิทธิ์) กำหนดที่ `includes/schema/lists.php` (หลังบ้านสร้างฟอร์มจากไฟล์นี้)
+- รายการที่ซ่อน (`is_active = 0`) ยังอยู่ใน cache แต่ `content_list()` ข้ามไป — list ที่ซ่อนหมดจะว่าง ไม่ตกไป fallback · ฟิลด์รูป: path ที่ไฟล์ไม่มีบน server นี้ → `''` (`content_local_image()`) เพราะ uploads แยกต่อ server
+- **รูปที่อัปโหลด** (`includes/lib/media.php`): เบราว์เซอร์ย่อรูปก่อนส่ง (≤ 2400px, WebP) → server ตรวจว่าเป็น JPG/PNG/WebP จริง แล้วแปลงใหม่ด้วย GD เป็น WebP → `uploads/YYYY/MM/<สุ่ม>.webp` + แถว `lyiweb_media` (`lyiweb_items.image_id` ทับ path ใน `data_common`) · `uploads/` อยู่ใน .gitignore, **ห้าม deploy ทับ/ลบ**, ต้องให้ PHP เขียนได้ (เหมือน `cache/`) และห้ามรันสคริปต์ในนั้น (`.htaccess` + `web.config` `<location path="uploads">`) · dev กับ .70 ใช้ `test_LYI` ร่วมกันแต่ uploads แยก — รูปที่อัปโหลดบนเครื่องหนึ่ง อีกเครื่องจะเห็นเป็น Image pending — ลำดับสำคัญเพราะสี swatch ถูก `json_encode` ลง `data-swatch`
 - เครื่อง dev (local) กับ company server (.70) ใช้ `test_LYI` ร่วมกันแต่ cache แยกเครื่อง — แก้ในหลังบ้านของเครื่องหนึ่ง อีกเครื่องเห็นผลช้าสุด 5 นาที (หรือกด "ล้าง cache" ในแดชบอร์ดของเครื่องนั้น) · production ไม่มีปัญหานี้ (DB `LYI` + หลังบ้านอยู่เครื่องเดียวกับเว็บ)
 - แก้ข้อมูลใน DB แล้วต้องเรียก `content_cache_clear()` (หลังบ้านจะทำให้) — ถ้าแก้ตรงใน Navicat หน้าเว็บจะเปลี่ยนภายใน 5 นาที
 - **แก้ `includes/home-data.php` แล้วต้องรัน `php tools/build-seed-home.php`** ให้ `docs/sql/002_lyiweb_seed_home.sql` ตรงกันเสมอ (seed ใส่เฉพาะ list ที่ยังไม่มีแถว — ไม่ทับเนื้อหาที่แก้ในหลังบ้านแล้ว)
@@ -76,7 +78,7 @@ request → index.php / about.php / catalog.php / contact.php
 - UX: หลังบันทึกต้องกลับมาตำแหน่งเดิม (เก็บ scroll ใน sessionStorage ตอน submit, `admin.js`) — **ห้ามทำให้หน้าเด้งขึ้นบนสุด** (ผู้ใช้ไม่ชอบ) · ข้อความผลการบันทึก (`flash()` → `[data-flash]`) แสดงเป็น toast มุมขวาบน · มี error → เลื่อนไปช่องแรกที่ผิด
 - แถบด้านบนแสดง DB ที่ต่ออยู่ (`test_LYI` เขียว / `LYI` แดง = PRODUCTION) กันแก้ผิดที่
 - ไฟล์: `admin/*.php` (หน้า), `admin/assets/` (CSS/JS), `includes/admin/init.php` (require ก่อนทุกหน้า: auth, header, layout `admin_page_start/end()`, `admin_require(perm)`), `includes/admin/access.php` (ป้ายสิทธิ์, หน้า/ส่วน, `admin_roles()`, สรุป scope), `includes/lib/auth.php`
-- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์) · ผู้ใช้ & สิทธิ์ (`users.php` dropdown ค้นหาผู้ใช้ sysmnuser ที่ไม่ถูกล็อก จัดกลุ่มตามแผนก เรียง A→Z — ไทยเรียงแบบพจนานุกรม (สระหน้า เ แ โ ใ ไ นับตามพยัญชนะ), `-` = ไม่ระบุแผนก ไว้ท้าย · ให้/ถอน role = เลือกคนที่ login ได้) · บทบาท (`roles.php` สร้าง/แก้/ลบ role: สิทธิ์ + ติ๊กหน้า/ส่วนที่แก้ได้)
+- หน้าที่มี: แดชบอร์ด (สถิติ, แก้ไขล่าสุด, ล้าง cache) · ข้อความหน้าเว็บ & SEO (`blocks.php` แท็บต่อหน้า, ไทย/อังกฤษ, ค้นหา, กรองที่ยังไม่แปล) · **รายการ & รูปภาพ** (`lists.php` แท็บต่อ list ใน `includes/schema/lists.php` — การ์ดพับได้ ไทย/อังกฤษ, ↑↓ จัดลำดับ, แสดง/ซ่อน, เพิ่ม/ลบ, อัปโหลดรูป — บันทึกครั้งเดียวทั้งหน้า · สิทธิ์ตาม `scope` ของ list: แก้เนื้อหา = ทุกอย่าง (รูปต้องมี `media.upload` ด้วย), แปลอังกฤษ = เฉพาะช่อง English ห้ามเปลี่ยนลำดับ) · ข้อมูลติดต่อ & ลิงก์ (`settings.php` มี validate อีเมล/URL/เวลา/เบอร์) · ผู้ใช้ & สิทธิ์ (`users.php` dropdown ค้นหาผู้ใช้ sysmnuser ที่ไม่ถูกล็อก จัดกลุ่มตามแผนก เรียง A→Z — ไทยเรียงแบบพจนานุกรม (สระหน้า เ แ โ ใ ไ นับตามพยัญชนะ), `-` = ไม่ระบุแผนก ไว้ท้าย · ให้/ถอน role = เลือกคนที่ login ได้) · บทบาท (`roles.php` สร้าง/แก้/ลบ role: สิทธิ์ + ติ๊กหน้า/ส่วนที่แก้ได้)
 - ทดสอบหน้าที่ต้อง login โดยไม่มีรหัสจริง: จำลอง session ใน CLI (ตั้ง `$_SESSION['lyiweb_user']` + `lyiweb_csrf` แล้ว require หน้า) — เขียนได้เฉพาะ `test_LYI` และต้องคืนค่าหลังทดสอบ
 
 ## Folder structure
@@ -85,7 +87,7 @@ request → index.php / about.php / catalog.php / contact.php
 /
 ├─ index.php, about.php, catalog.php, contact.php   หน้าเว็บ
 ├─ includes/            PHP partial/ข้อมูล (ห้ามเปิดตรงจากเว็บ — บล็อกทั้งใน .htaccess และ web.config)
-│  ├─ lib/db.php, lib/content.php   ชั้น DB + content (cache/fallback)
+│  ├─ lib/db.php, lib/content.php   ชั้น DB + content (cache/fallback) · lib/media.php อัปโหลดรูป · lib/auth.php
 │  ├─ schema/lists.php              นิยามฟิลด์ของแต่ละ list
 │  ├─ home-data.php                 ข้อมูลรายการหน้าแรกในโค้ด = fallback + ต้นทางของ seed 002
 │  ├─ site-defaults.php             ค่าติดต่อ/ลิงก์ + ชื่อหน้า/meta = fallback + ต้นทางของ seed 003
@@ -95,6 +97,7 @@ request → index.php / about.php / catalog.php / contact.php
 ├─ includes/admin/      init.php ของหลังบ้าน (บล็อกจากเว็บเพราะอยู่ใต้ includes/)
 ├─ tools/               สคริปต์ CLI (build-seed-home/site/blocks.php, extract-blocks.php + lib-textnodes.php) — บล็อกจากเว็บ, ไม่ deploy
 ├─ cache/               สร้างอัตโนมัติตอนรัน (content.json) — อยู่ใน .gitignore, บล็อกจากเว็บ, ไม่ deploy
+├─ uploads/             รูปที่อัปโหลดจากหลังบ้าน (สร้างอัตโนมัติ) — อยู่ใน .gitignore, ไม่ deploy/ไม่ลบบน server, เปิดได้เฉพาะไฟล์รูป
 ├─ assets/
 │  ├─ img/                    รูปทั้งหมด แยกโฟลเดอร์ตามหมวด (จัด 7 ต.ค. 2026) — รูปใหม่ให้วางในหมวดที่ตรง ห้ามวางที่ assets/ หรือ img/ ตรงๆ
 │  │  ├─ brand/               logo-lyi.svg, apple-touch-icon.png, placeholder.svg ("Image pending")
@@ -214,7 +217,7 @@ https://www.lyindustries.com/ ยังเป็น**เว็บเก่า** 
 1. **deploy เฉพาะสิ่งที่ commit แล้ว** — `git status` ต้องสะอาด; commit ที่ deploy = `HEAD`
 2. เลือก version ถัดไปจาก entry ล่าสุดใน DEPLOY_LOG.md
 3. เทียบไฟล์ local ↔ server ด้วย `cmp` เพื่อรู้ว่ามีไฟล์ไหนเพิ่ม/เปลี่ยน/ต้องลบ
-4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `admin/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git`, `*.md`, `docs/`, `tools/`, `cache/` และ `connectgrp.php` — ไฟล์ connectgrp ของแต่ละ server วางเองครั้งเดียว ห้ามทับ) · โฟลเดอร์ `cache/` บน server ต้องให้ PHP เขียนได้ (IIS: สิทธิ์ Modify ให้ IUSR/app pool) — ถ้าเขียนไม่ได้เว็บยังทำงานแต่จะ query DB ทุกครั้ง
+4. สำรองไฟล์บน server ที่จะถูกทับ/ลบ แล้ว copy: `*.php`, `includes/`, `assets/`, `admin/`, `web.config`, `.htaccess` → `N:\lyindustries-dev\` (ห้าม copy `.git`, `*.md`, `docs/`, `tools/`, `cache/`, `uploads/` และ `connectgrp.php` — ไฟล์ connectgrp ของแต่ละ server วางเองครั้งเดียว ห้ามทับ) · โฟลเดอร์ `cache/` บน server ต้องให้ PHP เขียนได้ (IIS: สิทธิ์ Modify ให้ IUSR/app pool) — ถ้าเขียนไม่ได้เว็บยังทำงานแต่จะ query DB ทุกครั้ง
 5. ถ้าลบ/เปลี่ยนชื่อไฟล์ในโปรเจกต์ ต้องลบไฟล์เก่าบน server ด้วย (ใช้ path แบบ literal ไม่ใช้ตัวแปรใน `rm`)
 6. ตรวจ: `curl` ทุกหน้าได้ 200, `*.html` ได้ 301, `includes/…` ได้ 404, `.woff2` ได้ `font/woff2` และ diff HTML จาก server กับ `php <page>.php` ในเครื่องต้องตรงกัน
 7. `git tag -a vX.Y.Z -m "Deploy vX.Y.Z to dev"` ที่ commit ที่ deploy

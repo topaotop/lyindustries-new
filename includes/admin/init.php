@@ -30,6 +30,7 @@ function admin_menu(): array
         ],
         'เนื้อหาเว็บไซต์' => [
             ['blocks.php', 'ข้อความหน้าเว็บ & SEO', 'text', 'content.translate'],
+            ['lists.php', 'รายการ & รูปภาพ', 'list', 'content.translate'],
         ],
         'ตั้งค่าเว็บไซต์' => [
             ['settings.php', 'ข้อมูลติดต่อ & ลิงก์', 'phone', 'settings.edit'],
@@ -49,6 +50,7 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'list'     => '<rect x="3.5" y="4" width="4" height="4" rx="1"/><rect x="3.5" y="12" width="4" height="4" rx="1"/><path d="M10.5 6h6M10.5 14h6"/>',
         'menu'     => '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
         'back'     => '<path d="M12 4.5 6.5 10l5.5 5.5"/>',
         'user'     => '<circle cx="10" cy="7" r="3.2"/><path d="M4 17a6 6 0 0 1 12 0"/>',
@@ -93,6 +95,11 @@ function admin_require(?string $permission = null): array
 /** Reject POSTs without a valid CSRF token. */
 function admin_check_post(): void
 {
+    // a POST bigger than post_max_size arrives empty — say so instead of "invalid token"
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST === [] && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        http_response_code(413);
+        exit('ข้อมูลที่ส่งใหญ่เกินที่ server รับได้ (' . ini_get('post_max_size') . ') — ลองเลือกรูปให้น้อยลงต่อการบันทึกหนึ่งครั้ง');
+    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrf_valid()) {
         http_response_code(400);
         exit('Invalid or expired form token — please reload the page and try again.');

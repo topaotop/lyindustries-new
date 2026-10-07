@@ -10,12 +10,15 @@ declare(strict_types=1);
  * - 'i18n' => false : stored once in data_common
  * - type 'image'    : path string in data_common; lyiweb_items.image_id (uploaded media) overrides it
  * - 'label'         : field name shown in the admin form
+ * - 'scope'         : page.section the list belongs to — who may edit it follows that section's
+ *                     role scope (lyiweb_role_scopes), same as the page text
  *
- * @return array<string, array{title: string, fields: array<string, array{type: string, i18n: bool, label: string}>}>
+ * @return array<string, array{title: string, scope: string, fields: array<string, array{type: string, i18n: bool, label: string}>}>
  */
 return [
     'home.partners' => [
         'title'  => 'หน้าแรก · แถบกลุ่มสินค้า (marquee)',
+        'scope'  => 'home.trust',
         'fields' => [
             'name' => ['type' => 'text', 'i18n' => false, 'label' => 'กลุ่มสินค้า'],
             'tag'  => ['type' => 'text', 'i18n' => false, 'label' => 'ป้ายกำกับ'],
@@ -23,6 +26,7 @@ return [
     ],
     'home.tiles' => [
         'title'  => 'หน้าแรก · ไทล์จุดใช้งานบนเสื้อผ้า',
+        'scope'  => 'home.story',
         'fields' => [
             'label' => ['type' => 'text',  'i18n' => false, 'label' => 'ป้ายภาษาอังกฤษ (ตัวเล็กสีส้ม)'],
             'icon'  => ['type' => 'icon',  'i18n' => false, 'label' => 'ไอคอน'],
@@ -36,6 +40,7 @@ return [
     ],
     'home.steps' => [
         'title'  => 'หน้าแรก · ขั้นตอนการผลิต',
+        'scope'  => 'home.process',
         'fields' => [
             'n'     => ['type' => 'text',     'i18n' => false, 'label' => 'เลขขั้น'],
             'title' => ['type' => 'text',     'i18n' => true,  'label' => 'หัวข้อ'],
@@ -47,6 +52,7 @@ return [
     ],
     'home.swatches' => [
         'title'  => 'หน้าแรก · สี Pantone ตัวอย่าง',
+        'scope'  => 'home.colorlab',
         'fields' => [
             'name' => ['type' => 'text',  'i18n' => false, 'label' => 'ชื่อสี'],
             'hex'  => ['type' => 'color', 'i18n' => false, 'label' => 'สี (hex)'],
@@ -57,6 +63,7 @@ return [
     ],
     'home.products' => [
         'title'  => 'หน้าแรก · หมวดสินค้า',
+        'scope'  => 'home.specimens',
         'fields' => [
             'title' => ['type' => 'text',     'i18n' => true,  'label' => 'ชื่อหมวด'],
             'label' => ['type' => 'text',     'i18n' => false, 'label' => 'ป้ายภาษาอังกฤษ'],
@@ -68,6 +75,7 @@ return [
     ],
     'home.gallery' => [
         'title'  => 'หน้าแรก · ตัวอย่างสินค้า (Inspiration Hub)',
+        'scope'  => 'home.gallery',
         'fields' => [
             'code' => ['type' => 'text',  'i18n' => false, 'label' => 'รหัสสินค้า'],
             'type' => ['type' => 'text',  'i18n' => false, 'label' => 'ประเภท'],
@@ -76,6 +84,7 @@ return [
     ],
     'home.faq' => [
         'title'  => 'หน้าแรก · คำถามที่พบบ่อย',
+        'scope'  => 'home.faq',
         'fields' => [
             'q' => ['type' => 'text',     'i18n' => true, 'label' => 'คำถาม'],
             'a' => ['type' => 'textarea', 'i18n' => true, 'label' => 'คำตอบ'],

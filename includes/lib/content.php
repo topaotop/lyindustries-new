@@ -33,7 +33,7 @@ function content_cache_clear(): void
 }
 
 /** Bump when the cached structure changes so old cache files are ignored. */
-const CONTENT_CACHE_VERSION = 3;
+const CONTENT_CACHE_VERSION = 4;
 
 /**
  * Everything public pages need from the DB in one round trip, or null when neither DB nor cache
@@ -69,10 +69,9 @@ function content_raw(): ?array
 
     try {
         $rows = db_rows(
-            'SELECT i.list_key, i.data_th, i.data_en, i.data_common, m.file_path
+            'SELECT i.list_key, i.is_active, i.data_th, i.data_en, i.data_common, m.file_path
                FROM dbo.lyiweb_items i
                LEFT JOIN dbo.lyiweb_media m ON m.id = i.image_id
-              WHERE i.is_active = 1
               ORDER BY i.list_key, i.sort_order, i.id'
         );
         $settingRows = db_rows('SELECT setting_key, value FROM dbo.lyiweb_settings');
@@ -95,7 +94,9 @@ function content_raw(): ?array
         $data['pages'][$row['slug']] = $row;
     }
     foreach ($rows as $row) {
+        // hidden rows are kept so a list whose items are all hidden shows nothing (not the built-in data)
         $data['items'][$row['list_key']][] = [
+            'active' => (bool) $row['is_active'],
             'th'     => json_decode((string) $row['data_th'], true) ?: [],
             'en'     => json_decode((string) $row['data_en'], true) ?: [],
             'common' => json_decode((string) $row['data_common'], true) ?: [],
@@ -130,6 +131,9 @@ function content_list(string $key, string $lang = 'th'): array
 
     $out = [];
     foreach ($rows as $row) {
+        if (!($row['active'] ?? true)) {
+            continue;
+        }
         $item = [];
         foreach ($fields as $name => $def) {
             if ($def['i18n']) {
@@ -142,6 +146,7 @@ function content_list(string $key, string $lang = 'th'): array
             $item[$name] = match ($def['type']) {
                 'int'   => (int) $value,
                 'bool'  => (bool) $value,
+                'image' => content_local_image((string) $value),
                 default => (string) $value,
             };
         }
@@ -149,6 +154,22 @@ function content_list(string $key, string $lang = 'th'): array
     }
 
     return $out;
+}
+
+/**
+ * A site-relative image path only when the file exists on this server, else '' (= "Image pending").
+ * Uploads live per server (dev and the company server share test_LYI but not their uploads/ folder),
+ * so a row can point to a file this machine does not have — never emit a broken <img>.
+ */
+function content_local_image(string $path): string
+{
+    if ($path === '' || preg_match('#^(https?:)?//#i', $path)) {
+        return $path;
+    }
+
+    $file = strtok($path, '?#');   // paths may carry a cache-buster such as ?v=2
+
+    return is_file(APP_ROOT . '/' . ltrim((string) $file, '/')) ? $path : '';
 }
 
 /** Write a file atomically; silently skipped when the folder is not writable. */
