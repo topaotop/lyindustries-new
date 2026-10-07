@@ -324,10 +324,10 @@ $card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $c
       <span class="key"><?= e($def['label']) ?></span>
 <?php if ($tag === 'textarea'): ?>
       <textarea name="<?= e("{$base}[th][$f]") ?>" rows="3" data-live="<?= e($f) ?>"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>><?= e((string) ($w['th'][$f] ?? '')) ?></textarea>
-      <textarea name="<?= e("{$base}[en][$f]") ?>" rows="3" placeholder="(ว่าง = ใช้ภาษาไทย)"><?= e((string) ($w['en'][$f] ?? '')) ?></textarea>
+      <textarea name="<?= e("{$base}[en][$f]") ?>" rows="3" placeholder="(ว่าง = ใช้ภาษาไทย)" data-live-en="<?= e($f) ?>"><?= e((string) ($w['en'][$f] ?? '')) ?></textarea>
 <?php else: ?>
       <input name="<?= e("{$base}[th][$f]") ?>" value="<?= e((string) ($w['th'][$f] ?? '')) ?>" maxlength="300" data-live="<?= e($f) ?>"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>>
-      <input name="<?= e("{$base}[en][$f]") ?>" value="<?= e((string) ($w['en'][$f] ?? '')) ?>" maxlength="300" placeholder="(ว่าง = ใช้ภาษาไทย)">
+      <input name="<?= e("{$base}[en][$f]") ?>" value="<?= e((string) ($w['en'][$f] ?? '')) ?>" maxlength="300" placeholder="(ว่าง = ใช้ภาษาไทย)" data-live-en="<?= e($f) ?>">
 <?php endif; ?>
 <?php if ($e1 || $e2): ?><small class="err"><?= e((string) ($e1 ?? $e2)) ?></small><?php endif; ?>
     </div>
@@ -409,7 +409,7 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
     <!-- the real page: click a card/item to edit it (wide screens, "เห็นหน้าเว็บ" view) -->
     <div class="preview-pane" data-preview-pane>
       <div class="preview-bar">
-        <b>หน้าเว็บจริง</b><span class="muted small"><?= e($list['where'] ?? '') ?> · คลิกรายการบนหน้าเว็บเพื่อแก้ · ข้อความที่พิมพ์เห็นผลทันที (ลำดับ/ซ่อน/รูป เห็นหลังกดบันทึก)</span>
+        <b>หน้าเว็บจริง</b><div class="view-switch view-switch-sm" role="group" aria-label="ภาษาของหน้าตัวอย่าง" data-preview-lang><button type="button" data-plang="th">TH</button><button type="button" data-plang="en">EN</button></div><span class="muted small"><?= e($list['where'] ?? '') ?> · คลิกรายการบนหน้าเว็บเพื่อแก้ · ข้อความที่พิมพ์เห็นผลทันที (ลำดับ/ซ่อน/รูป เห็นหลังกดบันทึก)</span>
         <a class="btn btn-sm btn-ghost" href="<?= e($pageUrl) ?>" target="_blank" rel="noopener">เปิดแท็บใหม่ ↗</a>
       </div>
       <div class="preview-box" data-preview-box><iframe data-preview title="ตัวอย่างหน้าเว็บ" data-src="preview.php?page=<?= e($scopePage) ?>"></iframe></div>

@@ -391,6 +391,9 @@ a.kpi-brand:hover { border-color: transparent; box-shadow: 0 8px 24px rgba(238, 
 .scope-hint ul { margin: 6px 0 0; padding-left: 18px; line-height: 1.9; }
 .scope-hint .btn { margin-left: 6px; padding: 3px 10px; font-size: 12.5px; }
 
+.view-switch-sm { margin: 0 4px; flex: none; }
+.view-switch-sm button { padding: 3px 10px; font: 600 12px var(--mono); }
+
 /* SEO & AEO page — layout */
 .page-head { display: flex; align-items: flex-start; gap: 14px; margin: 0 0 18px; }
 .page-head h1 { margin: 0 0 2px; }

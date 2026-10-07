@@ -151,7 +151,7 @@ admin_page_start('ข้อความหน้าเว็บ', 'blocks.php');
     <!-- the real page: click a text to edit it (shown on wide screens in the "เห็นหน้าเว็บ" view) -->
     <div class="preview-pane" data-preview-pane>
       <div class="preview-bar">
-        <b>หน้าเว็บจริง</b><span class="muted small">ชี้แล้วคลิกข้อความที่ต้องการแก้ — กรอบสีส้ม = ข้อความที่กำลังแก้ · พิมพ์แล้วเห็นผลทันที (ยังไม่บันทึกจนกว่าจะกดบันทึก)</span>
+        <b>หน้าเว็บจริง</b><div class="view-switch view-switch-sm" role="group" aria-label="ภาษาของหน้าตัวอย่าง" data-preview-lang><button type="button" data-plang="th">TH</button><button type="button" data-plang="en">EN</button></div><span class="muted small">ชี้แล้วคลิกข้อความที่ต้องการแก้ — กรอบสีส้ม = ข้อความที่กำลังแก้ · พิมพ์แล้วเห็นผลทันที (ยังไม่บันทึกจนกว่าจะกดบันทึก)</span>
         <a class="btn btn-sm btn-ghost" href="../<?= e($pages[$slug]['url']) ?>" target="_blank" rel="noopener">เปิดแท็บใหม่ ↗</a>
       </div>
       <div class="preview-box" data-preview-box><iframe data-preview title="ตัวอย่างหน้าเว็บ" data-src="preview.php?page=<?= e($slug) ?>"></iframe></div>
@@ -185,7 +185,7 @@ admin_page_start('ข้อความหน้าเว็บ', 'blocks.php');
         <div class="row<?= isset($errors[$key]) ? ' has-error' : '' ?>" data-row data-key="<?= e("$slug.$key") ?>" data-missing="<?= needs_translation($b['th'], $b['en']) ? '1' : '0' ?>">
           <span class="key"><b><?= e($kinds[$key] ?? 'ข้อความ') ?></b><small><?= e(substr($key, strlen($section) + 1)) ?></small></span>
           <textarea name="th[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="ภาษาไทย" data-th<?= $canTh($section) ? '' : ' readonly' ?>><?= e($b['th']) ?></textarea>
-          <textarea name="en[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="English" placeholder="English (ว่าง = ใช้ภาษาไทย)"><?= e($b['en']) ?></textarea>
+          <textarea name="en[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="English" placeholder="English (ว่าง = ใช้ภาษาไทย)" data-en><?= e($b['en']) ?></textarea>
 <?php if (isset($errors[$key])): ?><small class="err"><?= e($errors[$key]) ?></small><?php endif; ?>
         </div>
 <?php endforeach; ?>

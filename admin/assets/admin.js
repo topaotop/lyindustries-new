@@ -357,6 +357,32 @@
     };
   }
 
+  // TH | EN switch above the page preview (blocks + lists): reloads the frame in that language,
+  // remembered per browser. onSwitch runs before the frame reloads (the page marks itself not ready).
+  const previewLang = (form, frame, onSwitch) => {
+    let lang = 'th';
+    try { lang = localStorage.getItem('lyiweb-preview-lang') === 'en' ? 'en' : 'th'; } catch (err) { /* blocked */ }
+    const base = frame.dataset.src;
+    const group = form.querySelector('[data-preview-lang]');
+    const apply = () => {
+      group?.querySelectorAll('[data-plang]').forEach(b => b.classList.toggle('on', b.dataset.plang === lang));
+      frame.dataset.src = base + (lang === 'en' ? '&lang=en' : '');
+    };
+    group?.addEventListener('click', e => {
+      const b = e.target.closest('[data-plang]');
+      if (!b || b.dataset.plang === lang) return;
+      lang = b.dataset.plang;
+      try { localStorage.setItem('lyiweb-preview-lang', lang); } catch (err) { /* blocked */ }
+      apply();
+      onSwitch();
+      if (frame.getAttribute('src')) frame.src = frame.dataset.src;
+    });
+    apply();
+    return () => lang;
+  };
+  // what the page shows for a translatable text: English falls back to Thai when empty
+  const shown = (lang, th, en) => (lang === 'en' && en && en.value.trim() !== '' ? en.value : (th ? th.value : ''));
+
   // blocks.php "เห็นหน้าเว็บ" view: the real page on the left, click a text → its fields on the right
   const bform = document.querySelector('[data-blocks-form]');
   if (bform) {
@@ -374,6 +400,7 @@
     try { mode = localStorage.getItem('lyiweb-blocks-view') || 'visual'; } catch (err) { /* blocked */ }
     let ready = false;
     const post = msg => { if (ready) frame.contentWindow.postMessage(msg, location.origin); };
+    const plang = previewLang(bform, frame, () => { ready = false; });
     const fit = () => {
       if (!root.classList.contains('blocks-visual')) return;
       const scale = box.clientWidth / DESIGN_W;
@@ -428,7 +455,7 @@
       } else {
         row.scrollIntoView({ block: 'center' });
       }
-      const ta = row.querySelector('[data-th]:not([readonly])') || row.querySelector('textarea:not([readonly])');
+      const ta = (plang() === 'en' && row.querySelector('[data-en]:not([readonly])')) || row.querySelector('[data-th]:not([readonly])') || row.querySelector('textarea:not([readonly])');
       if (ta) { ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); }
       store('lyiweb-blocks-last:' + page, key);
       post({ type: 'focus', key, scroll: !fromPreview });
@@ -453,7 +480,8 @@
     // typing → preview updates live; moving into a field → its text is highlighted on the page
     bform.addEventListener('input', e => {
       const row = e.target.closest('[data-row]');
-      if (row && e.target.matches('[data-th]')) post({ type: 'text', key: row.dataset.key, value: e.target.value });
+      if (!row || !e.target.matches(plang() === 'en' ? '[data-th], [data-en]' : '[data-th]')) return;
+      post({ type: 'text', key: row.dataset.key, value: shown(plang(), row.querySelector('[data-th]'), row.querySelector('[data-en]')) });
     });
     bform.addEventListener('focusin', e => {
       const row = e.target.closest('[data-row]');
@@ -491,6 +519,7 @@
     try { mode = localStorage.getItem('lyiweb-blocks-view') || 'visual'; } catch (err) { /* blocked */ }
     let ready = false;
     const post = msg => { if (ready) frame.contentWindow.postMessage(msg, location.origin); };
+    const plang = previewLang(lform, frame, () => { ready = false; });
     const visual = () => root.classList.contains('blocks-visual');
     const fit = () => {
       if (!visual()) return;
@@ -543,7 +572,8 @@
       mark(card);
       if (visual()) pane.scrollTop += card.getBoundingClientRect().top - pane.getBoundingClientRect().top - 60;
       else card.scrollIntoView({ block: 'start' });
-      const input = (field && card.querySelector(`[data-live="${CSS.escape(field)}"]:not([readonly])`))
+      const input = (field && plang() === 'en' && card.querySelector(`[data-live-en="${CSS.escape(field)}"]:not([readonly])`))
+        || (field && card.querySelector(`[data-live="${CSS.escape(field)}"]:not([readonly])`))
         || card.querySelector('input:not([type=hidden]):not([type=checkbox]):not([readonly]), textarea:not([readonly])');
       input?.focus({ preventScroll: true });
       post({ type: 'focusItem', ref, scroll: !fromPreview });
@@ -569,14 +599,17 @@
     // typing → the page updates live; opening/entering a card → the item is outlined on the page
     lform.addEventListener('input', e => {
       const card = e.target.closest('[data-ref]');
-      if (card && e.target.matches('[data-live]')) post({ type: 'itemText', ref: card.dataset.ref, field: e.target.dataset.live, value: e.target.value });
+      if (!card || !e.target.matches(plang() === 'en' ? '[data-live], [data-live-en]' : '[data-live]')) return;
+      const field = e.target.dataset.live || e.target.dataset.liveEn;
+      const th = card.querySelector(`[data-live="${CSS.escape(field)}"]`);
+      post({ type: 'itemText', ref: card.dataset.ref, field, value: shown(plang(), th, card.querySelector(`[data-live-en="${CSS.escape(field)}"]`)) });
     });
     // any field clicked on the right → that item (and that field, when shown) is selected on the page
     lform.addEventListener('focusin', e => {
       const card = e.target.closest('[data-items] [data-ref]');
       if (!card) return;
       mark(card);
-      post({ type: 'focusItem', ref: card.dataset.ref, field: e.target.dataset.live || null, scroll: true });
+      post({ type: 'focusItem', ref: card.dataset.ref, field: e.target.dataset.live || e.target.dataset.liveEn || null, scroll: true });
     });
     lform.querySelector('[data-items]').addEventListener('toggle', e => {
       const card = e.target;
