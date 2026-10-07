@@ -14,6 +14,20 @@
 
 ---
 
+## v1.9.0 — 2026-10-07 · dev
+
+- **Commit:** `f978925` · **Tag:** `v1.9.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - หลังบ้าน: **แดชบอร์ดใหม่** — การ์ดตัวเลขมีไอคอน (คำขอใหม่, กดติดต่อ 7 วัน + เส้นแนวโน้ม, % แปลอังกฤษ, เนื้อหา), "สิ่งที่ควรทำ" พร้อมปุ่มไปแก้, "แก้ไขล่าสุด" เป็นภาษาคน + ลิงก์ + รวมรายการซ้ำ, ทางลัด, กล่อง cache เล็กลง · เวลาเทียบกับนาฬิกาของ DB
+- **DB:** ไม่มี
+- **Files:** เพิ่ม 0 · แก้ 5 · ลบ 0 (`admin/index.php`, `admin/seo.php`, `admin/assets/admin.css`, `includes/admin/init.php`, `includes/lib/seo.php`)
+- **Backup:** 5 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ หน้าเว็บ (ไทย+อังกฤษ) 200 · robots/sitemap 200 · admin → 302 login, หน้า login 200 ไม่มี error · `index.html` → 301 · `includes/…`, `connectgrp.php` → 404 · HTML หน้าเว็บจาก server ตรงกับ local (ต่างเฉพาะรูปโรงย้อมที่อัปโหลดเฉพาะ local และเวลาในฟอร์ม) · URL สาธารณะ 200
+- **Note:** แดชบอร์ดหลัง login ทดสอบใน local (Chrome, `test_LYI`) — บน server ต้อง login จริงจึงจะเปิดดูได้ (agent ไม่มีรหัส)
+
+---
+
 ## v1.8.0 — 2026-10-07 · dev
 
 - **Commit:** `981c3e0` · **Tag:** `v1.8.0`
