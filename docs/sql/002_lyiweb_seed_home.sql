@@ -10,7 +10,7 @@ SET NOCOUNT ON;
 SET XACT_ABORT ON;
 BEGIN TRANSACTION;
 
-/* home.partners — หน้าแรก · แถบกลุ่มสินค้า (marquee) (8 rows) */
+/* home.partners — หน้าแรก · แถบคำเลื่อนใต้ภาพหลัก (8 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.partners')
 BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.partners', 10, NULL, NULL, N'{"name":"SPORTSWEAR","tag":"PERFORMANCE"}');
@@ -23,7 +23,7 @@ BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.partners', 80, NULL, NULL, N'{"name":"LIFESTYLE","tag":"FASHION"}');
 END
 
-/* home.tiles — หน้าแรก · ไทล์จุดใช้งานบนเสื้อผ้า (8 rows) */
+/* home.tiles — หน้าแรก · การ์ดจุดใช้งานบนเสื้อผ้า (8 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.tiles')
 BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.tiles', 10, N'{"title":"เทปคอหลัง"}', NULL, N'{"label":"BACK NECK TAPE","icon":"neck","img":"assets/img/applications/app-back-neck.jpg","dx":-240,"dy":120,"rot":-4,"more":false}');
@@ -47,7 +47,7 @@ BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.steps', 60, N'{"title":"ส่งมอบตรงเวลา ซัพพลายเออร์เดียว","short":"ส่งมอบตรงเวลา","desc":"ซัพพลายเออร์รายเดียวรับผิดชอบคุณภาพตลอดสาย ลด lead time และตัดปัญหาความผิดพลาดในการประสานงานระหว่างโรงงานย่อย"}', NULL, N'{"n":"06","tag":"RELIABLE DELIVERY","img":"assets/img/process/CROCHET.jpg"}');
 END
 
-/* home.swatches — หน้าแรก · สี Pantone ตัวอย่าง (5 rows) */
+/* home.swatches — หน้าแรก · ปุ่มสี Pantone (5 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.swatches')
 BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.swatches', 10, NULL, NULL, N'{"name":"Flame Orange (CI)","hex":"#ff5a1f","glow":"rgba(255,90,31,0.4)","code":"PANTONE 16-1454 TCX","text":"#fff"}');
@@ -57,7 +57,7 @@ BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.swatches', 50, NULL, NULL, N'{"name":"Crimson Racing Red","hex":"#e61e38","glow":"rgba(230,30,56,0.4)","code":"PANTONE 18-1662 TCX","text":"#fff"}');
 END
 
-/* home.products — หน้าแรก · หมวดสินค้า (6 rows) */
+/* home.products — หน้าแรก · การ์ดหมวดสินค้า (6 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.products')
 BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.products', 10, N'{"title":"ยางยืด / สายยืด (Elastic Webbing)","desc":"ยืดหยุ่นสม่ำเสมอ คืนรูปยอดเยี่ยม ไม่ย้วยหลังผ่านการซักนับร้อยครั้ง สำหรับขอบเอว สายบ่า และงาน activewear"}', NULL, N'{"label":"ELASTIC WEBBING","spec":"10mm – 120mm · Custom Elasticity","code":"PROD-01","img":"assets/img/products/prod-elastic.jpg?v=2"}');
@@ -68,7 +68,7 @@ BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.products', 60, N'{"title":"งาน Finish หลากหลายแบบ (Finishing & Branding)","desc":"ต่อยอดเทปให้ครบทั้งฟังก์ชันและแบรนด์ — ซิลิโคนกันลื่น พิมพ์ลาย heat transfer ปั๊มนูน เลเซอร์ ตัดร้อน/ตัดเย็น ไปจนถึงงานป้ายเลเบล เลือกผสมได้ตามการใช้งาน"}', NULL, N'{"label":"FINISHING","spec":"Silicone / Print / Emboss / Laser / Labels","code":"PROD-06","img":"assets/img/products/prod-finishing.jpg"}');
 END
 
-/* home.gallery — หน้าแรก · ตัวอย่างสินค้า (Inspiration Hub) (6 rows) */
+/* home.gallery — หน้าแรก · ตัวอย่างสินค้า (รหัส LY…) (6 rows) */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_items WHERE list_key = N'home.gallery')
 BEGIN
     INSERT dbo.lyiweb_items (list_key, sort_order, data_th, data_en, data_common) VALUES (N'home.gallery', 10, NULL, NULL, N'{"code":"LY2086","type":"Elastic Jacquard","img":""}');

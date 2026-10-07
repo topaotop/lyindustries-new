@@ -233,6 +233,15 @@ fieldset[disabled] { opacity: .75; }
 .add-item { width: 100%; justify-content: center; margin-top: 12px; padding: 12px; border-style: dashed; color: var(--brand-dark); }
 .add-item:hover { border-color: var(--brand); background: #fffaf7; }
 
+/* "where on the page" help card (lists.php) */
+.where { display: flex; gap: 20px; align-items: center; padding: 14px; }
+.where-shot { flex: none; width: 300px; border-radius: 9px; overflow: hidden; border: 1px solid var(--line); line-height: 0; }
+.where-shot img { width: 100%; height: auto; display: block; transition: transform .2s; }
+.where-shot:hover img { transform: scale(1.03); }
+.where-text { min-width: 0; }
+.where-text p { margin: 4px 0 8px; }
+.where-label { display: inline-block; font-size: 12px; font-weight: 600; color: var(--brand-dark); background: #fff1ea; border-radius: 99px; padding: 2px 10px; }
+
 /* ---- responsive (kept last so these rules win over the base styles above) ---- */
 /* phone + tablet: the sidebar becomes a slide-in drawer opened from the ☰ button */
 .nav-toggle, .nav-backdrop { display: none; }
@@ -287,4 +296,8 @@ fieldset[disabled] { opacity: .75; }
   .item > .row { margin: 0 14px; }
   .row-common .common { grid-column: auto; }
   .img-preview { width: 120px; }
+}
+@media (max-width: 640px) {
+  .where { flex-direction: column; align-items: stretch; }
+  .where-shot { width: 100%; }
 }

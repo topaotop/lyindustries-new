@@ -383,7 +383,19 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
   <a href="?list=<?= e($lk) ?>"<?= $lk === $key ? ' class="on" aria-current="page"' : '' ?>><span><?= e(preg_replace('/^หน้าแรก · /u', '', $l['title'])) ?></span></a>
 <?php endforeach; ?>
 </nav>
-<p class="muted small"><?= e($pageLabel) ?> · ส่วน "<?= e($sectionLabel) ?>" — <?= count($view) ?> รายการ · กดที่รายการเพื่อเปิดแก้ไข<?= $canEdit ? ' · ใช้ ↑ ↓ จัดลำดับ' : '' ?></p>
+<?php $shot = 'assets/where/' . substr($key, strpos($key, '.') + 1) . '.webp';
+      $pageUrl = '../' . ($scopePage === 'home' ? 'index.php' : $scopePage . '.php') . ($scopeSection !== 'trust' ? '#' . $scopeSection : ''); ?>
+<section class="card where">
+<?php if (is_file(__DIR__ . '/' . $shot)): ?>
+  <a class="where-shot" href="<?= e(asset($shot)) ?>" target="_blank" rel="noopener" title="ดูภาพใหญ่"><img src="<?= e(asset($shot)) ?>" alt="ตำแหน่งบนหน้าเว็บ: <?= e($list['title']) ?>" loading="lazy"></a>
+<?php endif; ?>
+  <div class="where-text">
+    <span class="where-label">อยู่ตรงไหนบนหน้าเว็บ</span>
+    <p><b><?= e($pageLabel) ?></b> — <?= e($list['where'] ?? $sectionLabel) ?></p>
+    <p class="muted small"><?= count($view) ?> รายการ · กดที่รายการเพื่อเปิดแก้ไข<?= $canEdit ? ' · ใช้ ↑ ↓ จัดลำดับ' : '' ?></p>
+    <a class="btn btn-sm" href="<?= e($pageUrl) ?>" target="_blank" rel="noopener">เปิดดูบนหน้าเว็บจริง ↗</a>
+  </div>
+</section>
 
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง<?= $canUpload && array_filter($fields, static fn($d) => $d['type'] === 'image') ? ' · รูปที่เลือกไว้ต้องเลือกใหม่อีกครั้ง' : '' ?></div><?php endif; ?>
 <?php if (!$canEdit): ?><div class="flash flash-info">คุณมีสิทธิ์แปลภาษาอังกฤษเท่านั้นในส่วนนี้ — แก้ได้เฉพาะช่อง English</div><?php endif; ?>
@@ -394,7 +406,6 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
   <div class="toolbar">
     <input type="search" class="filter" placeholder="ค้นหาในรายการ…" data-filter>
     <label class="check"><input type="checkbox" data-only-missing> ยังไม่แปล (<?= $missingEn ?>)</label>
-    <a class="btn btn-ghost" href="../<?= e($scopePage === 'home' ? 'index.php' : $scopePage . '.php') ?>#<?= e($scopeSection) ?>" target="_blank" rel="noopener">ดูหน้านี้ ↗</a>
     <button class="btn btn-primary" type="submit">บันทึก</button>
   </div>
 
