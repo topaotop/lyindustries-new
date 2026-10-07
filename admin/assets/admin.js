@@ -411,8 +411,11 @@
         else if (page === 'footer') post({ type: 'focus', key: bform.querySelector('[data-row]')?.dataset.key || '' });
       } else if (e.data.type === 'pick') {
         pick(e.data.key, true);
+      } else if (e.data.type === 'pickItem') {
+        const [list, id] = String(e.data.ref).split('#');
+        say(`นี่คือรายการ (การ์ด/FAQ/ขั้นตอน …) — <a href="lists.php?list=${encodeURIComponent(list)}&focus=${encodeURIComponent(id)}">แก้ที่ รายการ & รูปภาพ →</a>`);
       } else if (e.data.type === 'miss') {
-        say('ตรงนี้ไม่ได้แก้ในหน้านี้ — การ์ด/รายการ (สินค้า, ขั้นตอนผลิต, FAQ …) แก้ที่ <a href="lists.php">รายการ & รูปภาพ</a> · เบอร์โทร อีเมล ที่อยู่ แก้ที่ <a href="settings.php">ข้อมูลติดต่อ & ลิงก์</a> · เมนูด้านบนยังแก้ไม่ได้');
+        say('ตรงนี้ไม่ได้แก้ในหน้านี้ — เบอร์โทร อีเมล ที่อยู่ แก้ที่ <a href="settings.php">ข้อมูลติดต่อ & ลิงก์</a> · รูปภาพและเมนูด้านบนยังแก้ไม่ได้');
       }
     });
     // typing → preview updates live; moving into a field → its text is highlighted on the page
@@ -447,6 +450,124 @@
     };
     bform.addEventListener('input', e => { if (e.target.matches('[data-serp-src]')) serp(); });
     serp();
+  }
+
+  // lists.php "เห็นหน้าเว็บ" view: the real page on the left, click an item → its card on the right
+  const lform = document.querySelector('[data-list-form]');
+  if (lform) {
+    const root = document.documentElement;
+    const list = lform.dataset.list;
+    const names = JSON.parse(lform.dataset.listNames || '{}');
+    const frame = lform.querySelector('[data-preview]');
+    const box = lform.querySelector('[data-preview-box]');
+    const pane = lform.querySelector('[data-edit-pane]');
+    const note = lform.querySelector('[data-preview-note]');
+    const wide = window.matchMedia('(min-width: 1100px)');
+    const DESIGN_W = 1280;
+    const store = (k, v) => { try { v === undefined ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (err) { /* blocked */ } };
+    const read = k => { try { return sessionStorage.getItem(k); } catch (err) { return null; } };
+    let mode = 'visual';
+    try { mode = localStorage.getItem('lyiweb-blocks-view') || 'visual'; } catch (err) { /* blocked */ }
+    let ready = false;
+    const post = msg => { if (ready) frame.contentWindow.postMessage(msg, location.origin); };
+    const visual = () => root.classList.contains('blocks-visual');
+    const fit = () => {
+      if (!visual()) return;
+      const scale = box.clientWidth / DESIGN_W;
+      frame.style.width = DESIGN_W + 'px';
+      frame.style.height = Math.ceil(box.clientHeight / scale) + 'px';
+      frame.style.transform = `scale(${scale})`;
+    };
+    const applyView = () => {
+      root.classList.toggle('blocks-visual', wide.matches && mode === 'visual');
+      lform.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === mode));
+      if (visual() && !frame.getAttribute('src')) frame.src = frame.dataset.src;
+      fit();
+    };
+    lform.querySelector('[data-view-switch]').addEventListener('click', e => {
+      const b = e.target.closest('[data-view]');
+      if (!b) return;
+      mode = b.dataset.view;
+      try { localStorage.setItem('lyiweb-blocks-view', mode); } catch (err) { /* blocked */ }
+      applyView();
+    });
+    wide.addEventListener('change', applyView);
+    window.addEventListener('resize', fit);
+
+    let noteTimer = 0;
+    const say = html => {
+      note.innerHTML = html;
+      note.hidden = false;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(() => { note.hidden = true; }, 7000);
+    };
+    const cardOf = ref => lform.querySelector(`[data-items] [data-ref="${CSS.escape(ref)}"]`);
+    const mark = card => {
+      lform.querySelectorAll('.item.is-picked').forEach(c => c.classList.remove('is-picked'));
+      card.classList.add('is-picked');
+      store('lyiweb-lists-last:' + list, card.dataset.ref);
+    };
+    // open one item: card opened and scrolled into view, cursor in the field that was clicked
+    const pickItem = (ref, field, fromPreview) => {
+      const [itemList, id] = String(ref).split('#');
+      if (itemList !== list) {
+        say(`รายการนี้อยู่ในแท็บ "${names[itemList] || itemList}" — <a href="?list=${encodeURIComponent(itemList)}&focus=${encodeURIComponent(id)}">ไปแก้ที่แท็บนั้น →</a>`);
+        return;
+      }
+      const card = cardOf(ref);
+      if (!card) { say('รายการนี้ไม่อยู่ในฟอร์ม (อาจเพิ่งถูกลบหรือคุณไม่มีสิทธิ์)'); return; }
+      note.hidden = true;
+      card.hidden = false;
+      card.open = true;
+      mark(card);
+      if (visual()) pane.scrollTop += card.getBoundingClientRect().top - pane.getBoundingClientRect().top - 60;
+      else card.scrollIntoView({ block: 'start' });
+      const input = (field && card.querySelector(`[data-live="${CSS.escape(field)}"]:not([readonly])`))
+        || card.querySelector('input:not([type=hidden]):not([type=checkbox]):not([readonly]), textarea:not([readonly])');
+      input?.focus({ preventScroll: true });
+      post({ type: 'focusItem', ref, scroll: !fromPreview });
+    };
+    window.addEventListener('message', e => {
+      if (e.origin !== location.origin || e.source !== frame.contentWindow || !e.data) return;
+      const d = e.data;
+      if (d.type === 'ready') {
+        ready = true;
+        fit();
+        const last = read('lyiweb-lists-last:' + list);
+        const ref = focusId ? `${list}#${focusId}` : (last && cardOf(last) ? last : lform.querySelector('[data-items] [data-ref]')?.dataset.ref);
+        if (ref) post({ type: 'focusItem', ref, scroll: true });
+      } else if (d.type === 'pickItem') {
+        pickItem(d.ref, d.field, true);
+      } else if (d.type === 'pick') {
+        const page = String(d.key).split('.')[0];
+        say(`นี่คือข้อความหน้าเว็บ — <a href="blocks.php?page=${encodeURIComponent(page)}&focus=${encodeURIComponent(d.key)}">แก้ที่ ข้อความหน้าเว็บ & SEO →</a>`);
+      } else if (d.type === 'miss') {
+        say('ตรงนี้ไม่ใช่รายการ — เบอร์โทร อีเมล ที่อยู่ แก้ที่ <a href="settings.php">ข้อมูลติดต่อ & ลิงก์</a> · รูปภาพประกอบส่วนต่างๆ และเมนูด้านบนยังแก้ไม่ได้');
+      }
+    });
+    // typing → the page updates live; opening/entering a card → the item is outlined on the page
+    lform.addEventListener('input', e => {
+      const card = e.target.closest('[data-ref]');
+      if (card && e.target.matches('[data-live]')) post({ type: 'itemText', ref: card.dataset.ref, field: e.target.dataset.live, value: e.target.value });
+    });
+    lform.addEventListener('focusin', e => {
+      const card = e.target.closest('[data-items] [data-ref]');
+      if (!card || card.classList.contains('is-picked')) return;
+      mark(card);
+      post({ type: 'focusItem', ref: card.dataset.ref, scroll: true });
+    });
+    lform.querySelector('[data-items]').addEventListener('toggle', e => {
+      const card = e.target;
+      if (card.matches && card.matches('[data-ref]') && card.open) { mark(card); post({ type: 'focusItem', ref: card.dataset.ref, scroll: true }); }
+    }, true);
+    const paneKey = 'lyiweb-lists-pane:' + list;
+    lform.addEventListener('submit', () => store(paneKey, String(pane.scrollTop)));
+    const focusId = new URLSearchParams(location.search).get('focus');
+    applyView();
+    const paneTop = read(paneKey);
+    if (paneTop !== null && visual()) pane.scrollTop = parseInt(paneTop, 10) || 0;
+    store(paneKey);
+    if (focusId) pickItem(`${list}#${focusId}`, null, false);   // link from the text editor (works in both views)
   }
 
   // destructive buttons ask first

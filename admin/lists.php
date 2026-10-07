@@ -281,14 +281,15 @@ foreach ($view as $w) {
 }
 
 /** One item card. $k = id or 'n1'…; '__KEY__' for the template. */
-$card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $canUpload, $errors, $imageOf, $preview, $titleField): void {
+$listKey = $key;
+$card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $canUpload, $errors, $imageOf, $preview, $titleField, $listKey): void {
     $err = static fn(string $p): ?string => $errors[$p] ?? null;
     $hasErr = (bool) array_filter(array_keys($errors), static fn($e) => str_starts_with($e, "$k."));
     $img = $imageOf($w);
     $imgShown = $img !== '' ? content_local_image($img) : '';
     $isNew = !ctype_digit($k);
     ?>
-  <details class="item card<?= $w['active'] ? '' : ' is-hidden' ?><?= $hasErr ? ' has-error' : '' ?>" data-item data-key="<?= e($k) ?>"<?= $isNew || $hasErr ? ' open' : '' ?>>
+  <details class="item card<?= $w['active'] ? '' : ' is-hidden' ?><?= $hasErr ? ' has-error' : '' ?>" data-item data-key="<?= e($k) ?>" data-ref="<?= e($listKey . '#' . $k) ?>"<?= $isNew || $hasErr ? ' open' : '' ?>>
     <summary>
       <span class="item-n" data-item-n><?= $n ?></span>
 <?php if ($imgShown !== ''): ?><img class="item-thumb" src="../<?= e($imgShown) ?>" alt=""><?php endif; ?>
@@ -322,10 +323,10 @@ $card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $c
     <div class="row<?= $e1 || $e2 ? ' has-error' : '' ?>"<?= ($w['en'][$f] ?? '') === '' ? ' data-missing="1"' : '' ?>>
       <span class="key"><?= e($def['label']) ?></span>
 <?php if ($tag === 'textarea'): ?>
-      <textarea name="<?= e("{$base}[th][$f]") ?>" rows="3"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>><?= e((string) ($w['th'][$f] ?? '')) ?></textarea>
+      <textarea name="<?= e("{$base}[th][$f]") ?>" rows="3" data-live="<?= e($f) ?>"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>><?= e((string) ($w['th'][$f] ?? '')) ?></textarea>
       <textarea name="<?= e("{$base}[en][$f]") ?>" rows="3" placeholder="(ว่าง = ใช้ภาษาไทย)"><?= e((string) ($w['en'][$f] ?? '')) ?></textarea>
 <?php else: ?>
-      <input name="<?= e("{$base}[th][$f]") ?>" value="<?= e((string) ($w['th'][$f] ?? '')) ?>" maxlength="300"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>>
+      <input name="<?= e("{$base}[th][$f]") ?>" value="<?= e((string) ($w['th'][$f] ?? '')) ?>" maxlength="300" data-live="<?= e($f) ?>"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>>
       <input name="<?= e("{$base}[en][$f]") ?>" value="<?= e((string) ($w['en'][$f] ?? '')) ?>" maxlength="300" placeholder="(ว่าง = ใช้ภาษาไทย)">
 <?php endif; ?>
 <?php if ($e1 || $e2): ?><small class="err"><?= e((string) ($e1 ?? $e2)) ?></small><?php endif; ?>
@@ -364,7 +365,7 @@ $card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $c
 <?php elseif ($def['type'] === 'int'): ?>
         <input type="number" name="<?= e("{$base}[c][$f]") ?>" value="<?= e((string) $v) ?>" step="1">
 <?php else: ?>
-        <input name="<?= e("{$base}[c][$f]") ?>" value="<?= e((string) $v) ?>" maxlength="300"<?= $f === $titleField ? ' data-title-src' : '' ?>>
+        <input name="<?= e("{$base}[c][$f]") ?>" value="<?= e((string) $v) ?>" maxlength="300"<?= empty($def['css']) ? ' data-live="' . e($f) . '"' : '' ?><?= $f === $titleField ? ' data-title-src' : '' ?>>
 <?php endif; ?>
 <?php if ($e1): ?><small class="err"><?= e($e1) ?></small><?php endif; ?>
       </div>
@@ -385,7 +386,7 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
 </nav>
 <?php $shot = 'assets/where/' . substr($key, strpos($key, '.') + 1) . '.webp';
       $pageUrl = '../' . ($scopePage === 'home' ? 'index.php' : $scopePage . '.php') . ($scopeSection !== 'trust' ? '#' . $scopeSection : ''); ?>
-<section class="card where">
+<section class="card where list-only">
 <?php if (is_file(__DIR__ . '/' . $shot)): ?>
   <a class="where-shot" href="<?= e(asset($shot)) ?>" target="_blank" rel="noopener" title="ดูภาพใหญ่"><img src="<?= e(asset($shot)) ?>" alt="ตำแหน่งบนหน้าเว็บ: <?= e($list['title']) ?>" loading="lazy"></a>
 <?php endif; ?>
@@ -400,10 +401,27 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง<?= $canUpload && array_filter($fields, static fn($d) => $d['type'] === 'image') ? ' · รูปที่เลือกไว้ต้องเลือกใหม่อีกครั้ง' : '' ?></div><?php endif; ?>
 <?php if (!$canEdit): ?><div class="flash flash-info">คุณมีสิทธิ์แปลภาษาอังกฤษเท่านั้นในส่วนนี้ — แก้ได้เฉพาะช่อง English</div><?php endif; ?>
 
-<form method="post" class="form" id="list-form" enctype="multipart/form-data" data-list-form>
+<form method="post" class="form" id="list-form" enctype="multipart/form-data" data-list-form data-list="<?= e($key) ?>"
+      data-list-names="<?= e(json_encode(array_map(static fn($l) => preg_replace('/^หน้าแรก · /u', '', $l['title']), $schema), JSON_UNESCAPED_UNICODE)) ?>">
   <?= csrf_field() ?>
   <input type="hidden" name="list" value="<?= e($key) ?>">
+  <div class="blocks-split" data-split>
+    <!-- the real page: click a card/item to edit it (wide screens, "เห็นหน้าเว็บ" view) -->
+    <div class="preview-pane" data-preview-pane>
+      <div class="preview-bar">
+        <b>หน้าเว็บจริง</b><span class="muted small"><?= e($list['where'] ?? '') ?> · คลิกรายการบนหน้าเว็บเพื่อแก้ · ข้อความที่พิมพ์เห็นผลทันที (ลำดับ/ซ่อน/รูป เห็นหลังกดบันทึก)</span>
+        <a class="btn btn-sm btn-ghost" href="<?= e($pageUrl) ?>" target="_blank" rel="noopener">เปิดแท็บใหม่ ↗</a>
+      </div>
+      <div class="preview-box" data-preview-box><iframe data-preview title="ตัวอย่างหน้าเว็บ" data-src="preview.php?page=<?= e($scopePage) ?>"></iframe></div>
+      <div class="preview-note" data-preview-note hidden></div>
+    </div>
+
+    <div class="edit-pane" data-edit-pane>
   <div class="toolbar">
+    <div class="view-switch" role="group" aria-label="รูปแบบการแก้ไข" data-view-switch>
+      <button type="button" data-view="visual">เห็นหน้าเว็บ</button>
+      <button type="button" data-view="list">รายการ</button>
+    </div>
     <input type="search" class="filter" placeholder="ค้นหาในรายการ…" data-filter>
     <label class="check"><input type="checkbox" data-only-missing> ยังไม่แปล (<?= $missingEn ?>)</label>
     <button class="btn btn-primary" type="submit">บันทึก</button>
@@ -419,6 +437,8 @@ admin_page_start('รายการ & รูปภาพ', 'lists.php');
 <?php endif; ?>
 
   <div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div>
+    </div>
+  </div>
 </form>
 <?php
 admin_page_end();

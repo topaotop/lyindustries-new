@@ -33,7 +33,7 @@ function content_cache_clear(): void
 }
 
 /** Bump when the cached structure changes so old cache files are ignored. */
-const CONTENT_CACHE_VERSION = 4;
+const CONTENT_CACHE_VERSION = 5;
 
 /**
  * Everything public pages need from the DB in one round trip, or null when neither DB nor cache
@@ -69,7 +69,7 @@ function content_raw(): ?array
 
     try {
         $rows = db_rows(
-            'SELECT i.list_key, i.is_active, i.data_th, i.data_en, i.data_common, m.file_path
+            'SELECT i.id, i.list_key, i.is_active, i.data_th, i.data_en, i.data_common, m.file_path
                FROM dbo.lyiweb_items i
                LEFT JOIN dbo.lyiweb_media m ON m.id = i.image_id
               ORDER BY i.list_key, i.sort_order, i.id'
@@ -96,6 +96,7 @@ function content_raw(): ?array
     foreach ($rows as $row) {
         // hidden rows are kept so a list whose items are all hidden shows nothing (not the built-in data)
         $data['items'][$row['list_key']][] = [
+            'id'     => (int) $row['id'],
             'active' => (bool) $row['is_active'],
             'th'     => json_decode((string) $row['data_th'], true) ?: [],
             'en'     => json_decode((string) $row['data_en'], true) ?: [],
@@ -150,10 +151,36 @@ function content_list(string $key, string $lang = 'th'): array
                 default => (string) $value,
             };
         }
+        if (defined('LYIWEB_PREVIEW') && isset($row['id'])) {
+            foreach ($fields as $name => $def) {
+                if (in_array($def['type'], ['text', 'textarea'], true) && empty($def['css']) && $item[$name] !== '') {
+                    $item[$name] = content_preview_mark($key, (int) $row['id'], $name) . $item[$name];
+                }
+            }
+        }
         $out[] = $item;
     }
 
     return $out;
+}
+
+/**
+ * Admin preview only: an invisible zero-width tag put in front of a list text so the preview
+ * script can tell which item/field each text on the page comes from (no template changes needed).
+ * Tag n is listed in $GLOBALS['lyiweb_preview_marks'][n] = [list, item id, field].
+ */
+function content_preview_mark(string $list, int $id, string $field): string
+{
+    $n = count($GLOBALS['lyiweb_preview_marks'] ??= []);
+    $GLOBALS['lyiweb_preview_marks'][] = [$list, $id, $field];
+    $digits = ["\u{200B}", "\u{200C}", "\u{200D}", "\u{2060}"];
+    $code = '';
+    do {
+        $code = $digits[$n % 4] . $code;
+        $n = intdiv($n, 4);
+    } while ($n > 0);
+
+    return "\u{2063}" . $code . "\u{2064}";
 }
 
 /**

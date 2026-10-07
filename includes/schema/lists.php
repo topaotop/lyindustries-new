@@ -10,6 +10,7 @@ declare(strict_types=1);
  * - 'i18n' => false : stored once in data_common
  * - type 'image'    : path string in data_common; lyiweb_items.image_id (uploaded media) overrides it
  * - 'label'         : field name shown in the admin form
+ * - 'css' => true   : value is used inside a style attribute (never marked in the admin preview)
  * - 'where'         : plain description of where the list shows on the page (admin help text;
  *                     a screenshot admin/assets/where/<name after the dot>.webp goes with it)
  * - 'scope'         : page.section the list belongs to — who may edit it follows that section's
@@ -62,7 +63,7 @@ return [
         'fields' => [
             'name' => ['type' => 'text',  'i18n' => false, 'label' => 'ชื่อสี'],
             'hex'  => ['type' => 'color', 'i18n' => false, 'label' => 'สี (hex)'],
-            'glow' => ['type' => 'text',  'i18n' => false, 'label' => 'สีเงา (rgba)'],
+            'glow' => ['type' => 'text',  'i18n' => false, 'label' => 'สีเงา (rgba)', 'css' => true],
             'code' => ['type' => 'text',  'i18n' => false, 'label' => 'รหัส Pantone'],
             'text' => ['type' => 'color', 'i18n' => false, 'label' => 'สีตัวอักษรบนแถบ'],
         ],
