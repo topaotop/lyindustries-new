@@ -9,6 +9,14 @@ declare(strict_types=1);
 
 const SITE_PROD_ORIGIN = 'https://www.lyindustries.com';
 const SITE_OG_IMAGE = 'assets/img/brand/og-image.jpg';   // 1200×630 link-preview picture
+const SEO_TITLE_RANGE = [30, 60];   // recommended lengths (admin hints): what fits a Google result line
+const SEO_DESC_RANGE = [70, 160];
+
+/** Settings key of a page's focus keyword — admin-only, never printed on the site. */
+function seo_kw_key(string $slug, string $l): string
+{
+    return "seo_kw_{$slug}_$l";
+}
 
 function is_production_host(): bool
 {

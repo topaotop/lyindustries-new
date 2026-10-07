@@ -37,14 +37,7 @@ $tab = (string) ($_GET['tab'] ?? $_POST['tab'] ?? 'overview');
 if (!isset($tabs[$tab])) {
     $tab = 'overview';
 }
-const SEO_TITLE_RANGE = [30, 60];   // what fits a Google result line
-const SEO_DESC_RANGE = [70, 160];
 const SEO_KW_MAX = 100;
-/** Settings key of a page's focus keyword — admin-only, never printed on the site. */
-function seo_kw_key(string $slug, string $l): string
-{
-    return "seo_kw_{$slug}_$l";
-}
 /** Verification code from a pasted meta tag or the bare code; '' = empty; null = not a valid code. */
 function seo_verify_code(string $raw, string $metaName): ?string
 {

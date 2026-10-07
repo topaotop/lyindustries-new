@@ -61,6 +61,8 @@ function admin_icon(string $key): string
         'list'     => '<rect x="3.5" y="4" width="4" height="4" rx="1"/><rect x="3.5" y="12" width="4" height="4" rx="1"/><path d="M10.5 6h6M10.5 14h6"/>',
         'menu'     => '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
         'back'     => '<path d="M12 4.5 6.5 10l5.5 5.5"/>',
+        'globe'    => '<circle cx="10" cy="10" r="6.5"/><path d="M3.5 10h13M10 3.5c2 2 2.8 4.2 2.8 6.5s-.8 4.5-2.8 6.5c-2-2-2.8-4.2-2.8-6.5s.8-4.5 2.8-6.5z"/>',
+        'refresh'  => '<path d="M15.5 6.5A6 6 0 1 0 16 11"/><path d="M16 3.5v3.5h-3.5"/>',
         'collapse' => '<path d="M10 5 5 10l5 5M15 5l-5 5 5 5"/>',
         'logout'   => '<path d="M8 4H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M12 6.5 15.5 10 12 13.5M15.5 10H8"/>',
         'user'     => '<circle cx="10" cy="7" r="3.2"/><path d="M4 17a6 6 0 0 1 12 0"/>',
