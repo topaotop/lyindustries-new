@@ -14,6 +14,15 @@
 
 ---
 
+## v1.3.1 — 2026-10-07 10:31 · dev
+
+- **Commit:** `82da73e` · **Tag:** `v1.3.1`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:** คนลาออก (บัญชี `sysmnuser` ถูกล็อก) ถูกถอน role ในเว็บอัตโนมัติเมื่อเปิดหน้าผู้ใช้/role + บันทึก audit + แจ้งครั้งเดียว
+- **Files:** แก้ 3 (`admin/roles.php`, `admin/users.php`, `includes/admin/access.php`) · DB ไม่เปลี่ยน
+- **Backup:** 3 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 4 หน้า + login 200 · users/roles → 302 login · `includes/` และ `connectgrp.php` → 404 · HTML จาก server ตรงกับ local ทุกหน้า · ไฟล์ admin ชุดที่ deploy รันด้วย session จำลองไม่มี error · URL สาธารณะผลเหมือนกัน
+
 ## v1.3.0 — 2026-10-07 10:16 · dev
 
 - **Commit:** `a0a206e` · **Tag:** `v1.3.0`
