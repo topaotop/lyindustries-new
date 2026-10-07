@@ -98,7 +98,7 @@ if ($role === null) {
     admin_page_start('บทบาท (Role)', 'roles.php');
     ?>
 <h1>บทบาท (Role)</h1>
-<p class="muted">role = ชุดสิทธิ์ + หน้า/ส่วนที่แก้ได้ แล้วนำไปให้ผู้ใช้ที่หน้า <a href="users.php">ผู้ใช้ & สิทธิ์</a> · ผู้ใช้ที่ level ≥ <?= auth_admin_min_level() ?> ในระบบบริษัทได้ทุกสิทธิ์อัตโนมัติ</p>
+<p class="muted">role = ชุดสิทธิ์ + หน้า/ส่วนที่แก้ได้ แล้วนำไปให้ผู้ใช้ที่หน้า <a href="users.php">ผู้ใช้ & สิทธิ์</a> · ผู้ใช้ที่ไม่มี role เลย login ไม่ได้<?= auth_admin_min_level() > 0 ? ' · ผู้ใช้ที่ level ≥ ' . auth_admin_min_level() . ' ในระบบบริษัทได้ทุกสิทธิ์อัตโนมัติ' : '' ?></p>
 <div class="actions" style="justify-content:flex-start;margin:14px 0"><a class="btn btn-primary" href="?new=1">+ เพิ่ม role</a></div>
 <div class="card">
   <table class="table">
@@ -180,7 +180,7 @@ admin_page_start($title, 'roles.php');
 <?php if (!$locked): ?>
   <div class="actions sticky">
 <?php if (!$isNew && !$role['is_system']): ?>
-    <button class="btn btn-danger" type="submit" name="action" value="delete" formnovalidate data-confirm="ลบ role นี้? ผู้ใช้ <?= $role['members'] ?> คนที่มี role นี้จะเสียสิทธิ์ทันที">ลบ role</button>
+    <button class="btn btn-danger" type="submit" name="action" value="delete" formnovalidate data-confirm="ลบ role นี้? ผู้ใช้ <?= $role['members'] ?> คนที่มี role นี้จะเสียสิทธิ์ทันที (ถ้าไม่มี role อื่นจะ login ไม่ได้)">ลบ role</button>
     <span class="spacer"></span>
 <?php endif; ?>
     <button class="btn btn-primary" type="submit" name="action" value="save">บันทึก</button>

@@ -63,6 +63,7 @@ function auth_attempt(string $username, string $password): array
     )[0] ?? null;
 
     $ok = false;
+    $allowed = false;
     if ($row !== null && (int) ($row['locked'] ?? 0) !== 1) {
         foreach (['pass', 'password'] as $col) {
             $stored = (string) ($row[$col] ?? '');
@@ -73,9 +74,11 @@ function auth_attempt(string $username, string $password): array
         }
     }
 
+    // only people picked in the admin (holding a role) may sign in; refused logins count as failures
+    $allowed = $ok && auth_has_access((int) $row['id'], (int) ($row['level'] ?? 0));
     db_exec(
         'INSERT dbo.lyiweb_login_attempts (username, ip, success) VALUES (?, ?, ?)',
-        [$username, client_ip(), $ok ? 1 : 0]
+        [$username, client_ip(), $allowed ? 1 : 0]
     );
 
     if ($row !== null && (int) ($row['locked'] ?? 0) === 1) {
@@ -83,6 +86,9 @@ function auth_attempt(string $username, string $password): array
     }
     if (!$ok) {
         return [false, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'];
+    }
+    if (!$allowed) {
+        return [false, 'บัญชีนี้ยังไม่ได้รับสิทธิ์เข้าหลังบ้านเว็บไซต์ — ติดต่อผู้ดูแลระบบ'];
     }
 
     session_regenerate_id(true);
@@ -120,6 +126,15 @@ function auth_user(): ?array
         auth_logout();
         return null;
     }
+    // access removed (last role revoked) → signed out on the next request
+    static $checked = false;
+    if (!$checked) {
+        $checked = true;
+        if (!auth_has_access($user['id'], $user['level'])) {
+            auth_logout();
+            return null;
+        }
+    }
     $_SESSION['lyiweb_last'] = time();
 
     return $user;
@@ -127,7 +142,7 @@ function auth_user(): ?array
 
 /**
  * Permissions of the logged-in user, re-read from the DB on every request so a revoked role
- * takes effect immediately. sysmnuser.level >= setting admin_min_level = every permission.
+ * takes effect immediately. sysmnuser.level >= setting admin_min_level = every permission (0 = off, the default since 009).
  *
  * @return list<string>
  */
@@ -164,7 +179,14 @@ function auth_admin_min_level(): int
 {
     static $min = null;
 
-    return $min ??= (int) (db_rows("SELECT value FROM dbo.lyiweb_settings WHERE setting_key = 'admin_min_level'")[0]['value'] ?? 5);
+    return $min ??= (int) (db_rows("SELECT value FROM dbo.lyiweb_settings WHERE setting_key = 'admin_min_level'")[0]['value'] ?? 0);
+}
+
+/** May this sysmnuser sign in? Needs at least one website role (or the level rule, when enabled). */
+function auth_has_access(int $userId, int $level): bool
+{
+    return auth_is_full_admin($level)
+        || db_rows('SELECT TOP 1 1 AS x FROM dbo.lyiweb_user_roles WHERE user_id = ?', [$userId]) !== [];
 }
 
 function auth_is_full_admin(int $level): bool

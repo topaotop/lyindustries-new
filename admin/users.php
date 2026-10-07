@@ -29,7 +29,10 @@ if ($user !== null) {
             $wanted = array_values(array_intersect(array_keys($roles), array_map('intval', (array) ($_POST['roles'] ?? []))));
             $add = array_diff($wanted, $current);
             $remove = array_diff($current, $wanted);
-            if ($add === [] && $remove === []) {
+            $adminRole = array_values(array_filter($roles, static fn(array $r): bool => $r['role_key'] === 'admin'))[0]['id'] ?? 0;
+            if (in_array($adminRole, $remove, true) && $roles[$adminRole]['members'] <= 1) {
+                flash('error', 'ถอน role ผู้ดูแลระบบไม่ได้ — ต้องมีผู้ดูแลอย่างน้อย 1 คน (ให้ role นี้กับคนอื่นก่อน)');
+            } elseif ($add === [] && $remove === []) {
                 flash('info', 'ไม่มีอะไรเปลี่ยน');
             } else {
                 db_transaction(static function () use ($id, $add, $remove, $me): void {
@@ -58,6 +61,7 @@ if ($user !== null) {
 <?php if ((int) $user['locked'] === 1): ?><div class="flash flash-warn">บัญชีนี้ถูกล็อกในระบบบริษัท — login ไม่ได้จนกว่า IT จะปลดล็อก (สิทธิ์ที่ให้ไว้จะมีผลเมื่อปลดล็อก)</div><?php endif; ?>
 <?php if ($isFull): ?><div class="flash flash-info">level <?= (int) $user['level'] ?> ≥ <?= $minLevel ?> — ได้ทุกสิทธิ์ทุกส่วนอัตโนมัติ role ด้านล่างไม่มีผล</div><?php endif; ?>
 <?php if ($isMe): ?><div class="flash flash-info">นี่คือบัญชีของคุณ — แก้สิทธิ์ตัวเองไม่ได้</div><?php endif; ?>
+<?php if (!$isFull): ?><p class="muted small">ติ๊กอย่างน้อย 1 role = login หลังบ้านได้ · ไม่มี role เลย = login ไม่ได้ (ถ้ากำลังใช้งานอยู่จะหลุดทันที)</p><?php endif; ?>
 
 <form method="post" class="form">
   <?= csrf_field() ?>
@@ -103,7 +107,7 @@ $admins = $minLevel > 0 ? db_rows(
 admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 ?>
 <h1>ผู้ใช้ & สิทธิ์</h1>
-<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — ทุกคนที่ไม่ถูกล็อก login ได้ แต่จะแก้อะไรไม่ได้จนกว่าจะได้ role · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a></p>
+<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — <b>login หลังบ้านได้เฉพาะคนที่ได้ role</b> · ค้นหาแล้วกด "กำหนดสิทธิ์" เพื่อเลือกคน · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a></p>
 
 <form method="get" class="card search-user">
   <label class="field" style="margin:0"><span>ค้นหาผู้ใช้เพื่อให้สิทธิ์</span>
@@ -123,7 +127,7 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <?php foreach ($found as $u): $uid = (int) $u['id']; ?>
       <tr<?= (int) $u['locked'] === 1 ? ' class="muted"' : '' ?>>
         <td><?= e($u['name'] ?: '—') ?></td><td><?= e($u['username']) ?></td><td><?= e((string) $u['department']) ?></td><td><?= (int) $u['level'] ?></td>
-        <td class="small"><?= (int) $u['locked'] === 1 ? 'ถูกล็อก' : ($minLevel > 0 && (int) $u['level'] >= $minLevel ? 'ทุกสิทธิ์ (level)' : (e(implode(', ', $granted[$uid]['roles'] ?? [])) ?: '<span class="muted">—</span>')) ?></td>
+        <td class="small"><?= (int) $u['locked'] === 1 ? 'ถูกล็อก' : ($minLevel > 0 && (int) $u['level'] >= $minLevel ? 'ทุกสิทธิ์ (level)' : (e(implode(', ', $granted[$uid]['roles'] ?? [])) ?: '<span class="muted">login ไม่ได้</span>')) ?></td>
         <td class="nowrap"><a href="?id=<?= $uid ?>">กำหนดสิทธิ์</a></td>
       </tr>
 <?php endforeach; ?>
@@ -133,9 +137,9 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 </section>
 <?php endif; ?>
 
-<div class="grid2">
+<div class="<?= $admins === [] ? '' : 'grid2' ?>">
   <section class="card">
-    <h2>ผู้ที่ได้รับ role (<?= count($granted) ?>)</h2>
+    <h2>ผู้ที่ login ได้ (<?= count($granted) ?>)</h2>
 <?php if ($granted === []): ?>
     <p class="muted">ยังไม่มี — ค้นหาผู้ใช้ด้านบนแล้วกด "กำหนดสิทธิ์"</p>
 <?php else: ?>
@@ -151,6 +155,7 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <?php endif; ?>
   </section>
 
+<?php if ($admins !== []): ?>
   <section class="card">
     <h2>ผู้ดูแลอัตโนมัติ (level ≥ <?= $minLevel ?>) · <?= count($admins) ?> คน</h2>
     <p class="muted small">ได้ทุกสิทธิ์ทุกส่วนจาก level ในระบบบริษัท — เปลี่ยนเกณฑ์ได้ที่ค่า <code>admin_min_level</code> ในตาราง lyiweb_settings</p>
@@ -160,6 +165,7 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <?php endforeach; ?>
     </ul>
   </section>
+<?php endif; ?>
 </div>
 <?php
 admin_page_end();

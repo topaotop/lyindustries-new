@@ -113,8 +113,8 @@ Permission ที่มี (กำหนดในโค้ด, ให้สิ�
 Role เริ่มต้น: `admin` (ทุกสิทธิ์), `editor` (content.edit, media.upload), `translator` (content.translate), `sales` (contact.view)
 
 **กติกา login**
-- ทุกคนที่มีใน `sysmnuser` และ `locked <> 1` **login ได้** (ตามที่ผู้ใช้กำหนด) — แต่ถ้าไม่มี role เลยจะเห็นแค่หน้า "ยังไม่มีสิทธิ์ ติดต่อผู้ดูแล"
-- **bootstrap admin คนแรก:** ผู้ใช้ `sysmnuser.level >= 5` ได้สิทธิ์ `admin` อัตโนมัติ (ใช้เกณฑ์เดียวกับ price-quote) — ปรับตัวเลขได้ใน `lyiweb_settings.admin_min_level`
+- ~~ทุกคนที่มีใน `sysmnuser` และ `locked <> 1` login ได้~~ → **เปลี่ยน 7 ต.ค. 2026 (ผู้ใช้สั่ง):** login ได้เฉพาะคนที่มี role อย่างน้อย 1 (เลือกในหน้า "ผู้ใช้ & สิทธิ์") และ `locked <> 1`
+- ~~bootstrap admin: `sysmnuser.level >= 5` ได้สิทธิ์ admin อัตโนมัติ~~ → **ปิดแล้ว** (`admin_min_level` = 0, SQL 009) — ผู้ดูแลคนแรก = `itti.p` (009 ให้ role `admin`) · ถอน role ผู้ดูแลระบบจากคนสุดท้ายไม่ได้
 - กันเดารหัส: ผิด 5 ครั้งใน 15 นาที → ล็อก username+IP 15 นาที (ตาราง **`lyiweb_login_attempts`**: `username`, `ip`, `attempted_at`, `success`)
 - session: `session_regenerate_id()` หลัง login, cookie `HttpOnly` + `Secure` + `SameSite=Lax`, หมดอายุเมื่อไม่ใช้งาน 2 ชม.
 - ทุกฟอร์ม/คำขอที่เขียนข้อมูลต้องมี CSRF token
@@ -210,7 +210,7 @@ request → I18n (ภาษาจาก URL) → Content::page('home', lang)
 |---|---|---|
 | 1 | API มีใครเรียกนอกจากหลังบ้าน | **ยังไม่มี มีแค่เว็บ** → API ใช้ session + CSRF อย่างเดียว ยังไม่ทำ API token (ออกแบบให้เพิ่มทีหลังได้) |
 | 2 | แจ้งเตือนฟอร์มติดต่อทางไหน | ผู้ใช้อธิบายเพิ่ม: **ช่องทางขอใบเสนอราคามี 4 ทาง = อีเมล, LINE, โทร, ฟอร์ม** → ดูข้อ 11.1 |
-| 3 | `level >= 5` = admin อัตโนมัติ | **OK** |
+| 3 | `level >= 5` = admin อัตโนมัติ | **OK** → ยกเลิก 7 ต.ค. 2026: ต้องเลือกทุกคน |
 | 4 | 183.89.245.21 = SQL Server เดียวกับ 192.168.0.22 | **ใช่** → สร้างตารางที่ .22 ได้ทั้ง `test_LYI` และ `LYI` |
 | 5 | z.com มี `gd` + WebP | **มี** → ย่อ/แปลงรูปด้วย GD ได้ |
 
