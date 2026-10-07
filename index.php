@@ -804,5 +804,6 @@ $menuItems = [
 </div>
 
 <script src="<?= e(asset('assets/js/home.js')) ?>" defer></script>
+<script src="<?= e(asset('assets/js/track.js')) ?>" defer></script>
 </body>
 </html>

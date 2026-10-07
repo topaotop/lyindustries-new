@@ -32,6 +32,10 @@ function admin_menu(): array
             ['blocks.php', 'ข้อความหน้าเว็บ & SEO', 'text', 'content.translate'],
             ['lists.php', 'รายการ & รูปภาพ', 'list', 'content.translate'],
         ],
+        'ลูกค้า' => [
+            ['contacts.php', 'คำขอจากลูกค้า', 'inbox', 'contact.view'],
+            ['clicks.php', 'สถิติการติดต่อ', 'chart', 'contact.view'],
+        ],
         'ตั้งค่าเว็บไซต์' => [
             ['settings.php', 'ข้อมูลติดต่อ & ลิงก์', 'phone', 'settings.edit'],
         ],
@@ -50,6 +54,8 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'inbox'    => '<path d="M3.5 11.5 5.6 5a1.5 1.5 0 0 1 1.4-1h6a1.5 1.5 0 0 1 1.4 1l2.1 6.5V15a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 3.5 15z"/><path d="M3.5 11.5h3.6l1 2h3.8l1-2h3.6"/>',
+        'chart'    => '<path d="M3.5 16.5h13"/><path d="M6 13.5v-3M10 13.5v-7M14 13.5v-5"/>',
         'list'     => '<rect x="3.5" y="4" width="4" height="4" rx="1"/><rect x="3.5" y="12" width="4" height="4" rx="1"/><path d="M10.5 6h6M10.5 14h6"/>',
         'menu'     => '<path d="M3.5 6h13M3.5 10h13M3.5 14h13"/>',
         'back'     => '<path d="M12 4.5 6.5 10l5.5 5.5"/>',
@@ -118,6 +124,16 @@ function flash(?string $type = null, ?string $message = null): ?array
     return $f;
 }
 
+/** Quote requests not opened yet (sidebar badge); 0 when the table is unavailable. */
+function admin_new_requests(): int
+{
+    try {
+        return (int) db_rows("SELECT COUNT(*) AS n FROM dbo.lyiweb_contact_requests WHERE status = N'new'")[0]['n'];
+    } catch (Throwable) {
+        return 0;
+    }
+}
+
 /** Environment label shown in the top bar so nobody edits production by mistake. */
 function admin_env(): array
 {
@@ -167,8 +183,9 @@ function admin_page_start(string $title, string $active): void
 <?php if ($group !== '' && $group !== null): ?>
       <span class="side-label"><?= e((string) $group) ?></span>
 <?php endif; ?>
-<?php foreach ($visible as [$file, $label, $icon]): ?>
-      <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><?= e($label) ?></span></a>
+<?php foreach ($visible as [$file, $label, $icon]):
+        $badge = $file === 'contacts.php' ? admin_new_requests() : 0; ?>
+      <a href="<?= e($file) ?>"<?= $active === $file ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><?= e($label) ?></span><?php if ($badge > 0): ?><small class="side-badge" title="คำขอใหม่ที่ยังไม่ได้เปิดอ่าน"><?= $badge ?></small><?php endif; ?></a>
 <?php endforeach; ?>
     </div>
 <?php endforeach; ?>

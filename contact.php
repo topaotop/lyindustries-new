@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . '/includes/lib/visitor.php';
 
 $activeNav = 'contact';
 $meta = page_meta('contact');
@@ -128,6 +129,13 @@ input,select,textarea{font:inherit;font-size:15px;color:var(--text-primary);back
 input:focus,select:focus,textarea:focus{border-color:var(--brand-orange)}
 textarea{min-height:130px;resize:vertical}
 form.card button{justify-self:start;border:0;cursor:pointer;font:inherit}
+form.card button:disabled{opacity:.6;cursor:wait}
+form.card .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+form.card .sent{display:flex;flex-direction:column;gap:6px;padding:28px 4px;text-align:center}
+form.card .sent strong{font-size:20px;color:var(--text-primary)}
+form.card .sent span{color:var(--text-secondary)}
+form.card.is-sent>:not(.sent){display:none}
+form.card .ferr{font-size:13.5px;color:#ff8a65}
 .note{font-size:12.5px;color:var(--text-tertiary)}
 .info{display:flex;flex-direction:column;gap:0}
 .info .row{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--border-light);font-size:15px}
@@ -174,7 +182,10 @@ section.block.light+section.block{padding-top:96px}
       <p><?= b('contact.form.03') ?></p>
     </div>
     <div class="cgrid">
-      <form class="card" id="qform">
+      <form class="card" id="qform" method="post" action="api/v1/contact.php"<?= isset($_GET['sent']) ? ' data-sent' : '' ?>>
+        <div class="sent full" role="status"<?= isset($_GET['sent']) ? '' : ' hidden' ?>><strong><?= b('contact.form.24') ?></strong><span><?= b('contact.form.25') ?></span></div>
+        <input type="hidden" name="t" value="<?= e(form_stamp()) ?>">
+        <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
         <label><?= b('contact.form.04') ?><input name="name" required></label>
         <label><?= b('contact.form.05') ?><input name="company"></label>
         <label><?= b('contact.form.06') ?><input name="email" type="email" required></label>
@@ -186,8 +197,9 @@ section.block.light+section.block{padding-top:96px}
             <option><?= b('contact.form.12') ?></option><option><?= b('contact.form.13') ?></option><option><?= b('contact.form.14') ?></option><option><?= b('contact.form.15') ?></option>
           </select></label>
         <label class="full"><?= b('contact.form.16') ?><textarea name="msg" required></textarea></label>
-        <button class="btn btn-o" type="submit"><?= b('contact.form.17') ?></button>
-        <span class="note full">มีรูปหรือไฟล์ tech pack? ส่งทาง LINE <?= e(site('line_id')) ?> หรือแนบในอีเมลที่เปิดขึ้นได้เลย</span>
+        <button class="btn btn-o" type="submit" data-label="<?= b('contact.form.17') ?>" data-busy="<?= b('contact.form.27') ?>"><?= b('contact.form.17') ?></button>
+        <span class="ferr full" role="alert" data-err-invalid="<?= b('contact.form.28') ?>" data-err-rate="<?= b('contact.form.29') ?>" data-err-server="<?= b('contact.form.26') ?>"<?= isset($_GET['err']) ? '' : ' hidden' ?>><?= b('contact.form.28') ?></span>
+        <span class="note full"><?= b('contact.form.30') ?> <?= e(site('line_id')) ?> <?= b('contact.form.31') ?> <a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></span>
       </form>
       <div class="info">
         <div class="row"><span class="k"><?= b('contact.form.18') ?></span><span><?= e(site('company_th')) ?><br><?= address_th_html() ?></span></div>
@@ -215,11 +227,31 @@ section.block.light+section.block{padding-top:96px}
 <?php require __DIR__ . '/includes/site-footer.php'; ?>
 
 <script>
-document.getElementById('qform').addEventListener('submit',function(e){
-  e.preventDefault();var f=new FormData(this);
-  var body='ชื่อ: '+f.get('name')+'\nบริษัท: '+f.get('company')+'\nอีเมล: '+f.get('email')+'\nโทร: '+f.get('phone')+'\nสินค้า: '+f.get('product')+'\n\nรายละเอียด:\n'+f.get('msg');
-  location.href='mailto:<?= e(site('email')) ?>?subject='+encodeURIComponent('ขอใบเสนอราคา — '+f.get('product'))+'&body='+encodeURIComponent(body);
-});
+// Quote form → saved in the admin (api/v1/contact.php). If the server cannot take it, open the
+// visitor's email app with everything filled in instead, so no request is lost.
+(function(){
+  var form=document.getElementById('qform'),btn=form.querySelector('button[type=submit]'),err=form.querySelector('.ferr'),sent=form.querySelector('.sent');
+  if(form.hasAttribute('data-sent')){form.classList.add('is-sent');}
+  function mailto(f){
+    var body='ชื่อ: '+f.get('name')+'\nบริษัท: '+f.get('company')+'\nอีเมล: '+f.get('email')+'\nโทร: '+f.get('phone')+'\nสินค้า: '+f.get('product')+'\n\nรายละเอียด:\n'+f.get('msg');
+    location.href='mailto:<?= e(site('email')) ?>?subject='+encodeURIComponent('ขอใบเสนอราคา — '+f.get('product'))+'&body='+encodeURIComponent(body);
+  }
+  function show(kind){err.textContent=err.getAttribute('data-err-'+kind);err.hidden=false;}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var f=new FormData(form);
+    err.hidden=true;btn.disabled=true;btn.textContent=btn.getAttribute('data-busy');
+    fetch(form.action,{method:'POST',body:f,headers:{'Accept':'application/json'}})
+      .then(function(r){return r.json().catch(function(){return {ok:false,error:'server'};});})
+      .then(function(res){
+        if(res.ok){form.classList.add('is-sent');sent.hidden=false;sent.scrollIntoView({block:'center',behavior:'smooth'});return;}
+        if(res.error==='invalid'||res.error==='rate'){show(res.error);}else{show('server');mailto(f);}
+      })
+      .catch(function(){show('server');mailto(f);})
+      .then(function(){btn.disabled=false;btn.textContent=btn.getAttribute('data-label');});
+  });
+})();
 </script>
+<script src="<?= e(asset('assets/js/track.js')) ?>" defer></script>
 </body>
 </html>

@@ -286,5 +286,6 @@ body{background:var(--bg-primary);color:var(--text-primary)}
 
 <?php require __DIR__ . '/includes/site-footer.php'; ?>
 
+<script src="<?= e(asset('assets/js/track.js')) ?>" defer></script>
 </body>
 </html>

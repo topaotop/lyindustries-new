@@ -22,6 +22,7 @@ $stats = db_rows(
         (SELECT COUNT(*) FROM dbo.lyiweb_blocks WHERE value_en IS NOT NULL AND value_en <> N'') AS blocks_en,
         (SELECT COUNT(*) FROM dbo.lyiweb_items WHERE is_active = 1) AS items,
         (SELECT COUNT(*) FROM dbo.lyiweb_contact_requests WHERE status = N'new') AS new_requests,
+        (SELECT COUNT(*) FROM dbo.lyiweb_channel_clicks WHERE is_bot = 0 AND clicked_at >= DATEADD(day, -7, GETDATE())) AS clicks7,
         (SELECT COUNT(*) FROM dbo.lyiweb_pages WHERE meta_desc_th IS NULL OR meta_desc_th = N'') AS pages_no_desc"
 )[0];
 $recent = db_rows(
@@ -55,7 +56,10 @@ admin_page_start('แดชบอร์ด', 'index.php');
 <?php endif; ?>
 
 <div class="stats">
-  <div class="stat"><b><?= (int) $stats['new_requests'] ?></b><span>ข้อความขอใบเสนอราคาใหม่</span></div>
+  <?= can('contact.view') ? '<a class="stat" href="contacts.php?status=new">' : '<div class="stat">' ?><b><?= (int) $stats['new_requests'] ?></b><span>คำขอใบเสนอราคาใหม่</span><?= can('contact.view') ? '</a>' : '</div>' ?>
+<?php if (can('contact.view')): ?>
+  <a class="stat" href="clicks.php?range=7"><b><?= (int) $stats['clicks7'] ?></b><span>กดติดต่อ (อีเมล/LINE/โทร/ฟอร์ม) 7 วัน</span></a>
+<?php endif; ?>
   <div class="stat"><b><?= (int) $stats['blocks'] ?></b><span>ข้อความบนหน้าเว็บ</span></div>
   <div class="stat"><b><?= $enPct ?>%</b><span>แปลอังกฤษแล้ว (<?= (int) $stats['blocks_en'] ?>/<?= (int) $stats['blocks'] ?>)</span></div>
   <div class="stat"><b><?= (int) $stats['items'] ?></b><span>รายการ (สินค้า, FAQ, ขั้นตอน …)</span></div>

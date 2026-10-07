@@ -222,5 +222,6 @@ section.video{padding-bottom:96px}
 </section>
 
 <footer><div class="wrap"><span><?= b('about.cta.05') ?></span><span><?= b('about.cta.06') ?></span></div></footer>
+<script src="<?= e(asset('assets/js/track.js')) ?>" defer></script>
 </body>
 </html>

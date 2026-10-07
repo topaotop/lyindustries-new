@@ -37,6 +37,15 @@ return [
     'contact.form.21' => 'EMAIL',
     'contact.form.22' => 'LINE',
     'contact.form.23' => 'HOURS',
+    // quote form: result messages + note under the button (form saved to the database, 3c)
+    'contact.form.24' => 'ส่งคำขอเรียบร้อยแล้ว',
+    'contact.form.25' => 'ขอบคุณที่ติดต่อเรา ทีมขายจะติดต่อกลับโดยเร็วที่สุด',
+    'contact.form.26' => 'ระบบส่งไม่สำเร็จ — กำลังเปิดอีเมลให้ส่งแทน',
+    'contact.form.27' => 'กำลังส่ง…',
+    'contact.form.28' => 'กรุณากรอกชื่อ อีเมล และรายละเอียดให้ครบถ้วน',
+    'contact.form.29' => 'ส่งบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่',
+    'contact.form.30' => 'มีรูปหรือไฟล์ tech pack? ส่งทาง LINE',
+    'contact.form.31' => 'หรือแนบมากับอีเมลถึง',
 
     // map
     'contact.map.01' => '02 — LOCATION',
