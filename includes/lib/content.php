@@ -272,22 +272,36 @@ function phone_schema(string $number): string
 }
 
 /** "02-517-0768 ต่อ 120, 121" */
-function phone_display_th(): string
+/** Phone with extension in the page language, e.g. "02-517-0768 ต่อ 120, 121" (pattern site.labels.03). */
+function phone_display(): string
 {
-    return site('phone') . (site('phone_ext') !== '' ? ' ต่อ ' . site('phone_ext') : '');
+    $ext = site('phone_ext');
+
+    return $ext === '' ? site('phone') : strtr(block_text('site.labels.03'), ['{phone}' => site('phone'), '{ext}' => $ext]);
 }
 
-/** Full Thai address; $separator is the raw HTML between the two lines (e.g. "<br>"). */
-function address_th_html(string $separator = ' '): string
+/** Company name in the page language (company_en on English pages when set). */
+function company_name(): string
 {
-    return e(site('address1_th')) . $separator . e(site('address2_th'));
+    return lang() === 'en' && site('company_en') !== '' ? site('company_en') : site('company_th');
 }
 
-/** "จันทร์ – ศุกร์: 08:30 – 17:30 น.<br>เสาร์: 08:30 – 12:00 น." (escaped HTML) */
-function hours_th_html(): string
+/** Full address in the page language; $separator is the raw HTML between the two lines (e.g. "<br>"). */
+function address_html(string $separator = ' '): string
 {
-    return 'จันทร์ – ศุกร์: ' . e(site('hours_weekday_open')) . ' – ' . e(site('hours_weekday_close')) . ' น.<br>'
-         . 'เสาร์: ' . e(site('hours_sat_open')) . ' – ' . e(site('hours_sat_close')) . ' น.';
+    $l = lang() === 'en' && site('address1_en') !== '' ? 'en' : 'th';
+
+    return e(site('address1_' . $l)) . $separator . e(site('address2_' . $l));
+}
+
+/** Opening hours in the page language (patterns site.labels.04/05), two lines as escaped HTML. */
+function hours_html(): string
+{
+    $line = static fn(string $key, string $open, string $close): string
+        => e(strtr(block_text($key), ['{open}' => site($open), '{close}' => site($close)]));
+
+    return $line('site.labels.04', 'hours_weekday_open', 'hours_weekday_close') . '<br>'
+         . $line('site.labels.05', 'hours_sat_open', 'hours_sat_close');
 }
 
 /** Value safe to print inside a JSON string in <script type="application/ld+json"> (without quotes). */
@@ -336,6 +350,12 @@ function block_text(string $key): string
 }
 
 /** Escaped copy block for templates: <?= b('home.hero.01') ?> */
+/** Copy block for use inside an HTML attribute (escaped, never wrapped by the admin preview). */
+function ba(string $key): string
+{
+    return e(block_text($key));
+}
+
 function b(string $key): string
 {
     $text = e(block_text($key));

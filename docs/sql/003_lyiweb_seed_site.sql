@@ -29,6 +29,12 @@ IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'address1_
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'address1_th', N'124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'address2_th')
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'address2_th', N'เขตคลองสามวา กรุงเทพฯ 10510');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'company_en')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'company_en', N'L.Y. Industries Co., Ltd.');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'address1_en')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'address1_en', N'124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'address2_en')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'address2_en', N'Khlong Sam Wa, Bangkok 10510');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'hours_weekday_open')
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'hours_weekday_open', N'08:30');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'hours_weekday_close')

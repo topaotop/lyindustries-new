@@ -20,7 +20,7 @@ $meta = page_meta('about', lang());
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"AboutPage","name":"เกี่ยวกับ L.Y. Industries","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"ผู้ผลิต Narrow Fabrics และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือก ขอบเอว งาน finishing) สำหรับแบรนด์เสื้อผ้ากีฬาและแฟชั่น"}}
+{"@context":"https://schema.org","@type":"AboutPage","name":"<?= json_inner(block_text('about.schema.01')) ?>","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"<?= json_inner(block_text('about.schema.02')) ?>"}}
 </script>
 <style>
 :root{--bg-primary:#08080a;--bg-secondary:#101014;--bg-card:rgba(22,22,28,.7);--brand-orange:#ff5a1f;--brand-orange-light:#ff7e47;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-light:rgba(255,255,255,.08);--border-glass:rgba(255,255,255,.12);--font-heading:'Kanit',-apple-system,sans-serif;--font-body:'Anuphan',-apple-system,sans-serif;--font-mono:'JetBrains Mono',Menlo,monospace}
@@ -181,10 +181,10 @@ section.video{padding-bottom:96px}
       <div class="facts">
         <div class="row"><span class="k"><?= b('about.story.07') ?></span><span class="v"><?= b('about.story.08') ?></span></div>
         <div class="row"><span class="k"><?= b('about.story.09') ?></span><span class="v"><?= b('about.story.10') ?></span></div>
-        <div class="row"><span class="k"><?= b('about.story.11') ?></span><span class="v"><?= address_th_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.11') ?></span><span class="v"><?= address_html() ?></span></div>
         <div class="row"><span class="k"><?= b('about.story.12') ?></span><span class="v"><?= b('about.story.13') ?></span></div>
         <div class="row"><span class="k"><?= b('about.story.14') ?></span><span class="v"><?= b('about.story.15') ?></span></div>
-        <div class="row"><span class="k"><?= b('about.story.16') ?></span><span class="v"><?= e(phone_display_th()) ?> · <?= e(site('email')) ?></span></div>
+        <div class="row"><span class="k"><?= b('about.story.16') ?></span><span class="v"><?= e(phone_display()) ?> · <?= e(site('email')) ?></span></div>
       </div>
     </div>
   </div>
@@ -217,7 +217,7 @@ section.video{padding-bottom:96px}
     <div class="row">
       <a class="btn btn-o" href="contact.php#form"><?= b('about.cta.04') ?></a>
       <a class="btn btn-g" href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a>
-      <a class="btn btn-g" href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a>
+      <a class="btn btn-g" href="<?= e(tel_href_intl()) ?>"><?= e(phone_display()) ?></a>
     </div>
   </div>
 </section>

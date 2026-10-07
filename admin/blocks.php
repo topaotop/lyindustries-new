@@ -63,6 +63,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $uid = auth_user()['id'];
     $clean = static fn(mixed $v): string => trim(preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', str_replace(["\r\n", "\r", "\n"], ' ', (string) $v)));
     $blockChanges = [];
+    // placeholders each text must keep, taken from the built-in default text
+    $tokens = [];
+    $defaultsFile = APP_ROOT . "/includes/blocks/$slug.php";
+    foreach (is_file($defaultsFile) ? require $defaultsFile : [] as $full => $text) {
+        if (preg_match_all('/\{[a-z]+\}/', (string) $text, $m)) {
+            $tokens[substr($full, strlen($slug) + 1)] = array_unique($m[0]);
+        }
+    }
     foreach ($blocks as $key => $old) {
         $new = ['th' => $old['th'], 'en' => $old['en']];
         $sec = (string) strstr($key, '.', true);
@@ -78,6 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach (['th', 'en'] as $l) {
             if (mb_strlen($new[$l]) > 2000) {
                 $errors[$key] = 'ยาวเกิน 2,000 ตัวอักษร';
+            }
+            // {phone} {open} … are filled in from ข้อมูลติดต่อ — a translation must keep every one of them
+            $missing = array_diff($tokens[$key] ?? [], $new[$l] === '' ? $tokens[$key] ?? [] : (preg_match_all('/\{[a-z]+\}/', $new[$l], $m) ? $m[0] : []));
+            if ($new[$l] !== '' && $missing !== []) {
+                $errors[$key] = 'ต้องมี ' . implode(' ', $missing) . ' อยู่ในข้อความ (ระบบใส่ค่าจริงให้)';
             }
         }
         if ($new !== $old) {

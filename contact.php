@@ -22,7 +22,7 @@ $quoteHref = '#form';
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ContactPage","name":"ติดต่อ L.Y. Industries","mainEntity":{"@type":["Organization","LocalBusiness"],"name":"L.Y. Industries Co., Ltd.","alternateName":["LY Industries","บริษัท แอล วาย อินดัสตรีย์ จำกัด"],"foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","faxNumber":"<?= json_inner(phone_schema(site('fax'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"hasMap":"https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"<?= json_inner(site('hours_weekday_open')) ?>","closes":"<?= json_inner(site('hours_weekday_close')) ?>"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"<?= json_inner(site('hours_sat_open')) ?>","closes":"<?= json_inner(site('hours_sat_close')) ?>"}],"contactPoint":{"@type":"ContactPoint","contactType":"sales","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","email":"<?= json_inner(site('email')) ?>","availableLanguage":["th","en"]},"sameAs":["<?= json_inner(site('line_url')) ?>"]}}
+{"@context":"https://schema.org","@type":"ContactPage","name":"<?= json_inner(block_text('contact.schema.01')) ?>","mainEntity":{"@type":["Organization","LocalBusiness"],"name":"L.Y. Industries Co., Ltd.","alternateName":["LY Industries","<?= json_inner(company_name()) ?>"],"foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","faxNumber":"<?= json_inner(phone_schema(site('fax'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"hasMap":"https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"<?= json_inner(site('hours_weekday_open')) ?>","closes":"<?= json_inner(site('hours_weekday_close')) ?>"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"<?= json_inner(site('hours_sat_open')) ?>","closes":"<?= json_inner(site('hours_sat_close')) ?>"}],"contactPoint":{"@type":"ContactPoint","contactType":"sales","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","email":"<?= json_inner(site('email')) ?>","availableLanguage":["th","en"]},"sameAs":["<?= json_inner(site('line_url')) ?>"]}}
 </script>
 <style>
 :root{--bg-primary:#08080a;--bg-secondary:#101014;--bg-card:rgba(22,22,28,.7);--brand-orange:#ff5a1f;--brand-orange-light:#ff7e47;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-light:rgba(255,255,255,.08);--border-glass:rgba(255,255,255,.12);--font-heading:'Kanit',-apple-system,sans-serif;--font-body:'Anuphan',-apple-system,sans-serif;--font-mono:'JetBrains Mono',Menlo,monospace}
@@ -199,17 +199,17 @@ section.block.light+section.block{padding-top:96px}
             <option><?= b('contact.form.12') ?></option><option><?= b('contact.form.13') ?></option><option><?= b('contact.form.14') ?></option><option><?= b('contact.form.15') ?></option>
           </select></label>
         <label class="full"><?= b('contact.form.16') ?><textarea name="msg" required></textarea></label>
-        <button class="btn btn-o" type="submit" data-label="<?= b('contact.form.17') ?>" data-busy="<?= b('contact.form.27') ?>"><?= b('contact.form.17') ?></button>
-        <span class="ferr full" role="alert" data-err-invalid="<?= b('contact.form.28') ?>" data-err-rate="<?= b('contact.form.29') ?>" data-err-server="<?= b('contact.form.26') ?>"<?= isset($_GET['err']) ? '' : ' hidden' ?>><?= b('contact.form.28') ?></span>
+        <button class="btn btn-o" type="submit" data-label="<?= ba('contact.form.17') ?>" data-busy="<?= ba('contact.form.27') ?>"><?= b('contact.form.17') ?></button>
+        <span class="ferr full" role="alert" data-err-invalid="<?= ba('contact.form.28') ?>" data-err-rate="<?= ba('contact.form.29') ?>" data-err-server="<?= ba('contact.form.26') ?>"<?= isset($_GET['err']) ? '' : ' hidden' ?>><?= b('contact.form.28') ?></span>
         <span class="note full"><?= b('contact.form.30') ?> <?= e(site('line_id')) ?> <?= b('contact.form.31') ?> <a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></span>
       </form>
       <div class="info">
-        <div class="row"><span class="k"><?= b('contact.form.18') ?></span><span><?= e(site('company_th')) ?><br><?= address_th_html() ?></span></div>
-        <div class="row"><span class="k"><?= b('contact.form.19') ?></span><a href="<?= e(tel_href_intl()) ?>"><?= e(phone_display_th()) ?></a></div>
+        <div class="row"><span class="k"><?= b('contact.form.18') ?></span><span><?= e(company_name()) ?><br><?= address_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('contact.form.19') ?></span><a href="<?= e(tel_href_intl()) ?>"><?= e(phone_display()) ?></a></div>
         <div class="row"><span class="k"><?= b('contact.form.20') ?></span><span><?= e(site('fax')) ?></span></div>
         <div class="row"><span class="k"><?= b('contact.form.21') ?></span><a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></div>
         <div class="row"><span class="k"><?= b('contact.form.22') ?></span><a href="<?= e(site('line_url')) ?>" target="_blank" rel="noopener"><?= e(site('line_id')) ?></a></div>
-        <div class="row"><span class="k"><?= b('contact.form.23') ?></span><span><?= hours_th_html() ?></span></div>
+        <div class="row"><span class="k"><?= b('contact.form.23') ?></span><span><?= hours_html() ?></span></div>
       </div>
     </div>
   </div>
@@ -221,8 +221,8 @@ section.block.light+section.block{padding-top:96px}
       <span class="eyebrow"><?= b('contact.map.01') ?></span>
       <h2><?= b('contact.map.02') ?></h2>
     </div>
-    <div class="map"><iframe title="แผนที่ L.Y. Industries" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=th&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
-    <div class="maprow"><span><?= address_th_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener"><?= b('contact.map.03') ?></a></div>
+    <div class="map"><iframe title="<?= ba('contact.map.04') ?>" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=th&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+    <div class="maprow"><span><?= address_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener"><?= b('contact.map.03') ?></a></div>
   </div>
 </section>
 

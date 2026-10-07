@@ -62,7 +62,7 @@ function page_translated(string $slug): bool
     if ($raw === null) {
         return $memo[$slug] = false;
     }
-    $pages = [$slug];
+    $pages = [$slug, 'site'];   // + menus/labels shared by every page
     if ($slug === 'catalog' || $slug === 'contact') {
         $pages[] = 'footer';   // shared footer of these two pages
     }

@@ -14,7 +14,7 @@ require __DIR__ . '/../includes/admin/init.php';
 admin_require('content.translate');
 header('X-Frame-Options: SAMEORIGIN');   // init.php sends DENY; this page is meant to be framed by the admin
 
-$files = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php', 'footer' => 'catalog.php'];
+$files = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php', 'footer' => 'catalog.php', 'site' => 'index.php'];
 $page = (string) ($_GET['page'] ?? 'home');
 if (!isset($files[$page])) {
     $page = 'home';

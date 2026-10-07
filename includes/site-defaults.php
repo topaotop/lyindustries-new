@@ -19,6 +19,9 @@ return [
         'company_th'             => 'บริษัท แอล วาย อินดัสตรีย์ จำกัด',
         'address1_th'            => '124 ซอยรามอินทรา 109 ถนนพระยาสุเรนทร์ แขวงบางชัน', // address is split in two so the homepage footer can break the line
         'address2_th'            => 'เขตคลองสามวา กรุงเทพฯ 10510',
+        'company_en'             => 'L.Y. Industries Co., Ltd.',            // English pages (/en/)
+        'address1_en'            => '124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan',
+        'address2_en'            => 'Khlong Sam Wa, Bangkok 10510',
         'hours_weekday_open'     => '08:30', // HH:MM — used in the visible text and in schema.org opening hours
         'hours_weekday_close'    => '17:30',
         'hours_sat_open'         => '08:30',

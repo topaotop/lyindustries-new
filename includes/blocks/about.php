@@ -70,4 +70,7 @@ return [
     'about.cta.04' => 'ขอใบเสนอราคา →',
     'about.cta.05' => '© 2026 L.Y. INDUSTRIES CO., LTD.',
     'about.cta.06' => 'BANGKOK, THAILAND · EST. 1978',
+    // schema: name/description in the page data for Google (JSON-LD, not shown on the page)
+    'about.schema.01' => 'เกี่ยวกับ L.Y. Industries',
+    'about.schema.02' => 'ผู้ผลิต Narrow Fabrics และ Trims ครบวงจร (ยางยืด เทปทอ เทปถัก เชือก ขอบเอว งาน finishing) สำหรับแบรนด์เสื้อผ้ากีฬาและแฟชั่น',
 ];

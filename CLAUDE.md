@@ -62,7 +62,9 @@ request → index.php / about.php / catalog.php / contact.php
 **สองภาษา (`includes/lib/i18n.php`, Phase 3)**
 - `/about.php` = ไทย, `/en/about.php` = อังกฤษ — **ไม่มีโฟลเดอร์ en จริง**: `.htaccess` + `web.config` rewrite `/en/<หน้า>` → หน้าเดิม `?lang=en` และ `/en/assets|uploads|api/...` → ไฟล์จริงที่ root (ลิงก์ relative จึงใช้ได้ทั้งสองภาษา) · `/en` → 301 `/en/` · `i18n_init()` ใน bootstrap ตั้ง `lang()` · หน้าใช้ `page_meta(slug, lang())`, `content_list(..., lang())`, `<html lang>` ตามภาษา
 - `lang_head_tags(slug)` ใน `<head>`: หน้าอังกฤษที่ยังแปลไม่ครบ (ข้อความหน้า + ชื่อ/คำอธิบาย SEO + รายการ i18n ของหน้าแรก — `page_translated()`) → `noindex` · แปลครบแล้ว → `hreflang` th/en/x-default ทั้งสองภาษา · หน้าไทยที่ยังไม่มีอังกฤษครบ output เท่าเดิม
-- **ยังไม่ทำ (Phase 3 ขั้นถัดไป):** ข้อความที่ยังเขียนตรงใน template (เมนู header/aside, alt/aria, "โทร:", ที่อยู่/เวลาทำการไทย, JSON-LD), ปุ่มเปลี่ยนภาษา (ต้องส่งภาพให้ดูก่อน), เปลี่ยนภาษา default
+- **ข้อความทุกชิ้นบนหน้าแปลได้แล้ว (3-2):** เมนู/ปุ่ม/ป้ายข้อมูลติดต่อที่ใช้ทุกหน้า = block page **`site`** (`includes/blocks/site.php`, แท็บ "เมนู & คำที่ใช้ทุกหน้า") · `site_nav()` / `$menuItems` ใช้คีย์ `'b' => 'site.nav.nn'` · ป้ายแบบมีช่องว่าง `{phone} ต่อ {ext}`, `จันทร์ – ศุกร์: {open} – {close} น.` (คำแปลต้องคง `{…}` ไว้ — หลังบ้านไม่ยอมบันทึกถ้าหาย) · helper ตามภาษา: `phone_display()`, `address_html($sep)`, `hours_html()`, `company_name()` (แทน `*_th`) + settings `company_en`, `address1_en`, `address2_en` · alt รูปแคตตาล็อก = `catalog.alt.nn`, ข้อความใน JSON-LD = `<page>.schema.nn` (`json_inner(block_text())`), title แผนที่ = `contact.map.04`
+- **`b()` ใช้ได้เฉพาะในเนื้อความ — ใน attribute (alt, aria-label, data-*, title) ต้องใช้ `ba()`** (preview ห่อ `b()` ด้วย `<span>` → attribute พัง) · ใน JSON-LD ใช้ `json_inner(block_text())`
+- **ยังไม่ทำ:** ปุ่มเปลี่ยนภาษา (ต้องส่งภาพให้ผู้ใช้/Pack ดูก่อน), คำแปลภาษาอังกฤษ, เปลี่ยนภาษา default
 
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
 - ข้อความทุกชิ้นเป็น `b('about|catalog|contact.<section>.nn')` และ footer ร่วมของ catalog/contact เป็น `b('footer.main.nn')` (`includes/site-footer.php`) — footer สั้นของ about อยู่ใน `about.cta.*`

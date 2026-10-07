@@ -42,12 +42,13 @@ function e(string|int|float|null $value): string
 function site_nav(): array
 {
     return [
-        ['key' => 'home',     'label' => 'หน้าแรก',        'href' => 'index.php'],
-        ['key' => 'process',  'label' => 'กระบวนการผลิต',   'href' => 'index.php#process'],
-        ['key' => 'catalog',  'label' => 'แคตาล็อกสินค้า',   'href' => 'catalog.php'],
-        ['key' => 'trimrite', 'label' => 'TRIMRITE®',      'href' => site('trimrite_url'), 'external' => true],
-        ['key' => 'about',    'label' => 'เกี่ยวกับเรา',      'href' => 'about.php'],
-        ['key' => 'contact',  'label' => 'ติดต่อเรา',        'href' => 'contact.php'],
+        // 'b' = text block of the label (block page "site", translated in the admin)
+        ['key' => 'home',     'b' => 'site.nav.01', 'href' => 'index.php'],
+        ['key' => 'process',  'b' => 'site.nav.02', 'href' => 'index.php#process'],
+        ['key' => 'catalog',  'b' => 'site.nav.03', 'href' => 'catalog.php'],
+        ['key' => 'trimrite', 'label' => 'TRIMRITE®', 'href' => site('trimrite_url'), 'external' => true],
+        ['key' => 'about',    'b' => 'site.nav.04', 'href' => 'about.php'],
+        ['key' => 'contact',  'b' => 'site.nav.05', 'href' => 'contact.php'],
     ];
 }
 

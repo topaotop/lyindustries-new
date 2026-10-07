@@ -19,6 +19,9 @@ $fields = [
         'company_th'  => ['ชื่อบริษัท (ไทย)', 'text', ''],
         'address1_th' => ['ที่อยู่ บรรทัด 1', 'text', 'เลขที่ ซอย ถนน แขวง'],
         'address2_th' => ['ที่อยู่ บรรทัด 2', 'text', 'เขต จังหวัด รหัสไปรษณีย์ (หน้าแรกขึ้นบรรทัดใหม่ตรงนี้)'],
+        'company_en'  => ['ชื่อบริษัท (English)', 'text', 'แสดงบนหน้าเว็บภาษาอังกฤษ (/en/)'],
+        'address1_en' => ['ที่อยู่ บรรทัด 1 (English)', 'text', 'เช่น 124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan'],
+        'address2_en' => ['ที่อยู่ บรรทัด 2 (English)', 'text', 'เช่น Khlong Sam Wa, Bangkok 10510'],
     ],
     'เวลาทำการ' => [
         'hours_weekday_open'  => ['จันทร์–ศุกร์ เปิด', 'time', ''],

@@ -17,11 +17,11 @@ $activeSwatch = $swatches[0];
 
 // Mobile side-menu (☰).
 $menuItems = [
-    ['n' => '01', 'label' => 'หน้าแรก',                 'href' => '#hero'],
-    ['n' => '02', 'label' => 'แคตาล็อกสินค้า',            'href' => 'catalog.php'],
-    ['n' => '03', 'label' => 'TRIMRITE® ↗',             'href' => site('trimrite_url'), 'external' => true],
-    ['n' => '04', 'label' => 'เกี่ยวกับเรา',               'href' => 'about.php'],
-    ['n' => '05', 'label' => 'ติดต่อเรา / ขอใบเสนอราคา',   'href' => 'contact.php'],
+    ['n' => '01', 'b' => 'site.nav.01',     'href' => '#hero'],
+    ['n' => '02', 'b' => 'site.nav.03',     'href' => 'catalog.php'],
+    ['n' => '03', 'label' => 'TRIMRITE® ↗', 'href' => site('trimrite_url'), 'external' => true],
+    ['n' => '04', 'b' => 'site.nav.04',     'href' => 'about.php'],
+    ['n' => '05', 'b' => 'site.nav.07',     'href' => 'contact.php'],
 ];
 ?>
 <!DOCTYPE html>
@@ -63,22 +63,22 @@ $menuItems = [
 
     <!-- Desktop Navigation Links -->
     <div style="display:flex;align-items:center;gap:26px;font-size:13.5px;font-weight:500;color:var(--text-secondary);white-space:nowrap" class="desktop-nav">
-      <a class="hv-1" href="#hero" style="transition:color 0.25s">หน้าแรก</a>
-      <a class="hv-1" href="#process" style="transition:color 0.25s">กระบวนการผลิต</a>
-      <a class="hv-1" href="catalog.php" style="transition:color 0.25s">แคตาล็อกสินค้า</a>
+      <a class="hv-1" href="#hero" style="transition:color 0.25s"><?= b('site.nav.01') ?></a>
+      <a class="hv-1" href="#process" style="transition:color 0.25s"><?= b('site.nav.02') ?></a>
+      <a class="hv-1" href="catalog.php" style="transition:color 0.25s"><?= b('site.nav.03') ?></a>
       <a class="hv-1" href="<?= e(site('trimrite_url')) ?>" target="_blank" rel="noopener" style="transition:color 0.25s">TRIMRITE®</a>
-      <a class="hv-1" href="about.php" style="transition:color 0.25s">เกี่ยวกับเรา</a>
-      <a class="hv-1" href="contact.php" style="transition:color 0.25s">ติดต่อเรา</a>
+      <a class="hv-1" href="about.php" style="transition:color 0.25s"><?= b('site.nav.04') ?></a>
+      <a class="hv-1" href="contact.php" style="transition:color 0.25s"><?= b('site.nav.05') ?></a>
     </div>
 
     <!-- Actions -->
     <div style="display:flex;align-items:center;gap:12px">
       <a href="#contact" class="nav-cta hv-2" style="background:linear-gradient(135deg,var(--brand-orange),var(--brand-orange-light));color:#fff;padding:9px 20px;border-radius:100px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 4px 18px var(--brand-orange-glow);transition:transform 0.2s,box-shadow 0.2s">
-        <span>ขอใบเสนอราคา</span>
+        <span><?= b('site.nav.06') ?></span>
         <span style="font-size:14px">→</span>
       </a>
       <!-- Mobile Hamburger Button -->
-      <button type="button" data-menu-toggle aria-label="เมนู" aria-expanded="false" aria-controls="sideMenu" class="mobile-burger hv-3" style="width:38px;height:38px;border-radius:50%;border:1px solid var(--border-light);background:rgba(255,255,255,0.05);cursor:pointer;display:grid;place-items:center;padding:0;transition:border-color 0.2s">
+      <button type="button" data-menu-toggle aria-label="<?= ba('site.nav.09') ?>" aria-expanded="false" aria-controls="sideMenu" class="mobile-burger hv-3" style="width:38px;height:38px;border-radius:50%;border:1px solid var(--border-light);background:rgba(255,255,255,0.05);cursor:pointer;display:grid;place-items:center;padding:0;transition:border-color 0.2s">
         <div style="display:flex;flex-direction:column;gap:4.5px;width:16px">
           <span style="height:1.5px;background:#fff;border-radius:1px;transition:transform 0.3s" class="burger-bar-1"></span>
           <span style="height:1.5px;background:#fff;border-radius:1px;transition:transform 0.3s" class="burger-bar-2"></span>
@@ -93,19 +93,19 @@ $menuItems = [
 <aside id="sideMenu" class="menu-drawer" style="position:fixed;top:0;right:0;bottom:0;z-index:90;width:min(420px,88vw);background:rgba(10,10,13,0.97);border-left:1px solid var(--border-light);box-shadow:-30px 0 80px rgba(0,0,0,0.5);display:flex;flex-direction:column;transition:transform 0.45s cubic-bezier(.22,.8,.3,1);padding:28px 28px 32px;overflow-y:auto">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
     <span style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.18em;color:var(--brand-orange);font-weight:700">MENU</span>
-    <button type="button" data-menu-toggle aria-label="ปิดเมนู" style="background:none;border:1px solid var(--border-light);width:40px;height:40px;border-radius:50%;color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center">×</button>
+    <button type="button" data-menu-toggle aria-label="<?= ba('site.nav.10') ?>" style="background:none;border:1px solid var(--border-light);width:40px;height:40px;border-radius:50%;color:#fff;font-size:22px;cursor:pointer;display:grid;place-items:center">×</button>
   </div>
   <div style="display:flex;flex-direction:column">
     <?php foreach ($menuItems as $m): ?>
       <a class="hv-4" href="<?= e($m['href']) ?>"<?= external_attrs($m) ?> data-menu-toggle style="font-family:var(--font-heading);font-size:22px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--border-light);padding:16px 0;transition:color 0.2s">
-        <span><?= e($m['label']) ?></span>
+        <span><?= isset($m['b']) ? b($m['b']) : e($m['label']) ?></span>
         <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-tertiary)"><?= e($m['n']) ?></span>
       </a>
     <?php endforeach; ?>
   </div>
   <div style="margin-top:auto;padding-top:24px;display:flex;flex-direction:column;gap:12px">
-    <div style="font-size:14px;line-height:1.7;color:var(--text-secondary)">โทร: <?= e(phone_display_th()) ?><br>อีเมล: <?= e(site('email')) ?></div>
-    <a href="#contact" data-menu-toggle style="background:var(--brand-orange);color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:15px">ติดต่อทีมฝ่ายขาย →</a>
+    <div style="font-size:14px;line-height:1.7;color:var(--text-secondary)"><?= b('site.labels.01') ?> <?= e(phone_display()) ?><br><?= b('site.labels.02') ?> <?= e(site('email')) ?></div>
+    <a href="#contact" data-menu-toggle style="background:var(--brand-orange);color:#fff;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:15px"><?= b('site.nav.08') ?> →</a>
   </div>
 </aside>
 
@@ -754,7 +754,7 @@ $menuItems = [
           <span style="font-size:18px">→</span>
         </a>
         <a class="hv-16" href="<?= e(tel_href_local()) ?>" style="background:rgba(255,255,255,0.04);border:1px solid var(--border-glass);color:#fff;padding:18px 26px;border-radius:14px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(12px);transition:background 0.2s">
-          <span>โทร: <?= e(phone_display_th()) ?></span>
+          <span><?= b('site.labels.01') ?> <?= e(phone_display()) ?></span>
           <span style="font-size:18px">→</span>
         </a>
       </div>
@@ -765,12 +765,12 @@ $menuItems = [
       
       <div style="display:flex;flex-direction:column;gap:10px">
         <span style="font-family:var(--font-heading);font-weight:700;font-size:16px;letter-spacing:0.06em;color:#fff"><?= b('home.contact.05') ?></span>
-        <span><?= e(site('company_th')) ?><br><?= address_th_html('<br>') ?></span>
+        <span><?= e(company_name()) ?><br><?= address_html('<br>') ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">
         <span style="font-family:var(--font-mono);font-size:11.5px;letter-spacing:0.16em;color:var(--brand-orange)"><?= b('home.contact.06') ?></span>
-        <span><?= hours_th_html() ?><br><?= e(site('email')) ?></span>
+        <span><?= hours_html() ?><br><?= e(site('email')) ?></span>
       </div>
 
       <div style="display:flex;flex-direction:column;gap:10px">

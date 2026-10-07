@@ -51,4 +51,7 @@ return [
     'contact.map.01' => '02 — LOCATION',
     'contact.map.02' => 'ที่อยู่ของเรา',
     'contact.map.03' => 'เปิดใน Google Maps ↗',
+    'contact.map.04' => 'แผนที่ L.Y. Industries',
+    // schema: name/description in the page data for Google (JSON-LD, not shown on the page)
+    'contact.schema.01' => 'ติดต่อ L.Y. Industries',
 ];

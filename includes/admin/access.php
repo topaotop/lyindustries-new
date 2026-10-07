@@ -37,17 +37,22 @@ function admin_content_pages(): array
             'process' => 'ขั้นตอนการผลิต', 'specimens' => 'หมวดสินค้า', 'rnd' => 'บริการ R&D', 'colorlab' => 'โรงย้อม & Color Lab',
             'gallery' => 'ตัวอย่างสินค้า', 'faq' => 'คำถามที่พบบ่อย', 'contact' => 'ติดต่อ + footer หน้าแรก']],
         'about'   => ['เกี่ยวกับเรา', 'about.php', 'factory', [
-            'hero' => 'ส่วนบนสุด', 'video' => 'วิดีโอ + ตัวเลข', 'story' => 'เรื่องราวบริษัท', 'facilities' => 'โรงงาน (Facilities)', 'cta' => 'ปุ่มท้ายหน้า + footer']],
+            'hero' => 'ส่วนบนสุด', 'video' => 'วิดีโอ + ตัวเลข', 'story' => 'เรื่องราวบริษัท', 'facilities' => 'โรงงาน (Facilities)', 'cta' => 'ปุ่มท้ายหน้า + footer',
+            'schema' => 'ข้อมูลสำหรับ Google (schema — ไม่แสดงบนหน้า)']],
         'catalog' => ['แคตตาล็อกสินค้า', 'catalog.php', 'tape', [
-            'hero' => 'ส่วนบนสุด', 'categories' => 'หมวดสินค้าหลัก', 'samples' => 'ตัวอย่างสินค้า + Inspiration Hub']],
+            'hero' => 'ส่วนบนสุด', 'categories' => 'หมวดสินค้าหลัก', 'samples' => 'ตัวอย่างสินค้า + Inspiration Hub',
+            'alt' => 'คำอธิบายรูป (alt — สำหรับ Google รูปภาพ/ผู้พิการทางสายตา)', 'schema' => 'ข้อมูลสำหรับ Google (schema — ไม่แสดงบนหน้า)']],
         'contact' => ['ติดต่อเรา', 'contact.php', 'mail', [
-            'hero' => 'ส่วนบนสุด', 'form' => 'ฟอร์ม + ข้อมูลติดต่อ', 'map' => 'แผนที่']],
+            'hero' => 'ส่วนบนสุด', 'form' => 'ฟอร์ม + ข้อมูลติดต่อ', 'map' => 'แผนที่',
+            'schema' => 'ข้อมูลสำหรับ Google (schema — ไม่แสดงบนหน้า)']],
         'footer'  => ['Footer (แคตตาล็อก + ติดต่อ)', 'catalog.php#footer', 'footer', ['main' => 'Footer']],
+        'site'    => ['เมนู & คำที่ใช้ทุกหน้า', 'index.php', 'menu', [
+            'nav' => 'เมนูและปุ่ม (ทุกหน้า)', 'labels' => 'ป้ายข้อมูลติดต่อ (ทุกหน้า) — ห้ามลบ {phone} {ext} {open} {close}']],
     ];
     $pages = [];
     foreach ($defs as $slug => [$label, $url, $icon, $names]) {
         // 'seo' = page title + meta description (lyiweb_pages); footer is not a page of its own
-        $sections = $slug === 'footer' ? [] : ['seo' => 'SEO (ชื่อหน้า + คำอธิบาย)'];
+        $sections = in_array($slug, ['footer', 'site'], true) ? [] : ['seo' => 'SEO (ชื่อหน้า + คำอธิบาย)'];
         $file = APP_ROOT . "/includes/blocks/$slug.php";
         foreach (is_file($file) ? array_keys(require $file) : [] as $full) {
             $sec = explode('.', $full)[1] ?? '';
@@ -69,7 +74,7 @@ function admin_content_pages(): array
  */
 function admin_block_kinds(string $slug): array
 {
-    $templates = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php', 'footer' => 'includes/site-footer.php'];
+    $templates = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php', 'footer' => 'includes/site-footer.php', 'site' => 'index.php'];
     $src = isset($templates[$slug]) && is_file(APP_ROOT . '/' . $templates[$slug]) ? (string) file_get_contents(APP_ROOT . '/' . $templates[$slug]) : '';
     $kinds = [];
     if (!preg_match_all("/<\?= b\('" . preg_quote($slug, '/') . "\.([a-z]+\.\d+)'\) \?>/", $src, $m, PREG_OFFSET_CAPTURE)) {
