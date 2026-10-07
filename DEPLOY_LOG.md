@@ -14,6 +14,20 @@
 
 ---
 
+## v1.3.0 — 2026-10-07 10:16 · dev
+
+- **Commit:** `a0a206e` · **Tag:** `v1.3.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - **login หลังบ้านได้เฉพาะคนที่ถูกเลือก** (มี role) — ยกเลิกสิทธิ์อัตโนมัติ level ≥ 5 · รหัสถูกแต่ไม่มี role = ปฏิเสธ · ถอน role หมด = หลุดทันที · ห้ามถอนผู้ดูแลคนสุดท้าย
+  - หน้าผู้ใช้ & สิทธิ์: dropdown เลือกผู้ใช้ จัดกลุ่มตามแผนก เรียง A→Z (แสดงชื่ออย่างเดียว) · กดบันทึกแล้วกลับหน้ารายการ · ปุ่มกลับทรงแคปซูล
+  - สลับตำแหน่ง: "ดูหน้าเว็บไซต์" ไปขวาแถบบน, ชื่อผู้ใช้ + ออกจากระบบ ลงล่าง sidebar · แก้หลังบ้านบนมือถือกว้างเกินจอ
+- **DB:** `009_lyiweb_login_selected_only.sql` — รันแล้วทั้ง `test_LYI` และ `LYI` (ตรวจแล้ว: `admin_min_level` = 0, itti.p = ผู้ดูแลระบบ) · `test_LYI` มีผู้ดูแล 3 คน (itti.p, user 71, Tadsanai — ผู้ใช้เพิ่มเอง)
+- **Files:** เพิ่ม 0 · แก้ 6 (`admin/assets/admin.css`, `admin/assets/admin.js`, `admin/roles.php`, `admin/users.php`, `includes/admin/init.php`, `includes/lib/auth.php`) · ลบ 0
+- **Backup:** 6 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 4 หน้า + login 200 · หน้า admin → 302 login · `*.html` / หน้าเก่า → 301 · `includes/ docs/ connectgrp.php` → 404 · HTML จาก server ตรงกับ local ทุกหน้า · รันไฟล์ admin ชุดที่ deploy ด้วย session จำลอง: ผู้ดูแลเปิดได้ทุกหน้าไม่มี error, ผู้ใช้ที่ไม่มี role ถูกส่งไปหน้า login · URL สาธารณะผลเหมือนกัน
+- **Note:** ผู้ใช้อื่นที่ login ค้างบน .70 และไม่มี role จะหลุดใน request ถัดไป (ตั้งใจ)
+
 ## v1.2.0 — 2026-10-07 09:37 · dev
 
 - **Commit:** `c7fb7e7` · **Tag:** `v1.2.0`
