@@ -14,6 +14,20 @@
 
 ---
 
+## v1.5.0 — 2026-10-07 11:51 · dev
+
+- **Commit:** `7b3886a` · **Tag:** `v1.5.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - **รายการ & รูปภาพ** (`admin/lists.php`): แก้ 7 list หน้าแรก — เพิ่ม/ลบ/เรียง/ซ่อน, อัปโหลดรูป (ย่อในเบราว์เซอร์ → แปลง WebP → `uploads/` + `lyiweb_media`), ชื่อแท็บภาษาคน + ภาพตำแหน่ง
+  - **คลิกแก้บนหน้าเว็บจริง** ทั้งหน้าข้อความและหน้ารายการ (`admin/preview.php`) — คลิกบนหน้า → เปิดช่องแก้, พิมพ์แล้วเห็นผลทันที, เลือกช่อง → กรอบส้ม/เลื่อนไปขั้นตอนผลิตที่ถูกขั้น · ป้ายชนิดข้อความ · ตัวอย่างผลค้นหา Google
+  - บล็อกสคริปต์ใน `uploads/` (`.htaccess` + `web.config`) · **IIS: เพิ่ม MIME `.webp`** (พบระหว่าง verify — เดิมได้ 404, แก้แล้ว commit `7b3886a` deploy `web.config` ซ้ำ)
+  - หน้าเว็บสาธารณะ: `require_once` bootstrap (output เท่าเดิม)
+- **Files:** เพิ่ม 10 (`admin/lists.php`, `admin/preview.php`, `includes/lib/media.php`, `admin/assets/where/*.webp` ×7) · แก้ 13 (`.htaccess`, `web.config`, `index/about/catalog/contact.php`, `admin/assets/admin.css|js`, `admin/blocks.php`, `includes/admin/access.php|init.php`, `includes/lib/content.php`, `includes/schema/lists.php`) · ลบ 0 · DB ไม่เปลี่ยน
+- **Backup:** 13 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 4 หน้า + login 200 · admin (lists/preview) → 302 login · `*.html` / หน้าเก่า → 301 · `includes/ connectgrp.php` → 404 · `uploads/`: `.php`/`.PHP`/`.svg` → 404, `.png`/`.webp` → 200 (ทดสอบด้วยไฟล์ชั่วคราวแล้วลบ) · `.webp` = `image/webp`, `.woff2` = `font/woff2` · ไฟล์บน server ตรงกับ HEAD ทุกไฟล์ · HTML: about/catalog/contact ตรงกับ local, index ต่างที่รูปขั้น 03 (local มีรูปที่ผู้ใช้อัปโหลดในเครื่อง dev → server แสดง Image pending ตามออกแบบ) · ไฟล์ admin ชุดที่ deploy รันด้วย session จำลองไม่มี error · URL สาธารณะผลเหมือนกัน
+- **Note:** `uploads/` บน server ยังไม่มี — PHP จะสร้างเองตอนอัปโหลดครั้งแรก (ให้ผู้ใช้ลองอัปโหลด 1 รูปบน .70 เพื่อยืนยันสิทธิ์เขียน) · รูปที่อัปโหลดบนเครื่อง dev ไม่ตามมาที่ server (uploads แยกต่อเครื่อง)
+
 ## v1.4.0 — 2026-10-07 10:41 · dev
 
 - **Commit:** `3ef2413` · **Tag:** `v1.4.0`
