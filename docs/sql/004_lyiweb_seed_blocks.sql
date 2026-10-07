@@ -271,7 +271,7 @@ IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND 
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'catalog' AND block_key = N'schema.13')
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'catalog', N'schema.13', N'text', N'ต่อยอดเทปให้ครบทั้งฟังก์ชันและแบรนด์ — ซิลิโคนกันลื่น พิมพ์ลาย heat transfer ปั๊มนูน เลเซอร์ ตัดร้อน/ตัดเย็น ไปจนถึงงานป้ายเลเบล เลือกผสมได้ตามการใช้งาน');
 
-/* contact.php — 38 blocks */
+/* contact.php — 46 blocks */
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'hero.01')
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'hero.01', N'text', N'CONTACT L.Y. INDUSTRIES');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'hero.02')
@@ -338,6 +338,22 @@ IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND 
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.30', N'text', N'มีรูปหรือไฟล์ tech pack? ส่งทาง LINE');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.31')
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.31', N'text', N'หรือแนบมากับอีเมลถึง');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.32')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.32', N'text', N'ขอใบเสนอราคา');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.33')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.33', N'text', N'ชื่อ');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.34')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.34', N'text', N'บริษัท');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.35')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.35', N'text', N'อีเมล');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.36')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.36', N'text', N'โทร');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.37')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.37', N'text', N'สินค้า');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.38')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.38', N'text', N'รายละเอียด');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'form.39')
+    INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'form.39', N'text', N'ระบบส่งไม่สำเร็จ — กรุณาส่งอีเมลถึง');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'map.01')
     INSERT dbo.lyiweb_blocks (page_slug, block_key, block_type, value_th) VALUES (N'contact', N'map.01', N'text', N'02 — LOCATION');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_blocks WHERE page_slug = N'contact' AND block_key = N'map.02')

@@ -19,6 +19,13 @@ try {
     foreach (db_rows('SELECT slug, updated_at AS t FROM dbo.lyiweb_pages') as $r) {
         $lastmod[$r['slug']] = max($lastmod[$r['slug']] ?? $r['t'], $r['t']);
     }
+    // contact data / links in lyiweb_settings appear on every page
+    $settingsAt = db_rows('SELECT MAX(updated_at) AS t FROM dbo.lyiweb_settings')[0]['t'] ?? null;
+    if ($settingsAt !== null) {
+        foreach (SITE_PAGE_FILES as $slug => $file) {
+            $lastmod[$slug] = max($lastmod[$slug] ?? $settingsAt, $settingsAt);
+        }
+    }
     $items = db_rows("SELECT MAX(updated_at) AS t FROM dbo.lyiweb_items WHERE list_key LIKE 'home.%'")[0]['t'] ?? null;
     if ($items !== null) {
         $lastmod['home'] = max($lastmod['home'] ?? $items, $items);

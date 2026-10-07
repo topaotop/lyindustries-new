@@ -81,11 +81,12 @@ function auth_attempt(string $username, string $password): array
         [$username, client_ip(), $allowed ? 1 : 0]
     );
 
-    if ($row !== null && (int) ($row['locked'] ?? 0) === 1) {
-        return [false, 'บัญชีนี้ถูกล็อก กรุณาติดต่อ IT'];
-    }
+    // a wrong password never tells whether the username exists or is locked
     if (!$ok) {
         return [false, 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง'];
+    }
+    if ((int) ($row['locked'] ?? 0) === 1) {
+        return [false, 'บัญชีนี้ถูกล็อก กรุณาติดต่อ IT'];
     }
     if (!$allowed) {
         return [false, 'บัญชีนี้ยังไม่ได้รับสิทธิ์เข้าหลังบ้านเว็บไซต์ — ติดต่อผู้ดูแลระบบ'];
@@ -185,8 +186,11 @@ function auth_admin_min_level(): int
 /** May this sysmnuser sign in? Needs at least one website role (or the level rule, when enabled). */
 function auth_has_access(int $userId, int $level): bool
 {
-    return auth_is_full_admin($level)
-        || db_rows('SELECT TOP 1 1 AS x FROM dbo.lyiweb_user_roles WHERE user_id = ?', [$userId]) !== [];
+    // an account locked in the company system (someone who left) loses access at once
+    $active = db_rows('SELECT TOP 1 1 AS x FROM dbo.sysmnuser WHERE id = ? AND ISNULL(locked, 0) <> 1', [$userId]) !== [];
+
+    return $active && (auth_is_full_admin($level)
+        || db_rows('SELECT TOP 1 1 AS x FROM dbo.lyiweb_user_roles WHERE user_id = ?', [$userId]) !== []);
 }
 
 function auth_is_full_admin(int $level): bool

@@ -213,15 +213,22 @@ function content_write_file(string $path, string $data): void
     }
 }
 
+/** Settings an editor may leave empty on purpose (empty = none, not "use the built-in value"). */
+const SITE_CLEARABLE = ['org_alt_names'];
+
 /**
  * Site setting (contact data, links, hours) from lyiweb_settings; empty or missing values fall
- * back to includes/site-defaults.php.
+ * back to includes/site-defaults.php (except SITE_CLEARABLE keys stored empty).
  */
 function site(string $key): string
 {
     static $defaults = null;
     $defaults ??= (require APP_ROOT . '/includes/site-defaults.php')['settings'];
-    $value = content_raw()['settings'][$key] ?? '';
+    $stored = content_raw()['settings'] ?? [];
+    if (in_array($key, SITE_CLEARABLE, true) && array_key_exists($key, $stored)) {
+        return $stored[$key];
+    }
+    $value = $stored[$key] ?? '';
     if ($value === '') {
         $value = $defaults[$key] ?? '';
     }

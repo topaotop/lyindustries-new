@@ -16,6 +16,10 @@ $isNew = isset($_GET['new']) || ($_POST['id'] ?? '') === 'new';
 $role = $isNew ? ['id' => 0, 'role_key' => '', 'name_th' => '', 'is_system' => false, 'perms' => [], 'scopes' => [], 'members' => 0] : ($roles[$id] ?? null);
 // the built-in admin role always has everything: shown, never edited
 $locked = $role !== null && $role['role_key'] === 'admin';
+// nor can anyone change or delete a role they hold themselves (no raising your own rights, no locking yourself out)
+$myRoles = array_map('intval', array_column(db_rows('SELECT role_id FROM dbo.lyiweb_user_roles WHERE user_id = ?', [auth_user()['id']]), 'role_id'));
+$own = !$isNew && $role !== null && !$locked && in_array((int) $role['id'], $myRoles, true);
+$locked = $locked || $own;
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $role !== null && !$locked) {
@@ -134,7 +138,7 @@ admin_page_start($title, 'roles.php');
 ?>
 <a class="back" href="roles.php"><?= admin_icon('back') ?><span>บทบาททั้งหมด</span></a>
 <h1><?= e($title) ?></h1>
-<?php if ($locked): ?><div class="flash flash-info">role ผู้ดูแลระบบได้ทุกสิทธิ์ทุกส่วนเสมอ — แก้ไม่ได้</div><?php endif; ?>
+<?php if ($own): ?><div class="flash flash-info">คุณมี role นี้อยู่ — แก้หรือลบ role ของตัวเองไม่ได้ ให้ผู้ดูแลคนอื่นทำ</div><?php elseif ($locked): ?><div class="flash flash-info">role ผู้ดูแลระบบได้ทุกสิทธิ์ทุกส่วนเสมอ — แก้ไม่ได้</div><?php endif; ?>
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง</div><?php endif; ?>
 
 <form method="post" class="form">

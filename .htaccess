@@ -1,4 +1,6 @@
 DirectoryIndex index.php
+# no folder listings (uploads/, assets/ …)
+Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
@@ -30,7 +32,8 @@ DirectoryIndex index.php
   RedirectMatch 404 (?i)/connectgrp\.php$
 </IfModule>
 
-# Uploaded images (admin) — never run anything from uploads/, only serve images
+# Uploaded images (admin) — only images are served from uploads/, nothing else, never a script
 <IfModule mod_alias.c>
-  RedirectMatch 404 (?i)^/(.*/)?uploads/.*\.(php\d?|phtml|phar|pl|py|cgi|asp|aspx|exe|sh|html?|svg)$
+  RedirectMatch 404 (?i)^/(.*/)?uploads/.*\.(ph|pl|py|cgi|asp|sh|exe|s?html?|xht|svg)
+  RedirectMatch 404 (?i)^/(.*/)?uploads/(?!.*\.(webp|jpe?g|png)$)
 </IfModule>

@@ -94,6 +94,16 @@ function admin_can_see(?string $perm): bool
 }
 
 /** Stop unless logged in (and holding $permission). */
+/** 403 page: no permission for this page or for what was posted. */
+function admin_forbidden(): never
+{
+    http_response_code(403);
+    admin_page_start('ไม่มีสิทธิ์', '');
+    echo '<div class="card"><h2>ไม่มีสิทธิ์ใช้งานหน้านี้</h2><p class="muted">ติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์</p></div>';
+    admin_page_end();
+    exit;
+}
+
 function admin_require(?string $permission = null): array
 {
     $user = auth_user();
@@ -102,11 +112,7 @@ function admin_require(?string $permission = null): array
         exit;
     }
     if ($permission !== null && !can($permission) && !($permission === 'content.translate' && can('content.edit'))) {
-        http_response_code(403);
-        admin_page_start('ไม่มีสิทธิ์', '');
-        echo '<div class="card"><h2>ไม่มีสิทธิ์ใช้งานหน้านี้</h2><p class="muted">ติดต่อผู้ดูแลระบบเพื่อขอสิทธิ์</p></div>';
-        admin_page_end();
-        exit;
+        admin_forbidden();
     }
 
     return $user;

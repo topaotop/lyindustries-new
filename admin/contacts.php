@@ -41,6 +41,8 @@ if ($id > 0) {
         $req['handler'] = $me['name'];
         $req['handled_at'] = new DateTime();
     }
+    // the address is user input: encode it so "x?cc=…" cannot add recipients (keep @ readable)
+    $mailto = str_replace('%40', '@', rawurlencode((string) $req['email']));
     $subject = 'ใบเสนอราคา — ' . ($req['product'] ?: 'L.Y. Industries');
     $greeting = 'เรียน คุณ' . $req['name'] . "\n\nขอบคุณที่ติดต่อ L.Y. Industries\n\n";
 
@@ -57,13 +59,13 @@ if ($id > 0) {
     <dl class="kv">
       <dt>ชื่อ</dt><dd><?= e($req['name']) ?></dd>
       <dt>บริษัท</dt><dd><?= e((string) $req['company']) ?: '<span class="muted">—</span>' ?></dd>
-      <dt>อีเมล</dt><dd><a href="mailto:<?= e($req['email']) ?>"><?= e($req['email']) ?></a></dd>
+      <dt>อีเมล</dt><dd><a href="mailto:<?= e($mailto) ?>"><?= e($req['email']) ?></a></dd>
       <dt>โทร</dt><dd><?= $req['phone'] ? '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', (string) $req['phone'])) . '">' . e($req['phone']) . '</a>' : '<span class="muted">—</span>' ?></dd>
       <dt>สินค้าที่สนใจ</dt><dd><?= e((string) $req['product']) ?: '<span class="muted">—</span>' ?></dd>
       <dt>ภาษา / หน้า</dt><dd><?= e(strtoupper((string) $req['lang'])) ?> · <?= e((string) $req['page']) ?></dd>
     </dl>
     <div class="actions" style="justify-content:flex-start;flex-wrap:wrap">
-      <a class="btn btn-primary" href="mailto:<?= e($req['email']) ?>?subject=<?= e(rawurlencode($subject)) ?>&amp;body=<?= e(rawurlencode($greeting)) ?>">ตอบกลับทางอีเมล</a>
+      <a class="btn btn-primary" href="mailto:<?= e($mailto) ?>?subject=<?= e(rawurlencode($subject)) ?>&amp;body=<?= e(rawurlencode($greeting)) ?>">ตอบกลับทางอีเมล</a>
 <?php if ($req['phone']): ?>
       <a class="btn" href="tel:<?= e(preg_replace('/[^0-9+]/', '', (string) $req['phone'])) ?>">โทรหา <?= e($req['phone']) ?></a>
 <?php endif; ?>

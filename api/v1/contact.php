@@ -14,6 +14,7 @@ require_once APP_ROOT . '/includes/lib/visitor.php';
 
 const CONTACT_MAX_PER_IP = 5;
 const CONTACT_WINDOW_MIN = 10;
+const CONTACT_STAMP_MAX_AGE = 86400;
 
 lang(($_POST['lang'] ?? '') === 'en' ? 'en' : 'th');
 $wantsJson = str_contains((string) ($_SERVER['HTTP_ACCEPT'] ?? ''), 'application/json');
@@ -24,7 +25,7 @@ $reply = static function (bool $ok, string $error = '', int $code = 200) use ($w
         header('Cache-Control: no-store');
         echo json_encode(['ok' => $ok, 'error' => $error], JSON_UNESCAPED_UNICODE);
     } else {
-        header('Location: ../../contact.php?' . ($ok ? 'sent=1' : 'err=1') . '#form', true, 303);
+        header('Location: ../../contact.php?' . ($ok ? 'sent=1' : 'err=' . (in_array($error, ['invalid', 'rate'], true) ? $error : 'server')) . '#form', true, 303);
     }
     exit;
 };
@@ -52,6 +53,10 @@ $data = [
 $age = form_stamp_age((string) ($_POST['t'] ?? ''));
 if (($_POST['website'] ?? '') !== '' || $age === null || $age < 3) {
     $reply(true);
+}
+// a page left open for more than a day (or a replayed old form): ask for a fresh page / email instead
+if ($age > CONTACT_STAMP_MAX_AGE) {
+    $reply(false, 'expired', 409);
 }
 if ($data['name'] === '' || $data['message'] === '' || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
     $reply(false, 'invalid', 422);

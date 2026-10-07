@@ -66,7 +66,7 @@ if (admin_can_see('seo')) {
         $todo[] = ['warn', 'search', 'ยังไม่ได้ตั้งคำค้นหาหลัก (Keyword) ' . (count($pageRows) - $kwSet) . ' หน้า', 'seo.php?tab=meta', 'ตั้ง'];
     }
     $notEn = count(array_filter(array_keys(SITE_PAGE_FILES), static fn($s) => !page_translated($s)));
-    if ($notEn > 0) {
+    if ($notEn > 0 && admin_can_see('content.translate')) {
         $todo[] = ['warn', 'globe', "หน้าภาษาอังกฤษยังแปลไม่ครบ $notEn หน้า (Google ยังไม่เก็บหน้านั้น)", 'blocks.php', 'แปล'];
     }
 }
@@ -76,7 +76,14 @@ if (can('content.edit') || can('content.translate')) {
     $pendingList = null;
     foreach ($schema as $key => $def) {
         $imgFields = array_keys(array_filter($def['fields'], static fn($f) => $f['type'] === 'image'));
-        foreach ($imgFields === [] ? [] : content_list($key, 'th') as $item) {
+        [$scopePage, $scopeSec] = array_pad(explode('.', (string) ($def['scope'] ?? $key)), 2, '');
+        if ($imgFields === [] || !can_content('th', $scopePage, $scopeSec)) {
+            continue;   // pictures are changed by content editors of that part only
+        }
+        foreach (content_list($key, 'th') as $item) {
+            if (!empty($item['more'])) {
+                continue;   // the "more categories" tile has no picture by design
+            }
             foreach ($imgFields as $f) {
                 if (($item[$f] ?? '') === '') {
                     $pending++;
@@ -219,19 +226,20 @@ admin_page_start('แดชบอร์ด', 'index.php');
     <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,30 <?= implode(' ', $pts) ?> 100,30"/><polyline points="<?= implode(' ', $pts) ?>"/></svg>
   </a>
 <?php endif; ?>
-  <a class="kpi" href="blocks.php">
+<?php $kpiTag = admin_can_see('content.translate') ? 'a' : 'div'; ?>
+  <<?= $kpiTag ?> class="kpi"<?= $kpiTag === 'a' ? ' href="blocks.php"' : '' ?>>
     <span class="kpi-ic"><?= admin_icon('globe') ?></span>
     <span class="kpi-label">แปลภาษาอังกฤษแล้ว</span>
     <b class="kpi-num"><?= $enPct ?>%</b>
     <span class="kpi-sub"><?= (int) $stats['blocks_en'] ?> / <?= (int) $stats['blocks'] ?> ข้อความ</span>
     <span class="kpi-bar"><i style="width:<?= $enPct ?>%"></i></span>
-  </a>
-  <a class="kpi" href="lists.php">
+  </<?= $kpiTag ?>>
+  <<?= $kpiTag ?> class="kpi"<?= $kpiTag === 'a' ? ' href="lists.php"' : '' ?>>
     <span class="kpi-ic"><?= admin_icon('list') ?></span>
     <span class="kpi-label">เนื้อหาบนเว็บ</span>
     <b class="kpi-num"><?= (int) $stats['blocks'] ?></b>
     <span class="kpi-sub">ข้อความ · <?= (int) $stats['items'] ?> รายการ (สินค้า, FAQ, ขั้นตอน …)</span>
-  </a>
+  </<?= $kpiTag ?>>
 </div>
 
 <div class="dash-grid">

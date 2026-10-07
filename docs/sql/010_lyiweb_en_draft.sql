@@ -193,6 +193,14 @@ UPDATE dbo.lyiweb_blocks SET value_en = N'Please fill in your name, email and de
 UPDATE dbo.lyiweb_blocks SET value_en = N'Too many requests — please wait a moment and try again.', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.29' AND (value_en IS NULL OR value_en = N'');
 UPDATE dbo.lyiweb_blocks SET value_en = N'Have photos or a tech pack? Send them on LINE', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.30' AND (value_en IS NULL OR value_en = N'');
 UPDATE dbo.lyiweb_blocks SET value_en = N'or attach them in an email to', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.31' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Quote request', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.32' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Name', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.33' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Company', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.34' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Email', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.35' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Phone', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.36' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Product', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.37' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'Details', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.38' AND (value_en IS NULL OR value_en = N'');
+UPDATE dbo.lyiweb_blocks SET value_en = N'The form could not be sent — please email us at', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'form.39' AND (value_en IS NULL OR value_en = N'');
 UPDATE dbo.lyiweb_blocks SET value_en = N'Our address', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'map.02' AND (value_en IS NULL OR value_en = N'');
 UPDATE dbo.lyiweb_blocks SET value_en = N'Open in Google Maps ↗', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'map.03' AND (value_en IS NULL OR value_en = N'');
 UPDATE dbo.lyiweb_blocks SET value_en = N'Map of L.Y. Industries', updated_at = GETDATE() WHERE page_slug = N'contact' AND block_key = N'map.04' AND (value_en IS NULL OR value_en = N'');

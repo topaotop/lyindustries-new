@@ -67,7 +67,7 @@ $settings = [];
 foreach (db_rows('SELECT setting_key, value FROM dbo.lyiweb_settings') as $r) {
     $settings[$r['setting_key']] = (string) $r['value'];
 }
-$setting = static fn(string $k): string => ($settings[$k] ?? '') !== '' ? $settings[$k] : site($k);
+$setting = static fn(string $k): string => array_key_exists($k, $settings) && ($settings[$k] !== '' || in_array($k, SITE_CLEARABLE, true)) ? $settings[$k] : site($k);
 $uid = $user['id'];
 $clean = static fn(mixed $v): string => trim(preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/u', '', str_replace(["\r\n", "\r", "\n"], ' ', (string) $v)));
 $saveSetting = static function (string $key, string $value) use ($settings, $uid): void {
@@ -85,16 +85,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     admin_check_post();
     $changes = 0;
 
+    if (in_array($tab, ['share', 'business', 'console'], true) && !$canSettings) {
+        admin_forbidden();
+    }
+
     if ($tab === 'meta') {
         $todo = [];
         $kwTodo = [];
         foreach ($pages as $slug => $p) {
             foreach (['title_th' => 200, 'meta_desc_th' => 400, 'title_en' => 200, 'meta_desc_en' => 400] as $col => $max) {
                 $l = substr($col, -2);
-                if (!isset($_POST['seo'][$slug][$col]) || !$canMeta($slug, $l)) {
+                if (!isset($_POST['seo'][$slug][$col])) {
                     continue;
                 }
                 $v = $clean($_POST['seo'][$slug][$col]);
+                if (!$canMeta($slug, $l)) {
+                    if ($v !== (string) ($pageRows[$slug][$col] ?? '')) {
+                        admin_forbidden();
+                    }
+                    continue;
+                }
                 if (mb_strlen($v) > $max) {
                     $errors["$slug.$col"] = "ยาวเกิน $max ตัวอักษร";
                 } elseif ($col === 'title_th' && $v === '') {
@@ -104,10 +114,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             foreach (['th', 'en'] as $l) {
-                if (!isset($_POST['seo_kw'][$slug][$l]) || !$canMeta($slug, $l)) {
+                if (!isset($_POST['seo_kw'][$slug][$l])) {
                     continue;
                 }
                 $v = $clean($_POST['seo_kw'][$slug][$l]);
+                if (!$canMeta($slug, $l)) {
+                    if ($v !== ($settings[seo_kw_key($slug, $l)] ?? '')) {
+                        admin_forbidden();
+                    }
+                    continue;
+                }
                 if (mb_strlen($v) > SEO_KW_MAX) {
                     $errors["kw.$slug.$l"] = 'ยาวเกิน ' . SEO_KW_MAX . ' ตัวอักษร';
                 } elseif ($v !== ($settings[seo_kw_key($slug, $l)] ?? '')) {
@@ -179,7 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $v = $clean($_POST['s'][$k] ?? '');
             $err = match (true) {
                 mb_strlen($v) > $max => "ยาวเกิน $max ตัวอักษร",
-                $k === 'org_founding' && $v !== '' && !preg_match('/^(19|20)\d\d$/', $v) => 'ปี ค.ศ. 4 หลัก เช่น 1978',
+                $v === '' && in_array($k, ['org_founding', 'addr_locality', 'addr_region', 'addr_postal', 'addr_country'], true) => 'ห้ามว่าง — Google ใช้ข้อมูลนี้',
+                $k === 'org_founding' && !preg_match('/^(19|20)\d\d$/', $v) => 'ปี ค.ศ. 4 หลัก เช่น 1978',
                 $k === 'addr_country' && $v !== '' && !preg_match('/^[A-Z]{2}$/', $v) => 'รหัสประเทศ 2 ตัวอักษรพิมพ์ใหญ่ เช่น TH',
                 in_array($k, ['geo_lat', 'geo_lng'], true) && $v !== '' && !is_numeric($v) => 'ตัวเลข เช่น 13.8569',
                 $k === 'geo_lat' && $v !== '' && abs((float) $v) > 90, $k === 'geo_lng' && $v !== '' && abs((float) $v) > 180 => 'พิกัดไม่ถูกต้อง',
@@ -195,9 +212,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors['s.geo_lng'] = 'ใส่ให้ครบทั้งละติจูดและลองจิจูด (หรือเว้นว่างทั้งคู่)';
         }
         if ($errors === []) {
-            db_transaction(static function () use ($new, $settings, $saveSetting, &$changes): void {
+            db_transaction(static function () use ($new, $setting, $saveSetting, &$changes): void {
                 foreach ($new as $k => $v) {
-                    if ($v !== ($settings[$k] ?? '')) {
+                    if ($v !== $setting($k)) {
                         $saveSetting($k, $v);
                         $changes++;
                     }
@@ -228,6 +245,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if ($tab === 'share' && $errors !== []) {
+        // each picture is saved as it uploads — report what failed, keep what worked
+        $names = ['site' => 'รูปหลัก'] + array_map(static fn($p) => $p['label'], $pages);
+        $failed = implode(' · ', array_map(static fn($k, $msg) => ($names[substr($k, 3)] ?? $k) . ': ' . $msg, array_keys($errors), $errors));
+        content_cache_clear();
+        flash('error', ($changes > 0 ? "บันทึกแล้ว $changes รูป · " : '') . 'ไม่สำเร็จ — ' . $failed);
+        header('Location: seo.php?tab=share');
+        exit;
+    }
     if ($errors === []) {
         content_cache_clear();
         flash($changes > 0 ? 'ok' : 'info', $changes > 0 ? "บันทึกแล้ว $changes รายการ — หน้าเว็บอัปเดตทันที" : 'ไม่มีอะไรเปลี่ยน');
@@ -264,7 +290,8 @@ foreach ($pages as $slug => $p) {
 $siteChecks = [
     ['คำถาม-คำตอบ', 'FAQPage', count($faq) >= 3 && count($faqEn) === count($faq) ? 'ok' : 'warn', count($faq) . ' คำถาม · อังกฤษ ' . count($faqEn) . '/' . count($faq)],
     ['Google Search Console', 'Verification', $setting('verify_google') !== '' ? 'ok' : 'warn', $setting('verify_google') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้เชื่อม'],
-    ['ข้อมูลธุรกิจ', 'Schema', $setting('org_alt_names') !== '' && $setting('addr_postal') !== '' ? 'ok' : 'warn', $setting('geo_lat') !== '' ? 'ครบ รวมพิกัด' : 'ครบ (ยังไม่มีพิกัดแผนที่)'],
+    ['ข้อมูลธุรกิจ', 'Schema', $setting('org_alt_names') !== '' && $setting('addr_postal') !== '' ? 'ok' : 'warn',
+        $setting('org_alt_names') === '' ? 'ยังไม่มีชื่ออื่นของบริษัท' : ($setting('addr_postal') === '' ? 'ที่อยู่ยังไม่ครบ' : ($setting('geo_lat') !== '' ? 'ครบ รวมพิกัด' : 'ครบ (ยังไม่มีพิกัดแผนที่)'))],
 ];
 $all = array_merge(array_merge(...array_values($pageChecks)), $siteChecks);
 $passed = count(array_filter($all, static fn($c) => $c[2] === 'ok'));

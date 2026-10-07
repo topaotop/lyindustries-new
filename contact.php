@@ -185,7 +185,7 @@ section.block.light+section.block{padding-top:96px}
       <p><?= b('contact.form.03') ?></p>
     </div>
     <div class="cgrid">
-      <form class="card" id="qform" method="post" action="api/v1/contact.php"<?= isset($_GET['sent']) ? ' data-sent' : '' ?>>
+      <form class="card" id="qform" method="post" action="api/v1/contact.php"<?= isset($_GET['sent']) ? ' data-sent' : '' ?> data-mail="<?= ba('contact.form.32') ?>|<?= ba('contact.form.33') ?>|<?= ba('contact.form.34') ?>|<?= ba('contact.form.35') ?>|<?= ba('contact.form.36') ?>|<?= ba('contact.form.37') ?>|<?= ba('contact.form.38') ?>">
         <div class="sent full" role="status"<?= isset($_GET['sent']) ? '' : ' hidden' ?>><strong><?= b('contact.form.24') ?></strong><span><?= b('contact.form.25') ?></span></div>
         <input type="hidden" name="t" value="<?= e(form_stamp()) ?>">
         <input type="hidden" name="lang" value="<?= e(lang()) ?>">
@@ -202,7 +202,7 @@ section.block.light+section.block{padding-top:96px}
           </select></label>
         <label class="full"><?= b('contact.form.16') ?><textarea name="msg" required></textarea></label>
         <button class="btn btn-o" type="submit" data-label="<?= ba('contact.form.17') ?>" data-busy="<?= ba('contact.form.27') ?>"><?= b('contact.form.17') ?></button>
-        <span class="ferr full" role="alert" data-err-invalid="<?= ba('contact.form.28') ?>" data-err-rate="<?= ba('contact.form.29') ?>" data-err-server="<?= ba('contact.form.26') ?>"<?= isset($_GET['err']) ? '' : ' hidden' ?>><?= b('contact.form.28') ?></span>
+        <span class="ferr full" role="alert" data-err-invalid="<?= ba('contact.form.28') ?>" data-err-rate="<?= ba('contact.form.29') ?>" data-err-server="<?= ba('contact.form.26') ?>"<?= isset($_GET['err']) ? '' : ' hidden' ?>><?= b(['rate' => 'contact.form.29', 'server' => 'contact.form.39'][$_GET['err'] ?? ''] ?? 'contact.form.28') ?><?php if (($_GET['err'] ?? '') === 'server'): ?> <a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a><?php endif; ?></span>
         <span class="note full"><?= b('contact.form.30') ?> <?= e(site('line_id')) ?> <?= b('contact.form.31') ?> <a href="mailto:<?= e(site('email')) ?>"><?= e(site('email')) ?></a></span>
       </form>
       <div class="info">
@@ -223,7 +223,7 @@ section.block.light+section.block{padding-top:96px}
       <span class="eyebrow"><?= b('contact.map.01') ?></span>
       <h2><?= b('contact.map.02') ?></h2>
     </div>
-    <div class="map"><iframe title="<?= ba('contact.map.04') ?>" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=th&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+    <div class="map"><iframe title="<?= ba('contact.map.04') ?>" src="https://www.google.com/maps?q=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510&hl=<?= e(lang()) ?>&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
     <div class="maprow"><span><?= address_html() ?></span><a class="btn btn-g" href="https://www.google.com/maps/search/?api=1&query=L.Y.+Industries+124+Soi+Ram+Inthra+109+Phraya+Suren+Rd+Bang+Chan+Khlong+Sam+Wa+Bangkok+10510" target="_blank" rel="noopener"><?= b('contact.map.03') ?></a></div>
   </div>
 </section>
@@ -236,16 +236,20 @@ section.block.light+section.block{padding-top:96px}
 (function(){
   var form=document.getElementById('qform'),btn=form.querySelector('button[type=submit]'),err=form.querySelector('.ferr'),sent=form.querySelector('.sent');
   if(form.hasAttribute('data-sent')){form.classList.add('is-sent');}
+  var loaded=Date.now();
   function mailto(f){
-    var body='ชื่อ: '+f.get('name')+'\nบริษัท: '+f.get('company')+'\nอีเมล: '+f.get('email')+'\nโทร: '+f.get('phone')+'\nสินค้า: '+f.get('product')+'\n\nรายละเอียด:\n'+f.get('msg');
-    location.href='mailto:<?= e(site('email')) ?>?subject='+encodeURIComponent('ขอใบเสนอราคา — '+f.get('product'))+'&body='+encodeURIComponent(body);
+    var L=form.getAttribute('data-mail').split('|');   // subject, name, company, email, phone, product, details — in the page language
+    var body=L[1]+': '+f.get('name')+'\n'+L[2]+': '+f.get('company')+'\n'+L[3]+': '+f.get('email')+'\n'+L[4]+': '+f.get('phone')+'\n'+L[5]+': '+f.get('product')+'\n\n'+L[6]+':\n'+f.get('msg');
+    location.href='mailto:<?= e(site('email')) ?>?subject='+encodeURIComponent(L[0]+' — '+f.get('product'))+'&body='+encodeURIComponent(body);
   }
   function show(kind){err.textContent=err.getAttribute('data-err-'+kind);err.hidden=false;}
   form.addEventListener('submit',function(e){
     e.preventDefault();
     var f=new FormData(form);
     err.hidden=true;btn.disabled=true;btn.textContent=btn.getAttribute('data-busy');
-    fetch(form.action,{method:'POST',body:f,headers:{'Accept':'application/json'}})
+    // the server ignores forms sent within 3 s of loading (bots) — a quick person just waits a moment
+    new Promise(function(ok){setTimeout(ok,Math.max(0,3500-(Date.now()-loaded)));})
+    .then(function(){return fetch(form.action,{method:'POST',body:f,headers:{'Accept':'application/json'}});})
       .then(function(r){return r.json().catch(function(){return {ok:false,error:'server'};});})
       .then(function(res){
         if(res.ok){form.classList.add('is-sent');sent.hidden=false;sent.scrollIntoView({block:'center',behavior:'smooth'});return;}

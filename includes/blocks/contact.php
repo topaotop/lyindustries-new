@@ -46,6 +46,15 @@ return [
     'contact.form.29' => 'ส่งบ่อยเกินไป กรุณารอสักครู่แล้วลองใหม่',
     'contact.form.30' => 'มีรูปหรือไฟล์ tech pack? ส่งทาง LINE',
     'contact.form.31' => 'หรือแนบมากับอีเมลถึง',
+    // email fallback (when the form cannot be sent) — not shown on the page
+    'contact.form.32' => 'ขอใบเสนอราคา',
+    'contact.form.33' => 'ชื่อ',
+    'contact.form.34' => 'บริษัท',
+    'contact.form.35' => 'อีเมล',
+    'contact.form.36' => 'โทร',
+    'contact.form.37' => 'สินค้า',
+    'contact.form.38' => 'รายละเอียด',
+    'contact.form.39' => 'ระบบส่งไม่สำเร็จ — กรุณาส่งอีเมลถึง',
 
     // map
     'contact.map.01' => '02 — LOCATION',

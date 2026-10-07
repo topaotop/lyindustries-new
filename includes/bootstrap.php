@@ -6,6 +6,8 @@ declare(strict_types=1);
  */
 
 define('APP_ROOT', dirname(__DIR__));
+// the business and its DB run on Bangkok time; PHP's default here may be UTC or Europe/Berlin
+date_default_timezone_set('Asia/Bangkok');
 
 /** Shown wherever a real photo has not been uploaded yet. */
 const SITE_PLACEHOLDER_IMG = 'assets/img/brand/placeholder.svg';

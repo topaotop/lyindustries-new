@@ -10,6 +10,8 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../includes/bootstrap.php';
 require_once APP_ROOT . '/includes/lib/visitor.php';
 
+const TRACK_MAX_PER_MIN = 30;
+
 header('Cache-Control: no-store');
 http_response_code(204);
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -28,12 +30,14 @@ $lang = in_array($lang, ['th', 'en'], true) ? $lang : 'th';
 
 try {
     $visitor = visitor_hash();
-    $dup = db_rows(
-        'SELECT TOP 1 1 AS x FROM dbo.lyiweb_channel_clicks
-          WHERE visitor = ? AND channel = ? AND page = ? AND clicked_at > DATEADD(second, -10, GETDATE())',
-        [$visitor, $channel, $page]
-    );
-    if ($dup === []) {
+    // same visitor + channel + page within 10 s counts once; more than 30 clicks a minute is a script
+    $seen = db_rows(
+        'SELECT COUNT(*) AS n,
+                SUM(CASE WHEN channel = ? AND page = ? AND clicked_at > DATEADD(second, -10, GETDATE()) THEN 1 ELSE 0 END) AS dup
+           FROM dbo.lyiweb_channel_clicks WHERE visitor = ? AND clicked_at > DATEADD(minute, -1, GETDATE())',
+        [$channel, $page, $visitor]
+    )[0];
+    if ((int) $seen['dup'] === 0 && (int) $seen['n'] < TRACK_MAX_PER_MIN) {
         db_exec(
             'INSERT dbo.lyiweb_channel_clicks (channel, page, position, lang, visitor, is_bot) VALUES (?, ?, ?, ?, ?, ?)',
             [$channel, $page, substr($position, 0, 50) ?: null, $lang, $visitor, is_bot_ua() ? 1 : 0]

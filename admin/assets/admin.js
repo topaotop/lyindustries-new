@@ -66,7 +66,8 @@
 
   // highlight changed fields and warn before leaving with unsaved changes
   let dirty = false;
-  document.querySelectorAll('form.form textarea, form.form input:not([type=hidden])').forEach(el => {
+  // only real fields (with a name) — the search box and "ยังไม่แปล" filter are not edits
+  document.querySelectorAll('form.form textarea[name], form.form input[name]:not([type=hidden])').forEach(el => {
     const initial = el.value;
     el.addEventListener('input', () => {
       el.classList.toggle('changed', el.value !== initial);
@@ -74,7 +75,10 @@
     });
   });
   // keep the scroll position across "save → reload" instead of jumping to the top
-  const scrollKey = 'lyiweb-admin-scroll:' + location.pathname + location.search.replace(/[?&]_=\d+/, '');
+  // keyed by the page + the tab the form belongs to, so blocks.php and blocks.php?page=home (after
+  // the save redirect) are the same place
+  const formTab = document.querySelector('form.form input[type=hidden][name="page"], form.form input[type=hidden][name="list"], form.form input[type=hidden][name="tab"]');
+  const scrollKey = 'lyiweb-admin-scroll:' + location.pathname + (formTab ? '#' + formTab.name + '=' + formTab.value : location.search.replace(/[?&]_=\d+/, ''));
   document.querySelectorAll('form.form').forEach(f => f.addEventListener('submit', () => {
     dirty = false;
     if (f.hasAttribute('data-leave')) return;   // this form goes to another page after saving
@@ -465,6 +469,9 @@
       if (e.data.type === 'ready') {
         ready = true;
         fit();
+        bform.querySelectorAll('[data-row]').forEach(row => {
+          if (row.querySelector('.changed')) post({ type: 'text', key: row.dataset.key, value: shown(plang(), row.querySelector('[data-th]'), row.querySelector('[data-en]')) });
+        });
         const want = new URLSearchParams(location.search).get('focus') || read('lyiweb-blocks-last:' + page);
         if (want && rowOf(want)) pick(want, false);
         else if (page === 'footer') post({ type: 'focus', key: bform.querySelector('[data-row]')?.dataset.key || '' });
@@ -584,6 +591,10 @@
       if (d.type === 'ready') {
         ready = true;
         fit();
+        lform.querySelectorAll('[data-items] [data-ref]').forEach(card => card.querySelectorAll('[data-live].changed, [data-live-en].changed').forEach(input => {
+          const field = input.dataset.live || input.dataset.liveEn;
+          post({ type: 'itemText', ref: card.dataset.ref, field, value: shown(plang(), card.querySelector(`[data-live="${CSS.escape(field)}"]`), card.querySelector(`[data-live-en="${CSS.escape(field)}"]`)) });
+        }));
         const last = read('lyiweb-lists-last:' + list);
         const ref = focusId ? `${list}#${focusId}` : (last && cardOf(last) ? last : lform.querySelector('[data-items] [data-ref]')?.dataset.ref);
         if (ref) post({ type: 'focusItem', ref, scroll: true });
@@ -714,7 +725,18 @@
   // copy buttons (sitemap address …)
   document.querySelectorAll('[data-copy]').forEach(btn => btn.addEventListener('click', async () => {
     const src = btn.parentElement.querySelector('[data-copy-src]');
-    try { await navigator.clipboard.writeText(src.textContent.trim()); btn.textContent = 'คัดลอกแล้ว ✓'; } catch (e) { btn.textContent = 'คัดลอกไม่ได้'; }
+    const text = src.textContent.trim();
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+      // http:// intranet addresses have no clipboard API — copy through a hidden text box
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.append(ta);
+      ta.select();
+      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+      ta.remove();
+    }
+    btn.textContent = ok ? 'คัดลอกแล้ว ✓' : 'คัดลอกไม่ได้';
     setTimeout(() => { btn.textContent = 'คัดลอก'; }, 1800);
   }));
 

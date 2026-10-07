@@ -13,7 +13,8 @@ $swatches     = content_list('home.swatches', $lang);
 $productCards = content_list('home.products', $lang);
 $galleryItems = content_list('home.gallery', $lang);
 $faqList      = content_list('home.faq', $lang);
-$activeSwatch = $swatches[0];
+// every colour button hidden in the admin → an empty ribbon instead of PHP warnings
+$activeSwatch = $swatches[0] ?? ['name' => '', 'hex' => 'transparent', 'glow' => 'transparent', 'code' => '', 'text' => '#fff'];
 
 // Mobile side-menu (☰).
 $menuItems = [

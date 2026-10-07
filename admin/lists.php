@@ -142,6 +142,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $new['upload'] = $canUpload ? $file($k) : null;
             } elseif ($canEdit) {
                 [$v, $err] = $check($def, $row['c'][$f] ?? '');
+                // fields that go into a style attribute: a colour only (#hex, rgb()/rgba())
+                if ($err === null && !empty($def['css']) && $v !== '' && !preg_match('/^(#[0-9a-f]{3,8}|rgba?\(\s*[\d.]+%?\s*,\s*[\d.]+%?\s*,\s*[\d.]+%?\s*(,\s*[\d.]+\s*)?\)|transparent)$/i', (string) $v)) {
+                    $err = 'ใช้รูปแบบสี เช่น rgba(255,90,31,0.4) หรือ #ff5a1f';
+                }
                 // keep the stored spelling of a colour when only the letter case differs
                 if ($def['type'] === 'color' && is_string($old['c'][$f] ?? null) && strcasecmp($old['c'][$f], (string) $v) === 0) {
                     $v = $old['c'][$f];
@@ -188,12 +192,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         };
         $i18n = array_keys(array_filter($fields, static fn($d) => $d['i18n']));
         $common = array_keys(array_filter($fields, static fn($d) => !$d['i18n']));
-        // order: by the position the user arranged, then rewrite as 10, 20, 30 …
+        // order: by the position the user arranged; renumber 10, 20, 30 … only when the order really
+        // changed (a translator's save, or edits without moving anything, keep the stored numbers)
         $keep = array_filter($wanted, static fn($w) => empty($w['delete']));
         uasort($keep, static fn($a, $b) => $a['order'] <=> $b['order']);
-        $pos = 0;
-        foreach ($keep as &$w) {
-            $w['sort'] = ($pos += 10);
+        $existing = array_values(array_filter(array_keys($keep), static fn($k) => isset($items[$k])));
+        $before = $existing;
+        usort($before, static fn($a, $b) => ($items[$a]['sort'] ?? 0) <=> ($items[$b]['sort'] ?? 0));
+        $newAtEnd = array_slice(array_keys($keep), 0, count($existing)) === $existing;
+        if ($before === $existing && $newAtEnd) {
+            $pos = max([0, ...array_map(static fn($r) => (int) ($r['sort'] ?? 0), $items)]);
+            foreach ($keep as $k => &$w) {
+                $w['sort'] = isset($items[$k]) ? $items[$k]['sort'] : ($pos += 10);
+            }
+        } else {
+            $pos = 0;
+            foreach ($keep as &$w) {
+                $w['sort'] = ($pos += 10);
+            }
         }
         unset($w);
 

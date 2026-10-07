@@ -75,7 +75,7 @@ function page_translated(string $slug): bool
     }
     $raw = content_raw();
     if ($raw === null) {
-        return $memo[$slug] = false;
+        return $memo[$slug] = true;   // unknown (DB down, no cache) — no noindex / no dropped hreflang during an outage
     }
     $pages = [$slug, 'site'];   // + menus/labels shared by every page
     if ($slug === 'catalog' || $slug === 'contact') {
