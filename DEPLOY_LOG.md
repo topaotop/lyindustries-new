@@ -14,6 +14,21 @@
 
 ---
 
+## v1.8.0 — 2026-10-07 · dev
+
+- **Commit:** `981c3e0` · **Tag:** `v1.8.0`
+- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - หลังบ้าน: ซ่อน/แสดง sidebar (☰) และ **ย่อเหลือไอคอน** (ปุ่ม "ย่อเมนู") บนจอคอม — จำค่าข้ามหน้า
+  - SEO & AEO: ป้ายมีคำอังกฤษในวงเล็บ (Title tag, Description, Preview, Keyword …), แถบความยาว, **คำค้นหาหลัก (Keyword)** + ตรวจว่าอยู่ใน title/description/H1/เนื้อหา, แท็บ **เชื่อมต่อ Google (Search Console)** โค้ดยืนยัน Google/Bing (ใส่เฉพาะหน้าแรก production)
+  - หน้าแรก: รูปตัวอย่างสินค้า 3 รหัสจาก Inspiration Hub (`assets/img/gallery/`, ชั่วคราว ผู้ใช้เปลี่ยนในหลังบ้าน) + `loading="lazy"`
+- **DB:** seed 003 (36 settings) รันแล้วทั้ง `test_LYI` และ `LYI` · `011` (รูป gallery) รันใน `test_LYI` แล้ว — `LYI` ยังไม่ได้รัน (ไม่กระทบ .70)
+- **Files:** เพิ่ม 3 · แก้ 8 · ลบ 0
+- **Backup:** 8 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 8 หน้า (ไทย+อังกฤษ) 200 · robots.txt / sitemap.xml 200 · admin → 302 login · `index.html` → 301 · `includes/…`, `connectgrp.php` → 404 · รูป gallery `image/webp` · HTML จาก server ตรงกับ local (ต่างเฉพาะ host/path, `?v=`, เวลาในฟอร์ม, รูปโรงย้อมที่อัปโหลดเฉพาะ local) · หน้าแรกบน server แสดงรูป gallery 3 รูป · URL สาธารณะ 200
+
+---
+
 ## v1.7.0 — 2026-10-07 · dev
 
 - **Commit:** `588c3d2` · **Tag:** `v1.7.0`
