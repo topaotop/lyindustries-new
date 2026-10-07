@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'clear
 $stats = db_rows(
     "SELECT
         (SELECT COUNT(*) FROM dbo.lyiweb_blocks) AS blocks,
-        (SELECT COUNT(*) FROM dbo.lyiweb_blocks WHERE value_en IS NOT NULL AND value_en <> N'') AS blocks_en,
         (SELECT COUNT(*) FROM dbo.lyiweb_items WHERE is_active = 1) AS items,
         (SELECT COUNT(*) FROM dbo.lyiweb_contact_requests WHERE status = N'new') AS new_requests,
         (SELECT COUNT(*) FROM dbo.lyiweb_channel_clicks WHERE is_bot = 0 AND clicked_at >= DATEADD(day, -7, GETDATE())) AS clicks7,
@@ -34,6 +33,9 @@ $recent = db_rows(
 );
 $cacheFile = content_cache_file();
 $cacheAge = is_file($cacheFile) ? time() - filemtime($cacheFile) : null;
+// translated = has English, or the text is already English (no Thai letters) — same rule as the editor
+$stats['blocks_en'] = count(array_filter(db_rows('SELECT value_th, value_en FROM dbo.lyiweb_blocks'),
+    static fn(array $r): bool => !needs_translation((string) $r['value_th'], (string) $r['value_en'])));
 $enPct = $stats['blocks'] > 0 ? (int) round($stats['blocks_en'] * 100 / $stats['blocks']) : 0;
 $labels = array_map(static fn(array $l): string => $l[0], admin_permission_labels());
 $scopes = auth_content_scopes();

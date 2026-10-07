@@ -137,7 +137,7 @@ $menuItems = [
 
     <!-- Massive Precision Headline -->
     <h1 class="text-gradient-silver" style="font-size:clamp(42px,6.2vw,92px);line-height:1.18;font-weight:700;max-width:1080px;margin:0">
-      <?= b('home.hero.02') ?><br><?= b('home.hero.03') ?><span class="text-gradient-orange"><?= b('home.hero.04') ?></span>
+      <?= b('home.hero.02') ?><br><?= b('home.hero.03') ?><?= word_gap() ?><span class="text-gradient-orange"><?= b('home.hero.04') ?></span>
     </h1>
 
     <!-- 50-word AEO Paragraph -->

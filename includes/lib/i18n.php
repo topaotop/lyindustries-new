@@ -13,6 +13,18 @@ declare(strict_types=1);
 const SITE_LANGS = ['th', 'en'];
 const SITE_PAGE_FILES = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php'];
 
+/** English still missing? A "Thai" text with no Thai letters (e.g. "02 — WHY IT MATTERS") is already English. */
+function needs_translation(string $th, string $en): bool
+{
+    return $en === '' && preg_match('/\p{Thai}/u', $th) === 1;
+}
+
+/** Space between two texts printed side by side: Thai joins words without one, English needs it. */
+function word_gap(): string
+{
+    return lang() === 'th' ? '' : ' ';
+}
+
 /** Pick the language of this request (called once from bootstrap.php). */
 function i18n_init(): void
 {
@@ -69,7 +81,7 @@ function page_translated(string $slug): bool
     foreach ($pages as $p) {
         $file = APP_ROOT . "/includes/blocks/$p.php";
         foreach (is_file($file) ? array_keys(require $file) : [] as $key) {
-            if ((string) ($raw['blocks'][$key]['en'] ?? '') === '') {
+            if (needs_translation((string) ($raw['blocks'][$key]['th'] ?? ''), (string) ($raw['blocks'][$key]['en'] ?? ''))) {
                 return $memo[$slug] = false;
             }
         }
@@ -86,7 +98,7 @@ function page_translated(string $slug): bool
                     continue;
                 }
                 foreach ($list['fields'] as $f => $def) {
-                    if ($def['i18n'] && (string) ($row['th'][$f] ?? '') !== '' && (string) ($row['en'][$f] ?? '') === '') {
+                    if ($def['i18n'] && needs_translation((string) ($row['th'][$f] ?? ''), (string) ($row['en'][$f] ?? ''))) {
                         return $memo[$slug] = false;
                     }
                 }

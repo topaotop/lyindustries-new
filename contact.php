@@ -134,6 +134,7 @@ form.card button{justify-self:start;border:0;cursor:pointer;font:inherit}
 form.card button:disabled{opacity:.6;cursor:wait}
 form.card .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 form.card .sent{display:flex;flex-direction:column;gap:6px;padding:28px 4px;text-align:center}
+form.card .sent[hidden]{display:none}
 form.card .sent strong{font-size:20px;color:var(--text-primary)}
 form.card .sent span{color:var(--text-secondary)}
 form.card.is-sent>:not(.sent){display:none}

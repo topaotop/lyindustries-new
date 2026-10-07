@@ -152,7 +152,7 @@ $bySection = [];
 foreach ($blocks as $key => $b) {
     $bySection[strstr($key, '.', true)][$key] = $b;
 }
-$missingEn = count(array_filter($blocks, static fn($b) => $b['en'] === ''));
+$missingEn = count(array_filter($blocks, static fn($b) => needs_translation($b['th'], $b['en'])));
 $sectionNames = $pages[$slug]['sections'];
 $enOnly = array_filter(array_keys($bySection + ($hasSeo ? ['seo' => 1] : [])), static fn($sec) => !$canTh((string) $sec));
 
@@ -233,7 +233,7 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
         <legend><?= e($sectionNames[$section] ?? $section) ?></legend>
         <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
 <?php foreach ($items as $key => $b): $rows = max(1, min(6, (int) ceil(mb_strlen($b['th']) / 60))); ?>
-        <div class="row<?= isset($errors[$key]) ? ' has-error' : '' ?>" data-row data-key="<?= e("$slug.$key") ?>" data-missing="<?= $b['en'] === '' ? '1' : '0' ?>">
+        <div class="row<?= isset($errors[$key]) ? ' has-error' : '' ?>" data-row data-key="<?= e("$slug.$key") ?>" data-missing="<?= needs_translation($b['th'], $b['en']) ? '1' : '0' ?>">
           <span class="key"><b><?= e($kinds[$key] ?? 'ข้อความ') ?></b><small><?= e(substr($key, strlen($section) + 1)) ?></small></span>
           <textarea name="th[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="ภาษาไทย" data-th<?= $canTh($section) ? '' : ' readonly' ?>><?= e($b['th']) ?></textarea>
           <textarea name="en[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="English" placeholder="English (ว่าง = ใช้ภาษาไทย)"><?= e($b['en']) ?></textarea>

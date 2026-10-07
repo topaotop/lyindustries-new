@@ -273,7 +273,7 @@ $preview = static function (array $w) use ($fields, $titleField): string {
 $missingEn = 0;
 foreach ($view as $w) {
     foreach ($fields as $f => $def) {
-        if ($def['i18n'] && ($w['en'][$f] ?? '') === '') {
+        if ($def['i18n'] && needs_translation((string) ($w['th'][$f] ?? ''), (string) ($w['en'][$f] ?? ''))) {
             $missingEn++;
             break;
         }
@@ -320,7 +320,7 @@ $card = static function (string $k, array $w, int $n) use ($fields, $canEdit, $c
             $tag = $def['type'] === 'textarea' ? 'textarea' : 'input';
             $e1 = $err("$k.th.$f");
             $e2 = $err("$k.en.$f"); ?>
-    <div class="row<?= $e1 || $e2 ? ' has-error' : '' ?>"<?= ($w['en'][$f] ?? '') === '' ? ' data-missing="1"' : '' ?>>
+    <div class="row<?= $e1 || $e2 ? ' has-error' : '' ?>"<?= needs_translation((string) ($w['th'][$f] ?? ''), (string) ($w['en'][$f] ?? '')) ? ' data-missing="1"' : '' ?>>
       <span class="key"><?= e($def['label']) ?></span>
 <?php if ($tag === 'textarea'): ?>
       <textarea name="<?= e("{$base}[th][$f]") ?>" rows="3" data-live="<?= e($f) ?>"<?= $canEdit ? '' : ' readonly' ?><?= $f === $titleField ? ' data-title-src' : '' ?>><?= e((string) ($w['th'][$f] ?? '')) ?></textarea>

@@ -144,7 +144,7 @@ section.video{padding-bottom:96px}
 <section class="hero">
   <div class="wrap">
     <span class="eyebrow"><?= b('about.hero.01') ?></span>
-    <h1><?= b('about.hero.02') ?><br><?= b('about.hero.03') ?><span><?= b('about.hero.04') ?></span></h1>
+    <h1><?= b('about.hero.02') ?><br><?= b('about.hero.03') ?><?= word_gap() ?><span><?= b('about.hero.04') ?></span></h1>
     <p class="lead"><?= b('about.hero.05') ?></p>
   </div>
 </section>
