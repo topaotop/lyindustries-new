@@ -17,7 +17,7 @@
 ## v1.7.0 — 2026-10-07 · dev
 
 - **Commit:** `588c3d2` · **Tag:** `v1.7.0`
-- **Target:** `\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
 - **Changes:**
   - หลังบ้าน: เมนูใหม่ **SEO & AEO** (`admin/seo.php`) — ภาพรวม, ชื่อหน้า & คำอธิบาย (ตัวอย่าง Google + ตัวนับ), รูปแชร์ลิงก์ (ทั้งเว็บ/รายหน้า ครอป 1200×630), ข้อมูลธุรกิจสำหรับ Google, ตัวอย่าง FAQ
   - ชื่อหน้า/คำอธิบายย้ายออกจากหน้า "ข้อความหน้าเว็บ" (เปลี่ยนชื่อเมนูจาก "ข้อความหน้าเว็บ & SEO")
