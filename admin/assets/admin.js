@@ -666,6 +666,19 @@
     run();
   });
 
+  // SEO business tab: the "Google knows this company as" card follows what is typed
+  document.querySelectorAll('[data-biz-form] [data-bind]').forEach(input => input.addEventListener('input', () => {
+    const k = input.dataset.bind;
+    document.querySelectorAll(`[data-bind-text="${k}"]`).forEach(el => { el.textContent = input.value.trim(); });
+    document.querySelectorAll(`[data-bind-show="${k}"]`).forEach(el => { el.hidden = input.value.trim() === ''; });
+  }));
+  // copy buttons (sitemap address …)
+  document.querySelectorAll('[data-copy]').forEach(btn => btn.addEventListener('click', async () => {
+    const src = btn.parentElement.querySelector('[data-copy-src]');
+    try { await navigator.clipboard.writeText(src.textContent.trim()); btn.textContent = 'คัดลอกแล้ว ✓'; } catch (e) { btn.textContent = 'คัดลอกไม่ได้'; }
+    setTimeout(() => { btn.textContent = 'คัดลอก'; }, 1800);
+  }));
+
   // share picture: preview the chosen file before saving
   document.querySelectorAll('[data-og-input]').forEach(input => input.addEventListener('change', () => {
     const f = input.files && input.files[0];

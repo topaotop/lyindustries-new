@@ -244,75 +244,132 @@ $rate = static function (int $n, array $range): string {
 $faq = content_list('home.faq', 'th');
 $faqEn = array_filter(content_list('home.faq', 'en'), static fn($f, $i) => $f['q'] !== ($faq[$i]['q'] ?? null), ARRAY_FILTER_USE_BOTH);
 $prodUrl = static fn(string $l, string $file): string => SITE_PROD_ORIGIN . '/' . ($l === 'en' ? 'en/' : '') . ($file === 'index.php' ? '' : $file);
-$label = ['ok' => 'ดี', 'warn' => 'ควรปรับ', 'bad' => 'ยังไม่มี'];
+
+// every check on the overview → one score (each page: title, description, keyword, English; site: FAQ, Search Console, business data)
+$pageChecks = [];
+foreach ($pages as $slug => $p) {
+    $r = $pageRows[$slug] ?? [];
+    $tl = $len($r['title_th'] ?? '');
+    $dl = $len($r['meta_desc_th'] ?? '');
+    $kw = $settings[seo_kw_key($slug, 'th')] ?? '';
+    $tr = page_translated($slug);
+    $pageChecks[$slug] = [
+        ['ชื่อหน้า', 'Title tag', $rate($tl, SEO_TITLE_RANGE), "$tl ตัวอักษร · แนะนำ " . implode('–', SEO_TITLE_RANGE)],
+        ['คำอธิบาย', 'Description', $rate($dl, SEO_DESC_RANGE), "$dl ตัวอักษร · แนะนำ " . implode('–', SEO_DESC_RANGE)],
+        ['คำค้นหาหลัก', 'Keyword', $kw !== '' ? 'ok' : 'warn', $kw !== '' ? $kw : 'ยังไม่ตั้ง'],
+        ['ภาษาอังกฤษ', 'hreflang', $tr ? 'ok' : 'warn', $tr ? 'ครบ — Google เห็นทั้งสองภาษา' : 'ยังแปลไม่ครบ'],
+        ['รูปตอนแชร์', 'Open Graph', 'ok', ($r['og_path'] ?? '') !== '' ? 'รูปเฉพาะหน้านี้' : 'ใช้รูปหลักของเว็บ'],
+    ];
+}
+$siteChecks = [
+    ['คำถาม-คำตอบ', 'FAQPage', count($faq) >= 3 && count($faqEn) === count($faq) ? 'ok' : 'warn', count($faq) . ' คำถาม · อังกฤษ ' . count($faqEn) . '/' . count($faq)],
+    ['Google Search Console', 'Verification', $setting('verify_google') !== '' ? 'ok' : 'warn', $setting('verify_google') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้เชื่อม'],
+    ['ข้อมูลธุรกิจ', 'Schema', $setting('org_alt_names') !== '' && $setting('addr_postal') !== '' ? 'ok' : 'warn', $setting('geo_lat') !== '' ? 'ครบ รวมพิกัด' : 'ครบ (ยังไม่มีพิกัดแผนที่)'],
+];
+$all = array_merge(array_merge(...array_values($pageChecks)), $siteChecks);
+$passed = count(array_filter($all, static fn($c) => $c[2] === 'ok'));
+$score = $all === [] ? 0 : (int) round($passed * 100 / count($all));
+$scoreState = $score >= 80 ? 'ok' : ($score >= 50 ? 'warn' : 'bad');
+
+$tabsMeta = [
+    'overview' => ['ภาพรวม', 'Overview', 'chart'],
+    'meta'     => ['ชื่อหน้า & คำอธิบาย', 'Title tag & Description', 'text'],
+    'share'    => ['รูปตอนแชร์ลิงก์', 'Open Graph', 'image'],
+    'business' => ['ข้อมูลธุรกิจ', 'Schema', 'factory'],
+    'faq'      => ['คำถาม-คำตอบ', 'AEO · FAQPage', 'chat'],
+    'console'  => ['เชื่อมต่อ Google', 'Google Search Console', 'link'],
+];
+$pill = static fn(string $state): string => '<span class="pill pill-' . $state . '">' . (['ok' => 'ดี', 'warn' => 'ควรปรับ', 'bad' => 'ยังไม่มี'][$state] ?? $state) . '</span>';
 
 admin_page_start('SEO & AEO', 'seo.php');
 ?>
-<h1>SEO &amp; AEO</h1>
-<p class="muted">สิ่งที่ Google และ AI (เช่น Google AI Overview, ChatGPT) อ่านจากเว็บ — ชื่อหน้า คำอธิบาย รูปตอนแชร์ ข้อมูลธุรกิจ และคำถาม-คำตอบ</p>
-<?php if (!is_production_host()): ?><div class="flash flash-info">นี่คือเว็บทดสอบ — ตั้งค่าไว้ไม่ให้ Google เก็บ (ปกติ) · ค่าที่แก้ที่นี่ใช้กับเว็บจริงเมื่อขึ้น www.lyindustries.com ด้วยฐานข้อมูลเดียวกัน</div><?php endif; ?>
-<nav class="tabs">
-<?php foreach ($tabs as $k => $t): ?>
-  <a href="?tab=<?= e($k) ?>"<?= $k === $tab ? ' class="on" aria-current="page"' : '' ?>><span><?= e($t) ?></span></a>
+<div class="seo-page">
+<header class="page-head">
+  <span class="page-head-ic"><?= admin_icon('search') ?></span>
+  <div>
+    <h1>SEO &amp; AEO</h1>
+    <p class="muted">สิ่งที่ Google และ AI (Google AI Overview, ChatGPT) อ่านจากเว็บ — ชื่อหน้า คำอธิบาย รูปตอนแชร์ ข้อมูลธุรกิจ และคำถาม-คำตอบ</p>
+  </div>
+<?php if (!is_production_host()): ?>
+  <span class="env-chip" title="ค่าที่แก้ที่นี่ใช้กับเว็บจริงเมื่อขึ้น www.lyindustries.com ด้วยฐานข้อมูลเดียวกัน"><span class="dot dot-warn"></span>เว็บทดสอบ · Google ไม่เก็บ</span>
+<?php endif; ?>
+</header>
+
+<nav class="seo-tabs" aria-label="หัวข้อ SEO">
+<?php foreach ($tabsMeta as $k => [$th, $en, $icon]): ?>
+  <a href="?tab=<?= e($k) ?>"<?= $k === $tab ? ' class="on" aria-current="page"' : '' ?>><?= admin_icon($icon) ?><span><b><?= e($th) ?></b><small><?= e($en) ?></small></span></a>
 <?php endforeach; ?>
 </nav>
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง</div><?php endif; ?>
 
 <?php if ($tab === 'overview'): ?>
-<section class="card">
-  <h2>ตรวจแต่ละหน้า</h2>
-  <table class="table rtable seo-check">
-    <thead><tr><th>หน้า</th><th>ชื่อหน้า (Title tag)</th><th>คำอธิบาย (Description)</th><th>คำค้นหาหลัก (Keyword)</th><th>อังกฤษ</th><th>รูปตอนแชร์ (Open Graph)</th><th>ทดสอบกับ Google</th></tr></thead>
-    <tbody>
-<?php foreach ($pages as $slug => $p): $r = $pageRows[$slug] ?? []; $tl = $len($r['title_th'] ?? ''); $dl = $len($r['meta_desc_th'] ?? '');
-      $tr = page_translated($slug); $file = SITE_PAGE_FILES[$slug]; ?>
-      <tr>
-        <td><b><?= e($p['label']) ?></b></td>
-        <td data-label="ชื่อหน้า (Title tag)"><span class="dot dot-<?= $rate($tl, SEO_TITLE_RANGE) ?>"></span><?= $tl ?> ตัวอักษร</td>
-        <td data-label="คำอธิบาย (Description)"><span class="dot dot-<?= $rate($dl, SEO_DESC_RANGE) ?>"></span><?= $dl ?> ตัวอักษร</td>
-        <td data-label="คำค้นหาหลัก (Keyword)"><?php $kw = $settings[seo_kw_key($slug, 'th')] ?? ''; ?><span class="dot dot-<?= $kw !== '' ? 'ok' : 'warn' ?>"></span><?= $kw !== '' ? e($kw) : 'ยังไม่ตั้ง' ?></td>
-        <td data-label="อังกฤษ"><span class="dot dot-<?= $tr ? 'ok' : 'warn' ?>"></span><?= $tr ? 'ครบ — Google เห็นทั้งสองภาษา' : 'ยังแปลไม่ครบ (Google ยังไม่เก็บหน้าอังกฤษ)' ?></td>
-        <td data-label="รูปตอนแชร์ (Open Graph)"><span class="dot dot-ok"></span><?= ($r['og_path'] ?? '') !== '' ? 'รูปเฉพาะหน้านี้' : 'รูปหลักของเว็บ' ?></td>
-        <td class="small act"><a href="https://search.google.com/test/rich-results?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">Rich Results ↗</a> · <a href="https://pagespeed.web.dev/analysis?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">ความเร็ว ↗</a></td>
-      </tr>
+<div class="score-row">
+  <section class="card score-card">
+    <div class="ring ring-<?= $scoreState ?>" style="--p:<?= $score ?>"><b><?= $score ?></b><small>/ 100</small></div>
+    <div>
+      <h2>คะแนน SEO &amp; AEO</h2>
+      <p>ผ่าน <b><?= $passed ?></b> จาก <?= count($all) ?> ข้อ</p>
+      <p class="muted small">นับจากชื่อหน้า คำอธิบาย คำค้นหาหลัก ภาษาอังกฤษของทุกหน้า + FAQ, Search Console และข้อมูลธุรกิจ</p>
+    </div>
+  </section>
+<?php foreach ($siteChecks as $i => [$th, $en, $state, $detail]): $href = ['?tab=faq', '?tab=console', '?tab=business'][$i]; ?>
+  <a class="card status-tile" href="<?= e($href) ?>">
+    <span class="status-top"><span class="status-name"><?= e($th) ?><small><?= e($en) ?></small></span><?= $pill($state) ?></span>
+    <span class="status-detail"><?= e($detail) ?></span>
+    <span class="status-go">ดูรายละเอียด →</span>
+  </a>
 <?php endforeach; ?>
-    </tbody>
-  </table>
-  <p class="small muted">ชื่อหน้าแนะนำ <?= SEO_TITLE_RANGE[0] ?>–<?= SEO_TITLE_RANGE[1] ?> ตัวอักษร · คำอธิบาย <?= SEO_DESC_RANGE[0] ?>–<?= SEO_DESC_RANGE[1] ?> ตัวอักษร (ยาวกว่านี้ Google ตัดท้าย) · ปุ่มทดสอบกับ Google ใช้กับเว็บจริง www.lyindustries.com (ใช้ได้หลัง launch)</p>
-</section>
-<div class="grid2">
-  <section class="card">
-    <h2>คำถาม-คำตอบ (AEO)</h2>
-    <p><span class="dot dot-<?= count($faq) >= 3 ? 'ok' : 'warn' ?>"></span><?= count($faq) ?> คำถามบนหน้าแรก · ภาษาอังกฤษ <?= count($faqEn) ?>/<?= count($faq) ?></p>
-    <p class="small muted">Google และ AI ใช้คำถาม-คำตอบนี้ตอบผู้ค้นหาโดยตรง ยิ่งตอบคำถามที่ลูกค้าถามจริงได้ชัด ยิ่งมีโอกาสถูกนำไปแสดง</p>
-    <a class="btn btn-sm" href="?tab=faq">ดูรายละเอียด →</a>
-  </section>
-  <section class="card">
-    <h2>ไฟล์สำหรับ search engine (XML Sitemap / Robots.txt)</h2>
-    <p><a href="../sitemap.xml" target="_blank" rel="noopener">sitemap.xml ↗</a> (XML Sitemap) — รายการหน้าเว็บทั้งหมด อัปเดตเองทุกครั้งที่แก้ ไม่ต้องตั้งรอบหรือกดปุ่ม · หน้าอังกฤษใส่เมื่อแปลครบ</p>
-    <p><a href="../robots.txt" target="_blank" rel="noopener">robots.txt ↗</a> (Robots.txt) — <?= is_production_host() ? 'เปิดให้ search engine เก็บ' : 'เว็บทดสอบ: ปิดไม่ให้เก็บทั้งเว็บ' ?> · ระบบสร้างให้ ไม่เปิดให้แก้เอง (พิมพ์ผิดบรรทัดเดียวเว็บหายจาก Google ได้)</p>
-  </section>
-  <section class="card">
-    <h2>Google Search Console</h2>
-    <p><span class="dot dot-<?= $setting('verify_google') !== '' ? 'ok' : 'warn' ?>"></span>Google: <?= $setting('verify_google') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้ใส่โค้ดยืนยัน' ?></p>
-    <p><span class="dot dot-<?= $setting('verify_bing') !== '' ? 'ok' : 'warn' ?>"></span>Bing: <?= $setting('verify_bing') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้ใส่ (ไม่บังคับ)' ?></p>
-    <p class="small muted">ต้องเชื่อมต่อก่อนถึงจะดูได้ว่าคนค้นคำไหนแล้วเจอเว็บเรา และส่ง sitemap ให้ Google</p>
-    <a class="btn btn-sm" href="?tab=console">ตั้งค่า →</a>
-  </section>
 </div>
 
+<h2 class="section-title">ตรวจแต่ละหน้า</h2>
+<div class="page-cards">
+<?php foreach ($pages as $slug => $p): $file = SITE_PAGE_FILES[$slug]; $ok = count(array_filter($pageChecks[$slug], static fn($c) => $c[2] === 'ok')); ?>
+  <section class="card page-card">
+    <header>
+      <span class="page-card-ic"><?= admin_icon($p['icon']) ?></span>
+      <span class="page-card-name"><b><?= e($p['label']) ?></b><small><?= e(preg_replace('#^https://#', '', $prodUrl('th', $file))) ?></small></span>
+      <span class="page-card-score"><?= $ok ?>/<?= count($pageChecks[$slug]) ?></span>
+    </header>
+    <ul class="checks">
+<?php foreach ($pageChecks[$slug] as [$th, $en, $state, $detail]): ?>
+      <li><span class="dot dot-<?= $state ?>"></span><span class="check-name"><?= e($th) ?> <small>(<?= e($en) ?>)</small></span><span class="check-detail"><?= e($detail) ?></span></li>
+<?php endforeach; ?>
+    </ul>
+    <footer>
+      <a class="btn btn-sm" href="?tab=meta#page-<?= e($slug) ?>">แก้ชื่อหน้า &amp; คำอธิบาย</a>
+      <a class="btn btn-sm btn-ghost" href="https://search.google.com/test/rich-results?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">Rich Results ↗</a>
+      <a class="btn btn-sm btn-ghost" href="https://pagespeed.web.dev/analysis?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">ความเร็ว ↗</a>
+    </footer>
+  </section>
+<?php endforeach; ?>
+</div>
+<p class="small muted">ปุ่ม Rich Results / ความเร็ว ทดสอบกับเว็บจริง www.lyindustries.com (ใช้ได้หลัง launch)</p>
+
+<section class="card files-card">
+  <h2>ไฟล์สำหรับ search engine <small class="muted">(XML Sitemap / Robots.txt)</small></h2>
+  <div class="files-grid">
+    <div><a class="file-link" href="../sitemap.xml" target="_blank" rel="noopener"><?= admin_icon('list') ?> sitemap.xml ↗</a><p class="muted small">รายการหน้าเว็บทั้งหมด อัปเดตเองทุกครั้งที่แก้ — ไม่ต้องตั้งรอบหรือกดปุ่ม · หน้าอังกฤษใส่เมื่อแปลครบ</p></div>
+    <div><a class="file-link" href="../robots.txt" target="_blank" rel="noopener"><?= admin_icon('shield') ?> robots.txt ↗</a><p class="muted small"><?= is_production_host() ? 'เปิดให้ search engine เก็บ' : 'เว็บทดสอบ: ปิดไม่ให้เก็บทั้งเว็บ' ?> · ระบบสร้างให้ ไม่เปิดให้แก้เอง (พิมพ์ผิดบรรทัดเดียวเว็บหายจาก Google ได้)</p></div>
+  </div>
+</section>
+
 <?php elseif ($tab === 'meta'): ?>
-<p class="muted">ชื่อหน้า (Title tag) = หัวข้อสีน้ำเงินในผลค้นหาและชื่อแท็บเบราว์เซอร์ · คำอธิบาย (Description) = ข้อความสีเทาใต้หัวข้อ · คำค้นหาหลัก (Keyword) = ใช้ตรวจเนื้อหาในหลังบ้านเท่านั้น ไม่ใส่ลงหน้าเว็บ · ภาษาอังกฤษว่าง = ใช้ภาษาไทย</p>
+<p class="tab-intro">ชื่อหน้า (Title tag) = หัวข้อสีน้ำเงินในผลค้นหาและชื่อแท็บเบราว์เซอร์ · คำอธิบาย (Description) = ข้อความสีเทาใต้หัวข้อ · คำค้นหาหลัก (Keyword) = ใช้ตรวจเนื้อหาในหลังบ้านเท่านั้น ไม่ใส่ลงหน้าเว็บ · ภาษาอังกฤษว่าง = ใช้ภาษาไทย</p>
+<nav class="jump">
+<?php foreach ($pages as $slug => $p): if (!$canMeta($slug, 'en')) { continue; } ?>
+  <a href="#page-<?= e($slug) ?>"><?= admin_icon($p['icon']) ?><?= e($p['label']) ?></a>
+<?php endforeach; ?>
+</nav>
 <form method="post" class="form" data-seo-form>
   <?= csrf_field() ?>
   <input type="hidden" name="tab" value="meta">
 <?php foreach ($pages as $slug => $p): $r = $pageRows[$slug] ?? []; if (!$canMeta($slug, 'en')) { continue; } $file = SITE_PAGE_FILES[$slug]; ?>
-  <fieldset class="card">
-    <legend><?= admin_icon($p['icon']) ?> <?= e($p['label']) ?></legend>
+  <fieldset class="card seo-card" id="page-<?= e($slug) ?>">
+    <legend><span class="legend-ic"><?= admin_icon($p['icon']) ?></span><?= e($p['label']) ?> <a class="legend-link" href="../<?= e($file === 'index.php' ? '' : $file) ?>" target="_blank" rel="noopener">ดูหน้าเว็บ ↗</a></legend>
     <div class="seo-langs">
 <?php foreach (['th' => 'ภาษาไทย', 'en' => 'English'] as $l => $lname): $ro = !$canMeta($slug, $l); ?>
       <div class="seo-lang" data-serp-group>
-        <h3><?= e($lname) ?></h3>
+        <h3><span class="lang-badge"><?= strtoupper($l) ?></span><?= e($lname) ?><?= $ro ? ' <span class="chip chip-dim">อ่านอย่างเดียว</span>' : '' ?></h3>
         <span class="serp-label">ตัวอย่างบน Google (Preview)</span>
         <div class="serp">
           <span class="serp-site"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="18" height="18"><span>L.Y. Industries<small><?= e(preg_replace('#^https://#', '', $prodUrl($l, $file))) ?></small></span></span>
@@ -342,149 +399,189 @@ admin_page_start('SEO & AEO', 'seo.php');
 </form>
 
 <?php elseif ($tab === 'share'): ?>
-<p class="muted">รูปที่ขึ้นเมื่อมีคนแชร์ลิงก์เว็บใน LINE, Facebook, Messenger ฯลฯ · อัปโหลดแล้วระบบตัดเป็น 1200×630 ให้อัตโนมัติ (ส่วนกลางของรูป)</p>
+<p class="tab-intro">รูปที่ขึ้นเมื่อมีคนแชร์ลิงก์เว็บใน LINE, Facebook, Messenger ฯลฯ · อัปโหลดแล้วระบบตัดเป็น 1200×630 ให้อัตโนมัติ (ส่วนกลางของรูป)</p>
 <?php if (!$canSettings): ?><div class="flash flash-info">เปลี่ยนรูปได้เฉพาะผู้มีสิทธิ์ "ตั้งค่าเว็บ"</div><?php endif; ?>
 <form method="post" class="form" enctype="multipart/form-data">
   <?= csrf_field() ?>
   <input type="hidden" name="tab" value="share">
-  <fieldset class="card"<?= $canSettings ? '' : ' disabled' ?>>
-    <legend>รูปหลักของเว็บ (ใช้ทุกหน้าที่ไม่ได้ตั้งรูปเอง)</legend>
-    <div class="og-row">
-      <div class="og-card"><img src="../<?= e(asset(og_image_path(['og_image' => '']))) ?>" alt="" data-og-preview><span class="og-host">lyindustries.com</span><b><?= e(page_meta('home', 'th')['title']) ?></b></div>
-      <div class="img-actions" data-img-field>
-        <label class="btn btn-sm"><input type="file" name="og[site]" accept="image/jpeg,image/png,image/webp" hidden data-og-input>เลือกรูปใหม่…</label>
+  <fieldset class="card seo-card"<?= $canSettings ? '' : ' disabled' ?>>
+    <legend><span class="legend-ic"><?= admin_icon('image') ?></span>รูปหลักของเว็บ <small class="muted">ใช้ทุกหน้าที่ไม่ได้ตั้งรูปเอง</small></legend>
+    <div class="og-main og-row">
+      <div class="chat-mock">
+        <span class="chat-bubble">ลองดูเว็บนี้ครับ lyindustries.com</span>
+        <div class="og-card"><img src="../<?= e(asset(og_image_path(['og_image' => '']))) ?>" alt="" data-og-preview><span class="og-host">lyindustries.com</span><b><?= e(page_meta('home', 'th')['title']) ?></b></div>
+      </div>
+      <div class="og-help" data-img-field>
+        <h3>เปลี่ยนรูปหลัก</h3>
+        <ul class="tips">
+          <li>รูปแนวนอน กว้างอย่างน้อย 1200px</li>
+          <li>โลโก้/ข้อความไว้กลางภาพ — ขอบบน-ล่างอาจถูกตัด</li>
+          <li>ไฟล์ JPG, PNG หรือ WebP</li>
+        </ul>
+        <label class="btn"><input type="file" name="og[site]" accept="image/jpeg,image/png,image/webp" hidden data-og-input><?= admin_icon('image') ?> เลือกรูปใหม่…</label>
 <?php if (($settings['og_image'] ?? SITE_OG_IMAGE) !== SITE_OG_IMAGE): ?>
         <label class="check small"><input type="checkbox" name="og_clear[site]" value="1"> กลับไปใช้รูปเริ่มต้น</label>
 <?php endif; ?>
 <?php if (isset($errors['og.site'])): ?><small class="err"><?= e($errors['og.site']) ?></small><?php endif; ?>
-        <small class="muted">แนะนำรูปแนวนอน กว้างอย่างน้อย 1200px มีโลโก้/ข้อความอยู่กลางภาพ</small>
       </div>
     </div>
   </fieldset>
-  <fieldset class="card"<?= $canSettings ? '' : ' disabled' ?>>
-    <legend>รูปเฉพาะหน้า (ไม่บังคับ)</legend>
+  <fieldset class="card seo-card"<?= $canSettings ? '' : ' disabled' ?>>
+    <legend><span class="legend-ic"><?= admin_icon('grid') ?></span>รูปเฉพาะหน้า <small class="muted">ไม่บังคับ</small></legend>
+    <div class="og-grid">
 <?php foreach ($pages as $slug => $p): $own = (string) ($pageRows[$slug]['og_path'] ?? ''); ?>
-    <div class="og-row og-row-page">
-      <div class="og-card og-small"><img src="../<?= e(asset($own !== '' && content_local_image($own) !== '' ? $own : og_image_path(['og_image' => '']))) ?>" alt="" data-og-preview><b><?= e($p['label']) ?></b></div>
-      <div class="img-actions" data-img-field>
-        <span class="small muted"><?= $own !== '' ? 'ใช้รูปเฉพาะหน้านี้' : 'ใช้รูปหลักของเว็บ' ?></span>
-        <label class="btn btn-sm"><input type="file" name="og[<?= e($slug) ?>]" accept="image/jpeg,image/png,image/webp" hidden data-og-input>เลือกรูปสำหรับหน้านี้…</label>
-<?php if ($own !== ''): ?><label class="check small"><input type="checkbox" name="og_clear[<?= e($slug) ?>]" value="1"> ใช้รูปหลักของเว็บแทน</label><?php endif; ?>
+      <div class="og-tile og-row" data-img-field>
+        <div class="og-card og-small"><img src="../<?= e(asset($own !== '' && content_local_image($own) !== '' ? $own : og_image_path(['og_image' => '']))) ?>" alt="" data-og-preview><b><?= e($p['label']) ?></b></div>
+        <span class="og-state"><?= $own !== '' ? '<span class="pill pill-ok">รูปเฉพาะหน้านี้</span>' : '<span class="pill pill-dim">ใช้รูปหลักของเว็บ</span>' ?></span>
+        <label class="btn btn-sm"><input type="file" name="og[<?= e($slug) ?>]" accept="image/jpeg,image/png,image/webp" hidden data-og-input>เลือกรูป…</label>
+<?php if ($own !== ''): ?><label class="check small"><input type="checkbox" name="og_clear[<?= e($slug) ?>]" value="1"> ใช้รูปหลักแทน</label><?php endif; ?>
 <?php if (isset($errors["og.$slug"])): ?><small class="err"><?= e($errors["og.$slug"]) ?></small><?php endif; ?>
       </div>
-    </div>
 <?php endforeach; ?>
+    </div>
   </fieldset>
 <?php if ($canSettings): ?><div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
 </form>
 
 <?php elseif ($tab === 'business'): ?>
-<p class="muted">ข้อมูลที่ฝังในหน้าเว็บให้ Google และ AI รู้จักบริษัท (ไม่แสดงบนหน้า) — ชื่อ ที่อยู่ เบอร์ อีเมล เวลาทำการ ใช้จาก <a href="settings.php">ข้อมูลติดต่อ &amp; ลิงก์</a> อยู่แล้ว</p>
-<form method="post" class="form">
-  <?= csrf_field() ?>
-  <input type="hidden" name="tab" value="business">
+<p class="tab-intro">ข้อมูลที่ฝังในหน้าเว็บให้ Google และ AI รู้จักบริษัท (ไม่แสดงบนหน้า) — ชื่อ ที่อยู่ เบอร์ อีเมล เวลาทำการ ใช้จาก <a href="settings.php">ข้อมูลติดต่อ &amp; ลิงก์</a> อยู่แล้ว</p>
 <?php
 $groups = [
-    'ชื่อและประวัติ' => [
-        'org_alt_names' => ['ชื่ออื่นของบริษัท', 'คั่นด้วยจุลภาค — ช่วยให้ค้นด้วยชื่อย่อแล้วเจอ เช่น LY Industries, LYI'],
-        'org_founding'  => ['ปีที่ก่อตั้ง (ค.ศ.)', ''],
-    ],
-    'ที่อยู่ (ภาษาอังกฤษ สำหรับ Google)' => [
-        'addr_locality' => ['เขต / อำเภอ', 'เช่น Khlong Sam Wa — ถนนและเลขที่ใช้ "ที่อยู่ บรรทัด 1 (English)" ในหน้าข้อมูลติดต่อ'],
-        'addr_region'   => ['จังหวัด', 'เช่น Bangkok'],
-        'addr_postal'   => ['รหัสไปรษณีย์', ''],
-        'addr_country'  => ['รหัสประเทศ', 'TH'],
-        'geo_lat'       => ['ละติจูด (ไม่บังคับ)', 'จาก Google Maps: คลิกขวาที่ตำแหน่งโรงงาน → ตัวเลขแรก เช่น 13.8569'],
-        'geo_lng'       => ['ลองจิจูด (ไม่บังคับ)', 'ตัวเลขที่สอง เช่น 100.7123'],
-    ],
-    'โซเชียลมีเดียของบริษัท (ไม่บังคับ)' => [
-        'social_facebook'  => ['Facebook', 'https://www.facebook.com/…'],
-        'social_instagram' => ['Instagram', 'https://www.instagram.com/…'],
-        'social_linkedin'  => ['LinkedIn', 'https://www.linkedin.com/company/…'],
-        'social_youtube'   => ['YouTube', 'https://www.youtube.com/@…'],
-        'social_tiktok'    => ['TikTok', 'https://www.tiktok.com/@…'],
-    ],
+    ['factory', 'ชื่อและประวัติ', [
+        'org_alt_names' => ['ชื่ออื่นของบริษัท', 'คั่นด้วยจุลภาค — ช่วยให้ค้นด้วยชื่อย่อแล้วเจอ', 'wide'],
+        'org_founding'  => ['ปีที่ก่อตั้ง (ค.ศ.)', '', ''],
+    ]],
+    ['home', 'ที่อยู่ (ภาษาอังกฤษ สำหรับ Google)', [
+        'addr_locality' => ['เขต / อำเภอ', 'ถนนและเลขที่ใช้ "ที่อยู่ บรรทัด 1 (English)" ในหน้าข้อมูลติดต่อ', ''],
+        'addr_region'   => ['จังหวัด', '', ''],
+        'addr_postal'   => ['รหัสไปรษณีย์', '', ''],
+        'addr_country'  => ['รหัสประเทศ', 'เช่น TH', ''],
+        'geo_lat'       => ['ละติจูด (ไม่บังคับ)', 'Google Maps: คลิกขวาที่โรงงาน → ตัวเลขแรก', ''],
+        'geo_lng'       => ['ลองจิจูด (ไม่บังคับ)', 'ตัวเลขที่สอง', ''],
+    ]],
+    ['users', 'โซเชียลมีเดียของบริษัท (ไม่บังคับ)', [
+        'social_facebook'  => ['Facebook', 'https://www.facebook.com/…', 'wide'],
+        'social_instagram' => ['Instagram', 'https://www.instagram.com/…', 'wide'],
+        'social_linkedin'  => ['LinkedIn', 'https://www.linkedin.com/company/…', 'wide'],
+        'social_youtube'   => ['YouTube', 'https://www.youtube.com/@…', 'wide'],
+        'social_tiktok'    => ['TikTok', 'https://www.tiktok.com/@…', 'wide'],
+    ]],
 ];
-foreach ($groups as $gname => $fields): ?>
-  <fieldset class="card"<?= $canSettings ? '' : ' disabled' ?>>
-    <legend><?= e($gname) ?></legend>
-<?php foreach ($fields as $k => [$fl, $help]): ?>
-    <label class="field<?= isset($errors["s.$k"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
-      <input name="s[<?= e($k) ?>]" value="<?= e((string) ($_POST['s'][$k] ?? $setting($k))) ?>"<?= str_starts_with($k, 'social_') ? ' type="url" placeholder="' . e($help) . '"' : '' ?>>
-<?php if (isset($errors["s.$k"])): ?><small class="err"><?= e($errors["s.$k"]) ?></small><?php elseif ($help !== '' && !str_starts_with($k, 'social_')): ?><small class="muted"><?= e($help) ?></small><?php endif; ?>
-    </label>
+$val = static fn(string $k): string => (string) ($_POST['s'][$k] ?? $setting($k));
+?>
+<div class="biz-layout">
+<form method="post" class="form" data-biz-form>
+  <?= csrf_field() ?>
+  <input type="hidden" name="tab" value="business">
+<?php foreach ($groups as [$icon, $gname, $fields]): ?>
+  <fieldset class="card seo-card"<?= $canSettings ? '' : ' disabled' ?>>
+    <legend><span class="legend-ic"><?= admin_icon($icon) ?></span><?= e($gname) ?></legend>
+    <div class="field-grid">
+<?php foreach ($fields as $k => [$fl, $help, $wide]): $social = str_starts_with($k, 'social_'); ?>
+      <label class="field<?= $wide ? ' span-2' : '' ?><?= isset($errors["s.$k"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
+        <input name="s[<?= e($k) ?>]" value="<?= e($val($k)) ?>" data-bind="<?= e($k) ?>"<?= $social ? ' type="url" placeholder="' . e($help) . '"' : '' ?>>
+<?php if (isset($errors["s.$k"])): ?><small class="err"><?= e($errors["s.$k"]) ?></small><?php elseif ($help !== '' && !$social): ?><small class="muted"><?= e($help) ?></small><?php endif; ?>
+      </label>
 <?php endforeach; ?>
+    </div>
   </fieldset>
 <?php endforeach; ?>
-  <p class="small muted">LINE (<?= e(site('line_url')) ?>) ใส่ให้อัตโนมัติจากหน้าข้อมูลติดต่อ</p>
 <?php if ($canSettings): ?><div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
 </form>
+<aside class="card biz-preview" aria-label="ตัวอย่างข้อมูลที่ Google เห็น">
+  <span class="serp-label">Google รู้จักบริษัทนี้ว่า</span>
+  <h3><?= e(site('company_en')) ?></h3>
+  <p class="biz-alt" data-bind-text="org_alt_names"><?= e($val('org_alt_names')) ?></p>
+  <dl>
+    <dt>ก่อตั้ง</dt><dd data-bind-text="org_founding"><?= e($val('org_founding')) ?></dd>
+    <dt>ที่อยู่</dt><dd><?= e(site('address1_en')) ?>, <span data-bind-text="addr_locality"><?= e($val('addr_locality')) ?></span>, <span data-bind-text="addr_region"><?= e($val('addr_region')) ?></span> <span data-bind-text="addr_postal"><?= e($val('addr_postal')) ?></span>, <span data-bind-text="addr_country"><?= e($val('addr_country')) ?></span></dd>
+    <dt>โทร</dt><dd><?= e(phone_schema(site('phone'))) ?></dd>
+    <dt>อีเมล</dt><dd><?= e(site('email')) ?></dd>
+    <dt>โปรไฟล์</dt><dd class="biz-links"><span class="chip">LINE</span><?php foreach (['facebook' => 'Facebook', 'instagram' => 'Instagram', 'linkedin' => 'LinkedIn', 'youtube' => 'YouTube', 'tiktok' => 'TikTok'] as $k => $name): ?><span class="chip" data-bind-show="social_<?= $k ?>"<?= $val("social_$k") === '' ? ' hidden' : '' ?>><?= e($name) ?></span><?php endforeach; ?></dd>
+  </dl>
+  <p class="muted small">LINE ใส่ให้อัตโนมัติจากหน้าข้อมูลติดต่อ · ตัวอย่างนี้อัปเดตตามที่พิมพ์</p>
+</aside>
+</div>
 
 <?php elseif ($tab === 'console'): ?>
-<p class="muted">เชื่อมเว็บกับ Google Search Console (และ Bing) เพื่อดูว่าคนค้นคำไหนแล้วเจอเว็บเรา อันดับเท่าไหร่ หน้าไหนมีปัญหา และส่ง sitemap ให้ Google เก็บหน้าใหม่เร็วขึ้น</p>
+<p class="tab-intro">เชื่อมเว็บกับ Google Search Console (และ Bing) เพื่อดูว่าคนค้นคำไหนแล้วเจอเว็บเรา อันดับเท่าไหร่ หน้าไหนมีปัญหา และส่ง sitemap ให้ Google เก็บหน้าใหม่เร็วขึ้น</p>
 <?php if (!$canSettings): ?><div class="flash flash-info">แก้ได้เฉพาะผู้มีสิทธิ์ "ตั้งค่าเว็บ"</div><?php endif; ?>
-<form method="post" class="form">
-  <?= csrf_field() ?>
-  <input type="hidden" name="tab" value="console">
-  <fieldset class="card"<?= $canSettings ? '' : ' disabled' ?>>
-    <legend>ยืนยันความเป็นเจ้าของเว็บ (Meta Tag Code Settings)</legend>
-<?php foreach (['verify_google' => ['Google Search Console', 'google-site-verification'], 'verify_bing' => ['Bing Webmaster Tools (ไม่บังคับ)', 'msvalidate.01']] as $k => [$fl, $metaName]): ?>
-    <label class="field<?= isset($errors["s.$k"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
-      <textarea name="s[<?= e($k) ?>]" rows="2" placeholder="<meta name=&quot;<?= e($metaName) ?>&quot; content=&quot;…&quot; />"><?= e((string) ($_POST['s'][$k] ?? $setting($k))) ?></textarea>
-<?php if (isset($errors["s.$k"])): ?><small class="err"><?= e($errors["s.$k"]) ?></small><?php else: ?><small class="muted">วาง meta tag ทั้งบรรทัดหรือเฉพาะรหัสก็ได้ — ระบบเก็บเฉพาะรหัส และใส่ในหน้าแรกของ www.lyindustries.com เท่านั้น</small><?php endif; ?>
-    </label>
+<div class="console-status">
+<?php foreach (['verify_google' => 'Google Search Console', 'verify_bing' => 'Bing Webmaster Tools'] as $k => $name): $on = $setting($k) !== ''; ?>
+  <div class="card status-tile"><span class="status-top"><span class="status-name"><?= e($name) ?></span><span class="pill pill-<?= $on ? 'ok' : ($k === 'verify_bing' ? 'dim' : 'warn') ?>"><?= $on ? 'ใส่โค้ดแล้ว' : ($k === 'verify_bing' ? 'ไม่บังคับ' : 'ยังไม่เชื่อม') ?></span></span></div>
 <?php endforeach; ?>
-  </fieldset>
-<?php if ($canSettings): ?><div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
-</form>
-<div class="grid2">
+</div>
+<div class="grid2 console-grid">
   <section class="card">
-    <h2>ขั้นตอน (Google Search Console)</h2>
-    <ol class="tips">
-      <li>เปิด <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console ↗</a> → เพิ่ม property แบบ <b>URL prefix</b> ใส่ <code>https://www.lyindustries.com/</code></li>
-      <li>เลือกวิธียืนยัน <b>HTML tag</b> → คัดลอก meta tag มาวางในช่องด้านบน → บันทึก</li>
-      <li>กลับไปกด <b>Verify</b> ใน Search Console <span class="muted">(ใช้ได้หลังเว็บใหม่ขึ้น www.lyindustries.com แล้ว)</span></li>
-      <li>เมนู <b>Sitemaps</b> → ใส่ <code>sitemap.xml</code> → Submit</li>
+    <h2>ขั้นตอน</h2>
+    <ol class="steps">
+      <li><b>เพิ่มเว็บใน Search Console</b><span>เปิด <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console ↗</a> → เพิ่ม property แบบ <b>URL prefix</b> ใส่ <code>https://www.lyindustries.com/</code></span></li>
+      <li><b>คัดลอกโค้ดยืนยัน</b><span>เลือกวิธี <b>HTML tag</b> → คัดลอก meta tag มาวางในช่องด้านขวา → บันทึก</span></li>
+      <li><b>กด Verify</b><span>กลับไปกด Verify ใน Search Console <span class="muted">(ใช้ได้หลังเว็บใหม่ขึ้น www.lyindustries.com แล้ว)</span></span></li>
+      <li><b>ส่ง sitemap</b><span>เมนู Sitemaps → ใส่ <code>sitemap.xml</code> → Submit</span></li>
     </ol>
     <p class="small muted">Bing: ที่ <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster Tools ↗</a> เลือก "Import from Google Search Console" ได้เลย ไม่ต้องใส่โค้ด · ถ้าฝ่าย IT ยืนยันด้วย DNS (property แบบ Domain) ไม่ต้องใส่โค้ดในหน้านี้</p>
   </section>
-  <section class="card">
-    <h2>ที่อยู่ sitemap (Your Sitemap URL)</h2>
-    <p><code><?= e(SITE_PROD_ORIGIN) ?>/sitemap.xml</code></p>
-    <p class="small muted">อัปเดตอัตโนมัติ (Automatic Sitemap Update) ทุกครั้งที่แก้เนื้อหา — ไม่ต้องตั้งรอบรายสัปดาห์/รายเดือน และไม่ต้องกดสร้างใหม่</p>
-    <h2>robots.txt (Robots.txt)</h2>
-    <p class="small muted">ระบบสร้างให้: เว็บจริงเปิดให้ทุก search engine เก็บและบอกที่อยู่ sitemap · เว็บทดสอบปิดทั้งหมด — <a href="../robots.txt" target="_blank" rel="noopener">ดูไฟล์ ↗</a></p>
-  </section>
+  <div>
+    <form method="post" class="form">
+      <?= csrf_field() ?>
+      <input type="hidden" name="tab" value="console">
+      <fieldset class="card seo-card"<?= $canSettings ? '' : ' disabled' ?>>
+        <legend><span class="legend-ic"><?= admin_icon('shield') ?></span>ยืนยันความเป็นเจ้าของเว็บ <small class="muted">(Meta Tag Code Settings)</small></legend>
+<?php foreach (['verify_google' => ['Google Search Console', 'google-site-verification'], 'verify_bing' => ['Bing Webmaster Tools (ไม่บังคับ)', 'msvalidate.01']] as $k => [$fl, $metaName]): ?>
+        <label class="field<?= isset($errors["s.$k"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
+          <textarea name="s[<?= e($k) ?>]" rows="2" placeholder="<meta name=&quot;<?= e($metaName) ?>&quot; content=&quot;…&quot; />"><?= e((string) ($_POST['s'][$k] ?? $setting($k))) ?></textarea>
+<?php if (isset($errors["s.$k"])): ?><small class="err"><?= e($errors["s.$k"]) ?></small><?php else: ?><small class="muted">วาง meta tag ทั้งบรรทัดหรือเฉพาะรหัสก็ได้ — ใส่ในหน้าแรกของ www.lyindustries.com เท่านั้น</small><?php endif; ?>
+        </label>
+<?php endforeach; ?>
+<?php if ($canSettings): ?><div class="actions"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
+      </fieldset>
+    </form>
+    <section class="card">
+      <h2>ที่อยู่ sitemap <small class="muted">(Your Sitemap URL)</small></h2>
+      <div class="copy-row"><code data-copy-src><?= e(SITE_PROD_ORIGIN) ?>/sitemap.xml</code><button class="btn btn-sm" type="button" data-copy>คัดลอก</button></div>
+      <p class="small muted">อัปเดตอัตโนมัติ (Automatic Sitemap Update) ทุกครั้งที่แก้เนื้อหา — ไม่ต้องตั้งรอบรายสัปดาห์/รายเดือน และไม่ต้องกดสร้างใหม่</p>
+      <h3>robots.txt <small class="muted">(Robots.txt)</small></h3>
+      <p class="small muted">ระบบสร้างให้: เว็บจริงเปิดให้ทุก search engine เก็บและบอกที่อยู่ sitemap · เว็บทดสอบปิดทั้งหมด — <a href="../robots.txt" target="_blank" rel="noopener">ดูไฟล์ ↗</a></p>
+    </section>
+  </div>
 </div>
 
 <?php else: /* faq */ ?>
-<section class="card">
-  <h2>คำถาม-คำตอบที่ Google และ AI อ่าน</h2>
-  <p class="muted">ฝังในหน้าแรกเป็นข้อมูลแบบ FAQPage — เวลามีคนถามเรื่องที่ตรงกับคำถามเหล่านี้ Google/AI อาจยกคำตอบของเราไปแสดง พร้อมลิงก์กลับมาที่เว็บ</p>
-  <div class="actions" style="justify-content:flex-start"><a class="btn btn-primary" href="lists.php?list=home.faq">แก้คำถาม-คำตอบ →</a></div>
+<section class="card faq-hero">
+  <span class="page-head-ic"><?= admin_icon('chat') ?></span>
+  <div>
+    <h2>คำถาม-คำตอบที่ Google และ AI อ่าน</h2>
+    <p class="muted">ฝังในหน้าแรกเป็นข้อมูลแบบ FAQPage — เวลามีคนถามเรื่องที่ตรงกับคำถามเหล่านี้ Google/AI อาจยกคำตอบของเราไปแสดง พร้อมลิงก์กลับมาที่เว็บ</p>
+  </div>
+  <a class="btn btn-primary" href="lists.php?list=home.faq">แก้คำถาม-คำตอบ →</a>
 </section>
 <div class="grid2">
 <?php foreach (['th' => 'ภาษาไทย', 'en' => 'English'] as $l => $lname): $list = content_list('home.faq', $l); ?>
   <section class="card">
-    <h2><?= e($lname) ?> · <?= count($list) ?> คำถาม</h2>
+    <h2><span class="lang-badge"><?= strtoupper($l) ?></span><?= e($lname) ?> <small class="muted">· <?= count($list) ?> คำถาม</small></h2>
+    <span class="serp-label">ตัวอย่างแบบ "คำถามที่คนอื่นถาม" บน Google</span>
+    <div class="paa">
 <?php foreach ($list as $i => $f): $same = $l === 'en' && $f['q'] === ($faq[$i]['q'] ?? null); ?>
-    <details class="faq-preview"<?= $i === 0 ? ' open' : '' ?>>
-      <summary><?= $same ? '<span class="chip chip-dim">ยังไม่แปล</span> ' : '' ?><?= e($f['q']) ?></summary>
-      <p><?= e($f['a']) ?></p>
-    </details>
+      <details class="faq-preview"<?= $i === 0 ? ' open' : '' ?>>
+        <summary><?= $same ? '<span class="chip chip-dim">ยังไม่แปล</span> ' : '' ?><?= e($f['q']) ?></summary>
+        <p><?= e($f['a']) ?></p>
+      </details>
 <?php endforeach; ?>
+    </div>
   </section>
 <?php endforeach; ?>
 </div>
 <section class="card">
   <h2>เขียนคำถาม-คำตอบให้ AI หยิบไปใช้</h2>
-  <ul class="tips">
-    <li>เขียนคำถามแบบที่ลูกค้าพิมพ์ค้นจริง เช่น "สั่งผลิตขั้นต่ำเท่าไหร่" มากกว่า "เงื่อนไขการสั่งซื้อ"</li>
-    <li>ประโยคแรกของคำตอบควรตอบตรงคำถามทันที (มีตัวเลข/ข้อเท็จจริง) แล้วค่อยขยายความ</li>
-    <li>1 คำถาม = 1 เรื่อง · คำตอบยาวพอดี 2–4 ประโยค</li>
-    <li>คำถามที่ควรมีเพิ่ม: ส่งออกต่างประเทศไหม, รับงานแบรนด์เล็กไหม, มาตรฐานที่ผ่าน (OEKO-TEX/RSL), ขอตัวอย่างฟรีไหม</li>
-  </ul>
+  <div class="tip-grid">
+    <div><b>ใช้คำแบบที่ลูกค้าพิมพ์</b><span>"สั่งผลิตขั้นต่ำเท่าไหร่" ดีกว่า "เงื่อนไขการสั่งซื้อ"</span></div>
+    <div><b>ตอบตรงในประโยคแรก</b><span>มีตัวเลข/ข้อเท็จจริงก่อน แล้วค่อยขยายความ</span></div>
+    <div><b>1 คำถาม = 1 เรื่อง</b><span>คำตอบยาวพอดี 2–4 ประโยค</span></div>
+    <div><b>คำถามที่ควรมีเพิ่ม</b><span>ส่งออกต่างประเทศไหม, รับงานแบรนด์เล็กไหม, มาตรฐานที่ผ่าน (OEKO-TEX/RSL), ขอตัวอย่างฟรีไหม</span></div>
+  </div>
 </section>
 <?php endif; ?>
+</div>
 <?php
 admin_page_end();
