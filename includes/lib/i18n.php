@@ -38,6 +38,9 @@ function site_base_path(): string
 {
     $dir = str_replace('\\', '/', dirname((string) ($_SERVER['SCRIPT_NAME'] ?? '/')));
     $dir = preg_replace('#/(admin|api/v1)$#', '', $dir) ?? $dir;
+    if ($dir === '.' || $dir === '') {
+        $dir = '/';   // command line: no request path
+    }
 
     return rtrim($dir, '/') . '/';
 }

@@ -64,3 +64,7 @@ require_once __DIR__ . '/lib/content.php';
 // Language from the URL (/en/... → lang=en via rewrite) — see includes/lib/i18n.php
 require_once __DIR__ . '/lib/i18n.php';
 i18n_init();
+
+// SEO: canonical/Open Graph/structured data; dev and test copies are noindex — see includes/lib/seo.php
+require_once __DIR__ . '/lib/seo.php';
+seo_init();

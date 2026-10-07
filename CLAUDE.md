@@ -68,6 +68,13 @@ request → index.php / about.php / catalog.php / contact.php
 - **คำแปล (3-4):** ร่างภาษาอังกฤษทั้งหมดอยู่ที่ `tools/data/en-draft.php` → `php tools/build-en-draft.php` → `docs/sql/010_lyiweb_en_draft.sql` (ใส่เฉพาะช่องอังกฤษที่ยังว่าง, รายการจับคู่ด้วยข้อมูลไทยเดิม, generator ตรวจว่า `{…}` ไม่หาย) · "แปลแล้ว" = มีอังกฤษ **หรือ** ข้อความไทยไม่มีตัวอักษรไทยเลย (ป้ายภาษาอังกฤษอยู่แล้ว) — `needs_translation()` ใช้ทั้งการเช็กหน้าครบ, ตัวกรอง "ยังไม่แปล" และ % ในแดชบอร์ด · ข้อความสองชิ้นที่ต่อกันโดยไม่มีช่องว่าง (หัวข้อใหญ่ + คำสีส้ม) ใส่ `word_gap()` คั่น (ไทย = ไม่มีช่องว่าง, อังกฤษ = เว้นวรรค)
 - **ยังไม่ทำ:** เปลี่ยนภาษา default · มือถือ 390px header หน้าย่อยแน่น (ชื่อบริษัท/ปุ่มขอใบเสนอราคาตัดบรรทัด — มีมาก่อนปุ่มภาษา) รอ Pack ตัดสิน
 
+**SEO / AEO (`includes/lib/seo.php`, Phase 4)**
+- ทุกหน้า: `seo_head_tags(slug, $meta)` หลัง `<title>` = canonical + hreflang/noindex (`lang_head_tags`) + Open Graph + twitter card (รูป `assets/img/brand/og-image.jpg` 1200×630)
+- **host ที่ไม่ใช่ production** (`is_production_host()` = www.lyindustries.com / lyindustries.com) ส่ง `X-Robots-Tag: noindex, nofollow` ทุก request และ `/robots.txt` = Disallow ทั้งหมด → เว็บ dev/test (lysystems.sytes.net) ไม่ถูก Google เก็บ
+- `/robots.txt` → `robots.php`, `/sitemap.xml` → `sitemap.php` (rewrite ทั้ง `.htaccess` + `web.config`) · sitemap ใส่หน้าไทยเสมอ + หน้าอังกฤษเมื่อแปลครบ พร้อม hreflang + lastmod จาก DB
+- หน้าแรก: JSON-LD `@graph` = Organization+LocalBusiness, WebSite, **FAQPage จากรายการ FAQ ในหลังบ้าน** (`home_schema_json()`, ตามภาษา) · URL ใน schema ทุกหน้าใช้ `https://www.lyindustries.com` (`schema_site_url()`)
+- รูปหนักในหน้าแรก (Color Lab, R&D) เป็น WebP กว้าง ≤ 1600px + `loading="lazy"` — รูปใหม่ที่ใส่ตรงใน template ให้ทำแบบเดียวกัน
+
 **หน้าย่อย (`about.php`, `catalog.php`, `contact.php`)**
 - ข้อความทุกชิ้นเป็น `b('about|catalog|contact.<section>.nn')` และ footer ร่วมของ catalog/contact เป็น `b('footer.main.nn')` (`includes/site-footer.php`) — footer สั้นของ about อยู่ใน `about.cta.*`
 - แต่ละหน้ามี `<style>` ของตัวเองใน `<head>` (CSS ซ้ำกันบางส่วน เช่น `.nav`, `.brand .mark`) — แก้ส่วนที่ใช้ร่วมต้องแก้ทั้ง 3 หน้า
@@ -115,8 +122,8 @@ request → index.php / about.php / catalog.php / contact.php
 │  │  ├─ applications/        app-*.jpg — ไทล์จุดใช้งานบนเสื้อผ้า (home.tiles)
 │  │  ├─ products/            prod-*.jpg — หมวดสินค้า (home.products + catalog.php)
 │  │  ├─ process/             bgvideo1, nl, BRAIDING, FINISHING, CROCHET .jpg — ขั้นตอนผลิต (home.steps)
-│  │  ├─ rnd/                 rnd-team.png — ส่วน R&D หน้าแรก
-│  │  └─ colorlab/            dye-dispenser, spectrophotometer, lab-dip .png — ส่วนโรงย้อม/Color Lab หน้าแรก (PNG ใหญ่)
+│  │  ├─ rnd/                 rnd-team.webp — ส่วน R&D หน้าแรก
+│  │  └─ colorlab/            dye-dispenser, spectrophotometer, lab-dip .webp — ส่วนโรงย้อม/Color Lab หน้าแรก (เดิม PNG 14MB → WebP 190KB)
 │  ├─ css/home.css, fonts.css สไตล์หน้าแรก / @font-face
 │  ├─ fonts/                  woff2 ที่ self-host
 │  └─ js/home.js              JS หน้าแรก

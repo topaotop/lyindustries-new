@@ -12,7 +12,7 @@ $meta = page_meta('about', lang());
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= e($meta['title']) ?></title>
-<?= lang_head_tags('about') ?>
+<?= seo_head_tags('about', $meta) ?>
 <link rel="icon" type="image/svg+xml" href="assets/img/brand/logo-lyi.svg">
 <link rel="apple-touch-icon" href="assets/img/brand/apple-touch-icon.png">
 <meta name="description" content="<?= e($meta['meta_desc']) ?>">
@@ -20,7 +20,7 @@ $meta = page_meta('about', lang());
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Anuphan:wght@300;400;500;600&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"AboutPage","name":"<?= json_inner(block_text('about.schema.01')) ?>","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"https://lyindustries.com","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"<?= json_inner(block_text('about.schema.02')) ?>"}}
+{"@context":"https://schema.org","@type":"AboutPage","name":"<?= json_inner(block_text('about.schema.01')) ?>","mainEntity":{"@type":"Organization","name":"L.Y. Industries Co., Ltd.","alternateName":"LY Industries","foundingDate":"1978","url":"<?= json_inner(schema_site_url()) ?>","email":"<?= json_inner(site('email')) ?>","telephone":"<?= json_inner(phone_schema(site('phone'))) ?>","address":{"@type":"PostalAddress","streetAddress":"124 Phraya Suren Road, Bang Chan","addressLocality":"Khlong Sam Wa","addressRegion":"Bangkok","postalCode":"10510","addressCountry":"TH"},"description":"<?= json_inner(block_text('about.schema.02')) ?>"}}
 </script>
 <style>
 :root{--bg-primary:#08080a;--bg-secondary:#101014;--bg-card:rgba(22,22,28,.7);--brand-orange:#ff5a1f;--brand-orange-light:#ff7e47;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-light:rgba(255,255,255,.08);--border-glass:rgba(255,255,255,.12);--font-heading:'Kanit',-apple-system,sans-serif;--font-body:'Anuphan',-apple-system,sans-serif;--font-mono:'JetBrains Mono',Menlo,monospace}

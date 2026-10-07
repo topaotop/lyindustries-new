@@ -6,6 +6,10 @@ DirectoryIndex index.php
   RewriteCond %{REQUEST_URI} ^(.*/)(index|about|catalog|contact)\.html$
   RewriteRule \.html$ %1%2.php [R=301,L,QSA]
 
+  # robots.txt / sitemap.xml are generated (robots.php, sitemap.php)
+  RewriteRule ^robots\.txt$ robots.php [L]
+  RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
   # English site: /en/... → the same pages with lang=en (no copies); files under /en/ come from
   # the site root so relative links (assets, uploads, api) work in both languages
   RewriteCond %{REQUEST_URI} ^(.*/)en$
