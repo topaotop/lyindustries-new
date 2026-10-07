@@ -14,6 +14,23 @@
 
 ---
 
+## v1.10.0 — 2026-10-07 · dev
+
+- **Commit:** `1fdefd3` · **Tag:** `v1.10.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - หลังบ้าน: หน้า **SEO & AEO ใหม่ทุกแท็บ** (คะแนน, การ์ดรายหน้า, ตัวอย่างแชท, การ์ดข้อมูลธุรกิจสด, ขั้นตอน Search Console)
+  - **Role/สิทธิ์** ตรงกับเมนู SEO (เมนูขึ้นเฉพาะคนมีสิทธิ์, ป้าย scope, ปุ่มติ๊ก SEO ทุกหน้า)
+  - หน้าตัวอย่าง (ข้อความหน้าเว็บ / รายการ) **สลับ TH | EN** ได้
+  - **แก้บั๊กจากการตรวจทั้งระบบ** — คนถูกล็อกหลุดทันที, แก้ role ตัวเองไม่ได้, SEO POST นอกสิทธิ์ 403, timezone Bangkok, ฟอร์มติดต่อ (อีเมลสำรอง/แผนที่อังกฤษ, error ตามชนิด, รอ 3 วิ, หมดอายุ 24 ชม.), track.php จำกัด 30/นาที, uploads รับเฉพาะรูป, ปิด directory listing, `/en/*.html` + หน้าเก่าใต้ `/en/` บน IIS ฯลฯ (รายละเอียดใน PROJECT_STATUS)
+- **DB:** `004` + `010` (ป้าย `contact.form.32–39`) รันใน `test_LYI` แล้ว — `LYI` ยังไม่ได้รัน (ไม่กระทบ .70)
+- **Files:** เพิ่ม 0 · แก้ 22 · ลบ 0
+- **Backup:** 22 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 8 หน้า (ไทย+อังกฤษ) 200 · robots/sitemap 200 · admin → 302 login, หน้า login ไม่มี error · `index.html`, `en/about.html` → 301 ไปหน้าภาษาเดียวกัน · `braiding.php` → หน้าแรก, `en/braiding.php` → `/en/` · `includes/…`, `connectgrp.php` → 404 · `assets/img/`, `api/v1/` (ดูรายการไฟล์) → 403 · uploads: รูป 200, ไฟล์อื่น 404 · `.webp`/`.woff2` MIME ถูก · `/en/contact.php` อีเมลสำรอง + แผนที่ภาษาอังกฤษ · HTML จาก server ตรงกับ local (ต่างเฉพาะรูปโรงย้อมที่อัปโหลดเฉพาะ local) · URL สาธารณะ 200
+- **Note:** รอบแรก IIS redirect `/en/about.html` ไป `/about.php` (ไทย) → แก้ `web.config` ใช้ path เต็ม (commit `1fdefd3`) แล้ว copy ซ้ำ ตรวจผ่าน · หน้าหลังบ้านบน server ต้อง login จริงจึงจะเปิดดูได้ (agent ไม่มีรหัส)
+
+---
+
 ## v1.9.0 — 2026-10-07 · dev
 
 - **Commit:** `f978925` · **Tag:** `v1.9.0`
