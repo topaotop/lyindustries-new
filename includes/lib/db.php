@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 /**
- * Thin sqlsrv wrapper. The connection comes from connectgrp.php (picks LYI / test_LYI by host)
+ * Thin sqlsrv wrapper. The connection comes from connectgrp.php (one per server, fixed to that server's DB)
  * and is opened lazily, only when a query actually runs.
  * SQL Server 2012 / compatibility level 100: no JSON functions, no OFFSET…FETCH.
  */
