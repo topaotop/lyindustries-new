@@ -43,6 +43,8 @@ return [
         'social_linkedin'        => '',
         'social_youtube'         => '',
         'social_tiktok'          => '',
+        'verify_google'          => '',   // Google Search Console HTML-tag code (production home page only)
+        'verify_bing'            => '',   // Bing Webmaster Tools msvalidate.01 code
     ],
     'pages' => [
         'home' => [

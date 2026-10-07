@@ -107,6 +107,14 @@ function seo_head_tags(string $slug, array $meta): string
         page_translated($slug) ? '<meta property="og:locale:alternate" content="' . (lang() === 'en' ? 'th_TH' : 'en_US') . '">' : '',
         '<meta name="twitter:card" content="summary_large_image">',
     ];
+    // ownership proof for Google Search Console / Bing Webmaster Tools — only the real site needs it
+    if ($slug === 'home' && is_production_host()) {
+        foreach (['google-site-verification' => 'verify_google', 'msvalidate.01' => 'verify_bing'] as $name => $key) {
+            if (site($key) !== '') {
+                $tags[] = '<meta name="' . $name . '" content="' . e(site($key)) . '">';
+            }
+        }
+    }
 
     return implode("\n", array_filter($tags, static fn(string $t): bool => $t !== '')) . "\n";
 }

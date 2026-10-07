@@ -591,13 +591,66 @@
   document.querySelectorAll('textarea[data-range]').forEach(t => {
     const [lo, hi] = t.dataset.range.split('-').map(Number);
     const out = t.parentElement.querySelector('.count');
+    // length bar: full width = 1.25 x the longest recommended length; the green band = recommended
+    const scale = hi * 1.25;
+    const meter = document.createElement('span');
+    meter.className = 'meter';
+    meter.innerHTML = '<b></b><i></i>';
+    meter.querySelector('b').style.cssText = `left:${lo / scale * 100}%;width:${(hi - lo) / scale * 100}%`;
+    if (out) out.before(meter);
     const tint = () => {
       const n = t.value.trim().length;
-      if (out) out.dataset.state = n === 0 ? 'empty' : n < lo || n > hi ? 'warn' : 'ok';
+      const state = n === 0 ? 'empty' : n < lo || n > hi ? 'warn' : 'ok';
+      meter.dataset.state = state;
+      meter.querySelector('i').style.width = Math.min(100, n / scale * 100) + '%';
+      if (out) {
+        out.dataset.state = state;
+        out.textContent = `${n} ตัวอักษร · แนะนำ ${lo}–${hi}` + (n > hi ? ' (Google ตัดท้าย)' : n > 0 && n < lo ? ' (สั้นไป)' : '');
+      }
     };
     t.addEventListener('input', tint);
     tint();
   });
+  // focus keyword: is it in the title, the description, the page heading (H1) and the page text?
+  // The page is fetched as published (saved text); title/description use what is typed now.
+  const pageText = {};
+  const loadPage = url => (pageText[url] ??= fetch(url, { credentials: 'same-origin' })
+    .then(r => (r.ok ? r.text() : Promise.reject()))
+    .then(html => {
+      const d = new DOMParser().parseFromString(html, 'text/html');
+      d.querySelectorAll('script, style, noscript, template').forEach(n => n.remove());
+      const clean = s => (s || '').replace(/\s+/g, ' ').trim();
+      return { h1: clean(d.querySelector('h1')?.textContent), body: clean(d.body?.textContent) };
+    })
+    .catch(() => null));
+  document.querySelectorAll('[data-kw]').forEach(input => {
+    const group = input.closest('[data-serp-group]');
+    const list = group.querySelector('[data-kw-check]');
+    const has = (text, kw) => text.toLowerCase().includes(kw);
+    const run = async () => {
+      const kw = input.value.trim().toLowerCase();
+      list.hidden = kw === '';
+      if (!kw) return;
+      const page = await loadPage(input.dataset.kwPage);
+      const times = page ? page.body.toLowerCase().split(kw).length - 1 : 0;
+      const rows = [
+        ['ชื่อหน้า (Title tag)', has(group.querySelector('[data-serp-title]').textContent, kw)],
+        ['คำอธิบาย (Description)', has(group.querySelector('[data-serp-desc]').textContent, kw)],
+        ['หัวข้อใหญ่บนหน้า (H1)', page ? has(page.h1, kw) : null],
+        [page ? `เนื้อหาบนหน้า — พบ ${times} ครั้ง` : 'เนื้อหาบนหน้า (เปิดหน้าเว็บไม่ได้)', page ? times > 0 : null],
+      ];
+      list.replaceChildren(...rows.map(([text, ok]) => {
+        const li = document.createElement('li');
+        li.dataset.ok = ok === null ? 'na' : String(ok);
+        li.textContent = text;
+        return li;
+      }));
+    };
+    let timer;
+    group.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(run, 250); });
+    run();
+  });
+
   // share picture: preview the chosen file before saving
   document.querySelectorAll('[data-og-input]').forEach(input => input.addEventListener('change', () => {
     const f = input.files && input.files[0];

@@ -11,6 +11,9 @@ require_once APP_ROOT . '/includes/lib/media.php';
  *   share     link-preview picture for LINE/Facebook (site + per page)        (settings.edit + media.upload)
  *   business  business data in the structured data (names, address, social)  (settings.edit)
  *   faq       the FAQ answer engines quote (edited in รายการ & รูปภาพ)
+ *   console   Google Search Console / Bing verification codes + sitemap address (settings.edit)
+ * Labels carry the usual English SEO term in brackets (Title tag, Description …) so staff can match
+ * them with guides and other tools.
  */
 
 $user = admin_require();
@@ -22,13 +25,45 @@ if (!$anyMeta && !$canSettings) {
     admin_require('settings.edit');   // shows the "no permission" page
 }
 
-$tabs = ['overview' => 'ภาพรวม', 'meta' => 'ชื่อหน้า & คำอธิบาย', 'share' => 'รูปตอนแชร์ลิงก์', 'business' => 'ข้อมูลธุรกิจสำหรับ Google', 'faq' => 'คำถาม-คำตอบ (AEO)'];
+$tabs = [
+    'overview' => 'ภาพรวม',
+    'meta'     => 'ชื่อหน้า & คำอธิบาย (Title tag & Description)',
+    'share'    => 'รูปตอนแชร์ลิงก์ (Open Graph)',
+    'business' => 'ข้อมูลธุรกิจสำหรับ Google (Schema)',
+    'faq'      => 'คำถาม-คำตอบ (AEO)',
+    'console'  => 'เชื่อมต่อ Google (Google Search Console)',
+];
 $tab = (string) ($_GET['tab'] ?? $_POST['tab'] ?? 'overview');
 if (!isset($tabs[$tab])) {
     $tab = 'overview';
 }
 const SEO_TITLE_RANGE = [30, 60];   // what fits a Google result line
 const SEO_DESC_RANGE = [70, 160];
+const SEO_KW_MAX = 100;
+/** Settings key of a page's focus keyword — admin-only, never printed on the site. */
+function seo_kw_key(string $slug, string $l): string
+{
+    return "seo_kw_{$slug}_$l";
+}
+/** Verification code from a pasted meta tag or the bare code; '' = empty; null = not a valid code. */
+function seo_verify_code(string $raw, string $metaName): ?string
+{
+    $raw = trim($raw);
+    if ($raw === '') {
+        return '';
+    }
+    if (str_contains($raw, '<')) {
+        if (preg_match('/name\s*=\s*["\']([^"\']+)["\']/i', $raw, $n) && strcasecmp($n[1], $metaName) !== 0) {
+            return null;   // a tag for another service pasted into this box
+        }
+        if (!preg_match('/content\s*=\s*["\']([^"\']*)["\']/i', $raw, $m)) {
+            return null;
+        }
+        $raw = trim($m[1]);
+    }
+
+    return preg_match('/^[A-Za-z0-9_\-]{8,120}$/', $raw) ? $raw : null;
+}
 
 $pageRows = [];
 foreach (db_rows('SELECT p.slug, p.title_th, p.title_en, p.meta_desc_th, p.meta_desc_en, p.og_image_id, m.file_path AS og_path
@@ -59,6 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($tab === 'meta') {
         $todo = [];
+        $kwTodo = [];
         foreach ($pages as $slug => $p) {
             foreach (['title_th' => 200, 'meta_desc_th' => 400, 'title_en' => 200, 'meta_desc_en' => 400] as $col => $max) {
                 $l = substr($col, -2);
@@ -74,13 +110,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $todo[] = [$slug, $col, $v];
                 }
             }
+            foreach (['th', 'en'] as $l) {
+                if (!isset($_POST['seo_kw'][$slug][$l]) || !$canMeta($slug, $l)) {
+                    continue;
+                }
+                $v = $clean($_POST['seo_kw'][$slug][$l]);
+                if (mb_strlen($v) > SEO_KW_MAX) {
+                    $errors["kw.$slug.$l"] = 'ยาวเกิน ' . SEO_KW_MAX . ' ตัวอักษร';
+                } elseif ($v !== ($settings[seo_kw_key($slug, $l)] ?? '')) {
+                    $kwTodo[seo_kw_key($slug, $l)] = $v;
+                }
+            }
         }
         if ($errors === []) {
-            db_transaction(static function () use ($todo, $pageRows, $uid, &$changes): void {
+            db_transaction(static function () use ($todo, $kwTodo, $pageRows, $uid, $saveSetting, &$changes): void {
                 foreach ($todo as [$slug, $col, $v]) {
                     // $col comes from the fixed list above, never from the request
                     db_exec("UPDATE dbo.lyiweb_pages SET $col = ?, updated_at = GETDATE(), updated_by = ? WHERE slug = ?", [$v === '' ? null : $v, $uid, $slug]);
                     audit_log('update', 'lyiweb_pages', "$slug.$col", $pageRows[$slug][$col] ?? null, $v);
+                    $changes++;
+                }
+                foreach ($kwTodo as $key => $v) {
+                    $saveSetting($key, $v);
                     $changes++;
                 }
             });
@@ -162,6 +213,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if ($tab === 'console' && $canSettings) {
+        $new = [];
+        foreach (['verify_google' => 'google-site-verification', 'verify_bing' => 'msvalidate.01'] as $k => $metaName) {
+            $code = seo_verify_code((string) ($_POST['s'][$k] ?? ''), $metaName);
+            if ($code === null) {
+                $errors["s.$k"] = 'รูปแบบไม่ถูกต้อง — คัดลอก meta tag ทั้งบรรทัดจาก ' . ($k === 'verify_google' ? 'Google Search Console' : 'Bing Webmaster Tools') . ' มาวาง';
+            } else {
+                $new[$k] = $code;
+            }
+        }
+        if ($errors === []) {
+            db_transaction(static function () use ($new, $settings, $saveSetting, &$changes): void {
+                foreach ($new as $k => $v) {
+                    if ($v !== ($settings[$k] ?? '')) {
+                        $saveSetting($k, $v);
+                        $changes++;
+                    }
+                }
+            });
+        }
+    }
+
     if ($errors === []) {
         content_cache_clear();
         flash($changes > 0 ? 'ok' : 'info', $changes > 0 ? "บันทึกแล้ว $changes รายการ — หน้าเว็บอัปเดตทันที" : 'ไม่มีอะไรเปลี่ยน');
@@ -196,16 +269,17 @@ admin_page_start('SEO & AEO', 'seo.php');
 <section class="card">
   <h2>ตรวจแต่ละหน้า</h2>
   <table class="table rtable seo-check">
-    <thead><tr><th>หน้า</th><th>ชื่อหน้า</th><th>คำอธิบาย</th><th>อังกฤษ</th><th>รูปตอนแชร์</th><th>ทดสอบกับ Google</th></tr></thead>
+    <thead><tr><th>หน้า</th><th>ชื่อหน้า (Title tag)</th><th>คำอธิบาย (Description)</th><th>คำค้นหาหลัก (Keyword)</th><th>อังกฤษ</th><th>รูปตอนแชร์ (Open Graph)</th><th>ทดสอบกับ Google</th></tr></thead>
     <tbody>
 <?php foreach ($pages as $slug => $p): $r = $pageRows[$slug] ?? []; $tl = $len($r['title_th'] ?? ''); $dl = $len($r['meta_desc_th'] ?? '');
       $tr = page_translated($slug); $file = SITE_PAGE_FILES[$slug]; ?>
       <tr>
         <td><b><?= e($p['label']) ?></b></td>
-        <td data-label="ชื่อหน้า"><span class="dot dot-<?= $rate($tl, SEO_TITLE_RANGE) ?>"></span><?= $tl ?> ตัวอักษร</td>
-        <td data-label="คำอธิบาย"><span class="dot dot-<?= $rate($dl, SEO_DESC_RANGE) ?>"></span><?= $dl ?> ตัวอักษร</td>
+        <td data-label="ชื่อหน้า (Title tag)"><span class="dot dot-<?= $rate($tl, SEO_TITLE_RANGE) ?>"></span><?= $tl ?> ตัวอักษร</td>
+        <td data-label="คำอธิบาย (Description)"><span class="dot dot-<?= $rate($dl, SEO_DESC_RANGE) ?>"></span><?= $dl ?> ตัวอักษร</td>
+        <td data-label="คำค้นหาหลัก (Keyword)"><?php $kw = $settings[seo_kw_key($slug, 'th')] ?? ''; ?><span class="dot dot-<?= $kw !== '' ? 'ok' : 'warn' ?>"></span><?= $kw !== '' ? e($kw) : 'ยังไม่ตั้ง' ?></td>
         <td data-label="อังกฤษ"><span class="dot dot-<?= $tr ? 'ok' : 'warn' ?>"></span><?= $tr ? 'ครบ — Google เห็นทั้งสองภาษา' : 'ยังแปลไม่ครบ (Google ยังไม่เก็บหน้าอังกฤษ)' ?></td>
-        <td data-label="รูปตอนแชร์"><span class="dot dot-ok"></span><?= ($r['og_path'] ?? '') !== '' ? 'รูปเฉพาะหน้านี้' : 'รูปหลักของเว็บ' ?></td>
+        <td data-label="รูปตอนแชร์ (Open Graph)"><span class="dot dot-ok"></span><?= ($r['og_path'] ?? '') !== '' ? 'รูปเฉพาะหน้านี้' : 'รูปหลักของเว็บ' ?></td>
         <td class="small act"><a href="https://search.google.com/test/rich-results?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">Rich Results ↗</a> · <a href="https://pagespeed.web.dev/analysis?url=<?= e(rawurlencode($prodUrl('th', $file))) ?>" target="_blank" rel="noopener">ความเร็ว ↗</a></td>
       </tr>
 <?php endforeach; ?>
@@ -221,15 +295,21 @@ admin_page_start('SEO & AEO', 'seo.php');
     <a class="btn btn-sm" href="?tab=faq">ดูรายละเอียด →</a>
   </section>
   <section class="card">
-    <h2>ไฟล์สำหรับ search engine</h2>
-    <p><a href="../sitemap.xml" target="_blank" rel="noopener">sitemap.xml ↗</a> — รายการหน้าเว็บทั้งหมด (สร้างอัตโนมัติ · หน้าอังกฤษใส่เมื่อแปลครบ)</p>
-    <p><a href="../robots.txt" target="_blank" rel="noopener">robots.txt ↗</a> — <?= is_production_host() ? 'เปิดให้ search engine เก็บ' : 'เว็บทดสอบ: ปิดไม่ให้เก็บทั้งเว็บ' ?></p>
-    <p class="small muted">หลัง launch: ส่ง sitemap ใน Google Search Console → https://www.lyindustries.com/sitemap.xml</p>
+    <h2>ไฟล์สำหรับ search engine (XML Sitemap / Robots.txt)</h2>
+    <p><a href="../sitemap.xml" target="_blank" rel="noopener">sitemap.xml ↗</a> (XML Sitemap) — รายการหน้าเว็บทั้งหมด อัปเดตเองทุกครั้งที่แก้ ไม่ต้องตั้งรอบหรือกดปุ่ม · หน้าอังกฤษใส่เมื่อแปลครบ</p>
+    <p><a href="../robots.txt" target="_blank" rel="noopener">robots.txt ↗</a> (Robots.txt) — <?= is_production_host() ? 'เปิดให้ search engine เก็บ' : 'เว็บทดสอบ: ปิดไม่ให้เก็บทั้งเว็บ' ?> · ระบบสร้างให้ ไม่เปิดให้แก้เอง (พิมพ์ผิดบรรทัดเดียวเว็บหายจาก Google ได้)</p>
+  </section>
+  <section class="card">
+    <h2>Google Search Console</h2>
+    <p><span class="dot dot-<?= $setting('verify_google') !== '' ? 'ok' : 'warn' ?>"></span>Google: <?= $setting('verify_google') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้ใส่โค้ดยืนยัน' ?></p>
+    <p><span class="dot dot-<?= $setting('verify_bing') !== '' ? 'ok' : 'warn' ?>"></span>Bing: <?= $setting('verify_bing') !== '' ? 'ใส่โค้ดยืนยันแล้ว' : 'ยังไม่ได้ใส่ (ไม่บังคับ)' ?></p>
+    <p class="small muted">ต้องเชื่อมต่อก่อนถึงจะดูได้ว่าคนค้นคำไหนแล้วเจอเว็บเรา และส่ง sitemap ให้ Google</p>
+    <a class="btn btn-sm" href="?tab=console">ตั้งค่า →</a>
   </section>
 </div>
 
 <?php elseif ($tab === 'meta'): ?>
-<p class="muted">ชื่อหน้า = หัวข้อสีน้ำเงินในผลค้นหาและชื่อแท็บเบราว์เซอร์ · คำอธิบาย = ข้อความสีเทาใต้หัวข้อ · ภาษาอังกฤษว่าง = ใช้ภาษาไทย</p>
+<p class="muted">ชื่อหน้า (Title tag) = หัวข้อสีน้ำเงินในผลค้นหาและชื่อแท็บเบราว์เซอร์ · คำอธิบาย (Description) = ข้อความสีเทาใต้หัวข้อ · คำค้นหาหลัก (Keyword) = ใช้ตรวจเนื้อหาในหลังบ้านเท่านั้น ไม่ใส่ลงหน้าเว็บ · ภาษาอังกฤษว่าง = ใช้ภาษาไทย</p>
 <form method="post" class="form" data-seo-form>
   <?= csrf_field() ?>
   <input type="hidden" name="tab" value="meta">
@@ -240,18 +320,26 @@ admin_page_start('SEO & AEO', 'seo.php');
 <?php foreach (['th' => 'ภาษาไทย', 'en' => 'English'] as $l => $lname): $ro = !$canMeta($slug, $l); ?>
       <div class="seo-lang" data-serp-group>
         <h3><?= e($lname) ?></h3>
+        <span class="serp-label">ตัวอย่างบน Google (Preview)</span>
         <div class="serp">
           <span class="serp-site"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="18" height="18"><span>L.Y. Industries<small><?= e(preg_replace('#^https://#', '', $prodUrl($l, $file))) ?></small></span></span>
           <span class="serp-title" data-serp-title></span>
           <span class="serp-desc" data-serp-desc></span>
         </div>
-<?php foreach (['title' => ['ชื่อหน้า', 200, 2], 'meta_desc' => ['คำอธิบาย', 400, 4]] as $f => [$fl, $max, $rows]): $col = "{$f}_$l"; ?>
+<?php foreach (['title' => ['ชื่อหน้า (Title tag)', 200, 2], 'meta_desc' => ['คำอธิบาย (Description)', 400, 4]] as $f => [$fl, $max, $rows]): $col = "{$f}_$l"; ?>
         <label class="field<?= isset($errors["$slug.$col"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
           <textarea name="seo[<?= e($slug) ?>][<?= $col ?>]" rows="<?= $rows ?>" maxlength="<?= $max ?>" data-count data-range="<?= e(implode('-', $f === 'title' ? SEO_TITLE_RANGE : SEO_DESC_RANGE)) ?>"
             <?= $f === 'title' ? 'data-serp-title-src' : 'data-serp-desc-src' ?><?= $ro ? ' readonly' : '' ?><?= $l === 'en' ? ' placeholder="(ว่าง = ใช้ภาษาไทย)"' : '' ?>><?= e((string) ($_POST['seo'][$slug][$col] ?? $r[$col] ?? '')) ?></textarea>
 <?php if (isset($errors["$slug.$col"])): ?><small class="err"><?= e($errors["$slug.$col"]) ?></small><?php endif; ?>
         </label>
 <?php endforeach; ?>
+<?php $kwKey = seo_kw_key($slug, $l); $kwPage = '../' . ($l === 'en' ? 'en/' : '') . ($file === 'index.php' ? '' : $file); ?>
+        <label class="field<?= isset($errors["kw.$slug.$l"]) ? ' has-error' : '' ?>"><span>คำค้นหาหลัก (Keyword)</span>
+          <input name="seo_kw[<?= e($slug) ?>][<?= $l ?>]" maxlength="<?= SEO_KW_MAX ?>" value="<?= e((string) ($_POST['seo_kw'][$slug][$l] ?? $settings[$kwKey] ?? '')) ?>"
+            data-kw data-kw-page="<?= e($kwPage) ?>" placeholder="<?= $l === 'en' ? 'e.g. elastic tape manufacturer' : 'เช่น โรงงานผลิตยางยืด' ?>"<?= $ro ? ' readonly' : '' ?>>
+<?php if (isset($errors["kw.$slug.$l"])): ?><small class="err"><?= e($errors["kw.$slug.$l"]) ?></small><?php else: ?><small class="muted">คำที่อยากให้ลูกค้าค้นแล้วเจอหน้านี้ — ระบบตรวจว่ามีคำนี้ในจุดสำคัญครบหรือยัง</small><?php endif; ?>
+          <ul class="kw-check" data-kw-check hidden></ul>
+        </label>
       </div>
 <?php endforeach; ?>
     </div>
@@ -338,6 +426,43 @@ foreach ($groups as $gname => $fields): ?>
   <p class="small muted">LINE (<?= e(site('line_url')) ?>) ใส่ให้อัตโนมัติจากหน้าข้อมูลติดต่อ</p>
 <?php if ($canSettings): ?><div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
 </form>
+
+<?php elseif ($tab === 'console'): ?>
+<p class="muted">เชื่อมเว็บกับ Google Search Console (และ Bing) เพื่อดูว่าคนค้นคำไหนแล้วเจอเว็บเรา อันดับเท่าไหร่ หน้าไหนมีปัญหา และส่ง sitemap ให้ Google เก็บหน้าใหม่เร็วขึ้น</p>
+<?php if (!$canSettings): ?><div class="flash flash-info">แก้ได้เฉพาะผู้มีสิทธิ์ "ตั้งค่าเว็บ"</div><?php endif; ?>
+<form method="post" class="form">
+  <?= csrf_field() ?>
+  <input type="hidden" name="tab" value="console">
+  <fieldset class="card"<?= $canSettings ? '' : ' disabled' ?>>
+    <legend>ยืนยันความเป็นเจ้าของเว็บ (Meta Tag Code Settings)</legend>
+<?php foreach (['verify_google' => ['Google Search Console', 'google-site-verification'], 'verify_bing' => ['Bing Webmaster Tools (ไม่บังคับ)', 'msvalidate.01']] as $k => [$fl, $metaName]): ?>
+    <label class="field<?= isset($errors["s.$k"]) ? ' has-error' : '' ?>"><span><?= e($fl) ?></span>
+      <textarea name="s[<?= e($k) ?>]" rows="2" placeholder="<meta name=&quot;<?= e($metaName) ?>&quot; content=&quot;…&quot; />"><?= e((string) ($_POST['s'][$k] ?? $setting($k))) ?></textarea>
+<?php if (isset($errors["s.$k"])): ?><small class="err"><?= e($errors["s.$k"]) ?></small><?php else: ?><small class="muted">วาง meta tag ทั้งบรรทัดหรือเฉพาะรหัสก็ได้ — ระบบเก็บเฉพาะรหัส และใส่ในหน้าแรกของ www.lyindustries.com เท่านั้น</small><?php endif; ?>
+    </label>
+<?php endforeach; ?>
+  </fieldset>
+<?php if ($canSettings): ?><div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div><?php endif; ?>
+</form>
+<div class="grid2">
+  <section class="card">
+    <h2>ขั้นตอน (Google Search Console)</h2>
+    <ol class="tips">
+      <li>เปิด <a href="https://search.google.com/search-console" target="_blank" rel="noopener">Google Search Console ↗</a> → เพิ่ม property แบบ <b>URL prefix</b> ใส่ <code>https://www.lyindustries.com/</code></li>
+      <li>เลือกวิธียืนยัน <b>HTML tag</b> → คัดลอก meta tag มาวางในช่องด้านบน → บันทึก</li>
+      <li>กลับไปกด <b>Verify</b> ใน Search Console <span class="muted">(ใช้ได้หลังเว็บใหม่ขึ้น www.lyindustries.com แล้ว)</span></li>
+      <li>เมนู <b>Sitemaps</b> → ใส่ <code>sitemap.xml</code> → Submit</li>
+    </ol>
+    <p class="small muted">Bing: ที่ <a href="https://www.bing.com/webmasters" target="_blank" rel="noopener">Bing Webmaster Tools ↗</a> เลือก "Import from Google Search Console" ได้เลย ไม่ต้องใส่โค้ด · ถ้าฝ่าย IT ยืนยันด้วย DNS (property แบบ Domain) ไม่ต้องใส่โค้ดในหน้านี้</p>
+  </section>
+  <section class="card">
+    <h2>ที่อยู่ sitemap (Your Sitemap URL)</h2>
+    <p><code><?= e(SITE_PROD_ORIGIN) ?>/sitemap.xml</code></p>
+    <p class="small muted">อัปเดตอัตโนมัติ (Automatic Sitemap Update) ทุกครั้งที่แก้เนื้อหา — ไม่ต้องตั้งรอบรายสัปดาห์/รายเดือน และไม่ต้องกดสร้างใหม่</p>
+    <h2>robots.txt (Robots.txt)</h2>
+    <p class="small muted">ระบบสร้างให้: เว็บจริงเปิดให้ทุก search engine เก็บและบอกที่อยู่ sitemap · เว็บทดสอบปิดทั้งหมด — <a href="../robots.txt" target="_blank" rel="noopener">ดูไฟล์ ↗</a></p>
+  </section>
+</div>
 
 <?php else: /* faq */ ?>
 <section class="card">

@@ -75,6 +75,10 @@ IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_yo
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_youtube', N'');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_tiktok')
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_tiktok', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'verify_google')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'verify_google', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'verify_bing')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'verify_bing', N'');
 
 /* pages (rows were created by 001_lyiweb_schema.sql) */
 UPDATE dbo.lyiweb_pages SET title_th = N'L.Y. Industries (Hybrid) — Narrow Fabrics & Trims ครบวงจร มาตรฐานระดับโลก', updated_at = GETDATE() WHERE slug = N'home' AND title_th IS NULL;

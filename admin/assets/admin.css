@@ -324,6 +324,21 @@ a.stat:hover { border-color: #ffc7ad; }
 .count[data-state="ok"] { color: var(--ok); }
 .count[data-state="warn"] { color: #b26a00; }
 .count[data-state="empty"] { color: var(--err); }
+.meter { position: relative; display: block; height: 5px; margin-top: 6px; border-radius: 3px; background: #ececf0; overflow: hidden; }
+.meter b { position: absolute; top: 0; bottom: 0; background: rgba(31, 157, 85, .16); }
+.meter i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 3px; background: var(--muted); transition: width .15s; }
+.meter[data-state="ok"] i { background: var(--ok); }
+.meter[data-state="warn"] i { background: #e8a33a; }
+.meter[data-state="empty"] i { background: var(--err); }
+@media (prefers-reduced-motion: reduce) { .meter i { transition: none; } }
+.serp-label { display: block; margin: 0 0 6px; font-size: 12.5px; color: var(--muted); }
+.kw-check { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.kw-check li { padding: 3px 10px; border-radius: 99px; font-size: 12.5px; background: #f3f3f6; color: var(--muted); }
+.kw-check li::before { content: "– "; }
+.kw-check li[data-ok="true"] { background: #e3f5ea; color: #17733f; }
+.kw-check li[data-ok="true"]::before { content: "✓ "; }
+.kw-check li[data-ok="false"] { background: #fdecea; color: #b3261e; }
+.kw-check li[data-ok="false"]::before { content: "✗ "; }
 .og-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 18px; padding: 10px 0; }
 .og-row-page { border-top: 1px solid #f0f0f3; }
 .og-card { width: 360px; max-width: 100%; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
