@@ -14,7 +14,7 @@ function admin_permission_labels(): array
         'content.translate' => ['แปลภาษาอังกฤษ', 'แก้ได้เฉพาะภาษาอังกฤษ เฉพาะหน้า/ส่วนที่กำหนดด้านล่าง'],
         'media.upload'      => ['อัปโหลดรูป', 'อัปโหลด/เปลี่ยนรูปภาพ'],
         'contact.view'      => ['ดูข้อความติดต่อ', 'ดูคำขอใบเสนอราคาจากฟอร์มหน้าเว็บ'],
-        'settings.edit'     => ['ตั้งค่าเว็บ', 'แก้ข้อมูลติดต่อ เบอร์โทร อีเมล ที่อยู่ ลิงก์'],
+        'settings.edit'     => ['ตั้งค่าเว็บ', 'แก้ข้อมูลติดต่อ เบอร์โทร อีเมล ที่อยู่ ลิงก์ · SEO & AEO: รูปตอนแชร์ลิงก์ (ต้องมีอัปโหลดรูปด้วย), ข้อมูลธุรกิจสำหรับ Google, เชื่อมต่อ Google Search Console'],
         'users.manage'      => ['จัดการผู้ใช้ & สิทธิ์', 'ให้/ถอนสิทธิ์ผู้ใช้ และแก้ role — เท่ากับผู้ดูแลระบบ ให้เฉพาะคนที่ไว้ใจ'],
     ];
 }
@@ -35,7 +35,7 @@ function admin_content_pages(): array
         'home'    => ['หน้าแรก', 'index.php', 'home', [
             'hero' => 'ส่วนบนสุด (Hero)', 'trust' => 'แถบความน่าเชื่อถือ + ตัวเลข', 'story' => 'จุดใช้งานบนเสื้อผ้า', 'why' => 'ทำไมต้องเรา',
             'process' => 'ขั้นตอนการผลิต', 'specimens' => 'หมวดสินค้า', 'rnd' => 'บริการ R&D', 'colorlab' => 'โรงย้อม & Color Lab',
-            'gallery' => 'ตัวอย่างสินค้า', 'faq' => 'คำถามที่พบบ่อย', 'contact' => 'ติดต่อ + footer หน้าแรก']],
+            'gallery' => 'ตัวอย่างสินค้า', 'faq' => 'คำถามที่พบบ่อย (AEO)', 'contact' => 'ติดต่อ + footer หน้าแรก']],
         'about'   => ['เกี่ยวกับเรา', 'about.php', 'factory', [
             'hero' => 'ส่วนบนสุด', 'video' => 'วิดีโอ + ตัวเลข', 'story' => 'เรื่องราวบริษัท', 'facilities' => 'โรงงาน (Facilities)', 'cta' => 'ปุ่มท้ายหน้า + footer',
             'schema' => 'ข้อมูลสำหรับ Google (schema — ไม่แสดงบนหน้า)']],
@@ -51,8 +51,8 @@ function admin_content_pages(): array
     ];
     $pages = [];
     foreach ($defs as $slug => [$label, $url, $icon, $names]) {
-        // 'seo' = page title + meta description (lyiweb_pages); footer is not a page of its own
-        $sections = in_array($slug, ['footer', 'site'], true) ? [] : ['seo' => 'SEO (ชื่อหน้า + คำอธิบาย)'];
+        // 'seo' = page title + meta description (lyiweb_pages) + focus keyword; footer is not a page of its own
+        $sections = in_array($slug, ['footer', 'site'], true) ? [] : ['seo' => 'SEO (ชื่อหน้า, คำอธิบาย, Keyword)'];
         $file = APP_ROOT . "/includes/blocks/$slug.php";
         foreach (is_file($file) ? array_keys(require $file) : [] as $full) {
             $sec = explode('.', $full)[1] ?? '';

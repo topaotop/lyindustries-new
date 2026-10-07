@@ -86,8 +86,9 @@ function admin_icon(string $key): string
 /** May the current user see this menu entry? (content.edit implies content.translate) */
 function admin_can_see(?string $perm): bool
 {
-    if ($perm === 'seo') {   // SEO & AEO: anyone who may edit some page's SEO, or the site settings
-        return can('settings.edit') || can('content.edit') || can('content.translate');
+    if ($perm === 'seo') {   // SEO & AEO: the site settings, or the SEO section of at least one page
+        return can('settings.edit')
+            || (bool) array_filter(array_keys(SITE_PAGE_FILES), static fn(string $s): bool => can_content('en', $s, 'seo'));
     }
     return $perm === null || can($perm) || ($perm === 'content.translate' && can('content.edit'));
 }

@@ -386,6 +386,11 @@ a.kpi-brand:hover { border-color: transparent; box-shadow: 0 8px 24px rgba(238, 
 }
 @media (prefers-reduced-motion: reduce) { .kpi { transition: none; } a.kpi:hover { transform: none; } }
 
+.scope-hint { margin: 0 0 14px; padding: 12px 14px; border-radius: 10px; background: #f6f7fb; border: 1px solid #e8eaf2; font-size: 13.5px; }
+.scope-hint b .ic { width: 16px; height: 16px; vertical-align: -3px; color: var(--brand); }
+.scope-hint ul { margin: 6px 0 0; padding-left: 18px; line-height: 1.9; }
+.scope-hint .btn { margin-left: 6px; padding: 3px 10px; font-size: 12.5px; }
+
 /* SEO & AEO page — layout */
 .page-head { display: flex; align-items: flex-start; gap: 14px; margin: 0 0 18px; }
 .page-head h1 { margin: 0 0 2px; }

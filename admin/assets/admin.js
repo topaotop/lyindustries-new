@@ -99,6 +99,12 @@
   }
   // role scopes: "all" covers every page, "whole page" covers its sections → grey out what is already included
   const tree = document.querySelector('[data-scope-tree]');
+  // roles: one click ticks the SEO section of every page
+  tree?.querySelector('[data-scope-seo]')?.addEventListener('click', () => {
+    tree.querySelectorAll('input[name="scopes[]"][value$=".seo"]').forEach(i => {
+      if (!i.disabled && !i.checked) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); }
+    });
+  });
   if (tree) {
     const allBox = tree.querySelector('[data-scope-all]');
     const contentPerms = [...document.querySelectorAll('[data-content-perm]')];

@@ -162,6 +162,14 @@ admin_page_start($title, 'roles.php');
   <fieldset class="card<?= isset($errors['scopes']) ? ' has-error' : '' ?>" data-scope-tree<?= $locked ? ' disabled' : '' ?>>
     <legend>หน้า/ส่วนที่แก้ได้</legend>
     <p class="muted small" style="margin-top:0">ใช้กับสิทธิ์ "แก้เนื้อหา" และ "แปลภาษาอังกฤษ" — ติ๊กทั้งหน้า = รวมส่วนที่จะเพิ่มในอนาคตด้วย</p>
+    <div class="scope-hint">
+      <b><?= admin_icon('search') ?> เมนู SEO &amp; AEO ใครทำอะไรได้</b>
+      <ul>
+        <li>ชื่อหน้า, คำอธิบาย, Keyword → ติ๊ก <b>SEO</b> ของหน้านั้น <button class="btn btn-sm" type="button" data-scope-seo>ติ๊ก SEO ทุกหน้า</button></li>
+        <li>คำถาม-คำตอบ (AEO) → ติ๊ก <b>คำถามที่พบบ่อย (AEO)</b> ของหน้าแรก</li>
+        <li>รูปตอนแชร์ลิงก์ → สิทธิ์ <b>ตั้งค่าเว็บ</b> + <b>อัปโหลดรูป</b> · ข้อมูลธุรกิจ, Search Console → <b>ตั้งค่าเว็บ</b></li>
+      </ul>
+    </div>
 <?php if (isset($errors['scopes'])): ?><p class="err small"><?= e($errors['scopes']) ?></p><?php endif; ?>
     <label class="perm scope-all"><input type="checkbox" name="scopes[]" value="*" data-scope-all<?= $all ? ' checked' : '' ?>><span><b>ทุกหน้า ทุกส่วน</b></span></label>
     <div class="scope-pages">
