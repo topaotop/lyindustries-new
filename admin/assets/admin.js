@@ -45,7 +45,9 @@
     applyFilter();
     // jump to the start of the content, just under the sticky toolbar
     const form = document.getElementById('blocks-form');
-    if (form) window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
+    const pane = document.querySelector('[data-edit-pane]');
+    if (document.documentElement.classList.contains('blocks-visual') && pane) pane.scrollTo({ top: 0 });
+    else if (form) window.scrollTo({ top: form.getBoundingClientRect().top + window.scrollY - 70, behavior: 'smooth' });
   });
   if (subnav) applyFilter();
 
@@ -321,6 +323,130 @@
       }
       dirty = true;
     };
+  }
+
+  // blocks.php "เห็นหน้าเว็บ" view: the real page on the left, click a text → its fields on the right
+  const bform = document.querySelector('[data-blocks-form]');
+  if (bform) {
+    const root = document.documentElement;
+    const page = bform.dataset.page;
+    const frame = bform.querySelector('[data-preview]');
+    const box = bform.querySelector('[data-preview-box]');
+    const pane = bform.querySelector('[data-edit-pane]');
+    const note = bform.querySelector('[data-preview-note]');
+    const wide = window.matchMedia('(min-width: 1100px)');
+    const DESIGN_W = 1280;   // the page is laid out at desktop width, then scaled to fit
+    const store = (k, v) => { try { v === undefined ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); } catch (err) { /* blocked */ } };
+    const read = k => { try { return sessionStorage.getItem(k); } catch (err) { return null; } };
+    let mode = 'visual';
+    try { mode = localStorage.getItem('lyiweb-blocks-view') || 'visual'; } catch (err) { /* blocked */ }
+    let ready = false;
+    const post = msg => { if (ready) frame.contentWindow.postMessage(msg, location.origin); };
+    const fit = () => {
+      if (!root.classList.contains('blocks-visual')) return;
+      const scale = box.clientWidth / DESIGN_W;
+      frame.style.width = DESIGN_W + 'px';
+      frame.style.height = Math.ceil(box.clientHeight / scale) + 'px';
+      frame.style.transform = `scale(${scale})`;
+    };
+    const applyView = () => {
+      const visual = wide.matches && mode === 'visual';
+      root.classList.toggle('blocks-visual', visual);
+      bform.querySelectorAll('[data-view]').forEach(b => b.classList.toggle('on', b.dataset.view === mode));
+      if (visual && !frame.getAttribute('src')) frame.src = frame.dataset.src;
+      fit();
+    };
+    bform.querySelector('[data-view-switch]').addEventListener('click', e => {
+      const b = e.target.closest('[data-view]');
+      if (!b) return;
+      mode = b.dataset.view;
+      try { localStorage.setItem('lyiweb-blocks-view', mode); } catch (err) { /* blocked */ }
+      applyView();
+    });
+    wide.addEventListener('change', applyView);
+    window.addEventListener('resize', fit);
+
+    let noteTimer = 0;
+    const say = html => {
+      note.innerHTML = html;
+      note.hidden = false;
+      clearTimeout(noteTimer);
+      noteTimer = setTimeout(() => { note.hidden = true; }, 7000);
+    };
+    const rowOf = key => bform.querySelector(`[data-row][data-key="${CSS.escape(key)}"]`);
+    // open the fields of one text: its section, scrolled into view, highlighted, cursor in the box
+    const pick = (key, fromPreview) => {
+      const row = rowOf(key);
+      if (!row) {
+        const other = key.split('.')[0];
+        say(other !== page
+          ? `ข้อความนี้อยู่ในแท็บอื่น — <a href="?page=${encodeURIComponent(other)}&focus=${encodeURIComponent(key)}">ไปแก้ที่แท็บนั้น →</a>`
+          : 'คุณไม่มีสิทธิ์แก้ข้อความนี้');
+        return;
+      }
+      note.hidden = true;
+      const sec = row.closest('[data-section-key]').dataset.sectionKey;
+      const btn = bform.querySelector(`[data-subnav] [data-sec="${CSS.escape(sec)}"]`);
+      if (btn && !btn.classList.contains('on')) btn.click();
+      bform.querySelectorAll('.row.is-picked').forEach(r => r.classList.remove('is-picked'));
+      row.classList.add('is-picked');
+      // scroll only the edit pane (scrollIntoView would also move the whole admin page)
+      if (root.classList.contains('blocks-visual')) {
+        pane.scrollTop += row.getBoundingClientRect().top - pane.getBoundingClientRect().top - (pane.clientHeight - row.offsetHeight) / 2;
+      } else {
+        row.scrollIntoView({ block: 'center' });
+      }
+      const ta = row.querySelector('[data-th]:not([readonly])') || row.querySelector('textarea:not([readonly])');
+      if (ta) { ta.focus({ preventScroll: true }); ta.setSelectionRange(ta.value.length, ta.value.length); }
+      store('lyiweb-blocks-last:' + page, key);
+      post({ type: 'focus', key, scroll: !fromPreview });
+    };
+    window.addEventListener('message', e => {
+      if (e.origin !== location.origin || e.source !== frame.contentWindow || !e.data) return;
+      if (e.data.type === 'ready') {
+        ready = true;
+        fit();
+        const want = new URLSearchParams(location.search).get('focus') || read('lyiweb-blocks-last:' + page);
+        if (want && rowOf(want)) pick(want, false);
+        else if (page === 'footer') post({ type: 'focus', key: bform.querySelector('[data-row]')?.dataset.key || '' });
+      } else if (e.data.type === 'pick') {
+        pick(e.data.key, true);
+      } else if (e.data.type === 'miss') {
+        say('ตรงนี้ไม่ได้แก้ในหน้านี้ — การ์ด/รายการ (สินค้า, ขั้นตอนผลิต, FAQ …) แก้ที่ <a href="lists.php">รายการ & รูปภาพ</a> · เบอร์โทร อีเมล ที่อยู่ แก้ที่ <a href="settings.php">ข้อมูลติดต่อ & ลิงก์</a> · เมนูด้านบนยังแก้ไม่ได้');
+      }
+    });
+    // typing → preview updates live; moving into a field → its text is highlighted on the page
+    bform.addEventListener('input', e => {
+      const row = e.target.closest('[data-row]');
+      if (row && e.target.matches('[data-th]')) post({ type: 'text', key: row.dataset.key, value: e.target.value });
+    });
+    bform.addEventListener('focusin', e => {
+      const row = e.target.closest('[data-row]');
+      if (!row || row.classList.contains('is-picked')) return;
+      bform.querySelectorAll('.row.is-picked').forEach(r => r.classList.remove('is-picked'));
+      row.classList.add('is-picked');
+      store('lyiweb-blocks-last:' + page, row.dataset.key);
+      post({ type: 'focus', key: row.dataset.key, scroll: true });
+    });
+    // keep the edit pane's scroll position across save → reload
+    const paneKey = 'lyiweb-blocks-pane:' + page;
+    bform.addEventListener('submit', () => store(paneKey, String(pane.scrollTop)));
+    applyView();
+    const paneTop = read(paneKey);
+    if (paneTop !== null && root.classList.contains('blocks-visual')) pane.scrollTop = parseInt(paneTop, 10) || 0;
+    store(paneKey);
+
+    // Google result preview for the SEO fields
+    const serpT = bform.querySelector('[data-serp-title]');
+    const serpD = bform.querySelector('[data-serp-desc]');
+    const serp = () => {
+      const t = bform.querySelector('[data-serp-src="title"]');
+      const d = bform.querySelector('[data-serp-src="meta_desc"]');
+      if (serpT && t) serpT.textContent = t.value.trim() || '(ยังไม่มีชื่อหน้า)';
+      if (serpD && d) serpD.textContent = d.value.trim() || '(ยังไม่มีคำอธิบาย — Google จะเลือกข้อความจากหน้าเว็บมาแสดงเอง)';
+    };
+    bform.addEventListener('input', e => { if (e.target.matches('[data-serp-src]')) serp(); });
+    serp();
   }
 
   // destructive buttons ask first

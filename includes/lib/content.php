@@ -311,5 +311,8 @@ function block_text(string $key): string
 /** Escaped copy block for templates: <?= b('home.hero.01') ?> */
 function b(string $key): string
 {
-    return e(block_text($key));
+    $text = e(block_text($key));
+
+    // admin preview (admin/preview.php) marks each text so it can be clicked and edited in place
+    return defined('LYIWEB_PREVIEW') ? '<span data-lyiweb-b="' . e($key) . '">' . $text . '</span>' : $text;
 }

@@ -62,6 +62,65 @@ function admin_content_pages(): array
 }
 
 /**
+ * What kind of text each block is ("หัวข้อ", "ปุ่ม / ลิงก์", "ป้ายเล็ก" …), worked out from the element
+ * that holds it in the page template, so editors see more than "hero.04".
+ *
+ * @return array<string, string> block key without the page prefix (e.g. "hero.04") => label
+ */
+function admin_block_kinds(string $slug): array
+{
+    $templates = ['home' => 'index.php', 'about' => 'about.php', 'catalog' => 'catalog.php', 'contact' => 'contact.php', 'footer' => 'includes/site-footer.php'];
+    $src = isset($templates[$slug]) && is_file(APP_ROOT . '/' . $templates[$slug]) ? (string) file_get_contents(APP_ROOT . '/' . $templates[$slug]) : '';
+    $kinds = [];
+    if (!preg_match_all("/<\?= b\('" . preg_quote($slug, '/') . "\.([a-z]+\.\d+)'\) \?>/", $src, $m, PREG_OFFSET_CAPTURE)) {
+        return $kinds;
+    }
+    foreach ($m[1] as [$key, $pos]) {
+        $before = substr($src, max(0, $pos - 1500), min($pos, 1500));
+        preg_match_all('/<([a-zA-Z][a-zA-Z0-9]*)\b([^>]*)>/', $before, $tags, PREG_SET_ORDER | PREG_OFFSET_CAPTURE);
+        $tag = '';
+        $attrs = '';
+        $inLink = false;
+        // nearest opening tag that is still open where the text sits (+ is it inside a link/button?)
+        foreach (array_reverse($tags) as $t) {
+            $name = strtolower($t[1][0]);
+            if (in_array($name, ['br', 'img', 'input', 'meta', 'link', 'source', 'path', 'svg', 'circle', 'rect', 'line'], true)
+                || stripos(substr($before, $t[0][1]), "</$name") !== false) {
+                continue;
+            }
+            if ($tag === '') {
+                [$tag, $attrs] = [$name, $t[2][0]];
+            }
+            if (in_array($name, ['a', 'button'], true)) {
+                $inLink = true;
+                break;
+            }
+            if (in_array($name, ['section', 'body', 'main', 'footer', 'form'], true)) {
+                break;
+            }
+        }
+        $size = preg_match('/font-size:\s*(\d+(?:\.\d+)?)px/', $attrs, $fs) ? (float) $fs[1] : (preg_match('/font-size:\s*clamp\((\d+)px/', $attrs, $fs) ? (float) $fs[1] : 0.0);
+        $mono = str_contains($attrs, 'font-mono');
+        $kinds[$key] = match (true) {
+            $tag === 'h1' => 'หัวข้อหลัก',
+            $tag === 'h2' => 'หัวข้อ',
+            in_array($tag, ['h3', 'h4', 'h5', 'h6'], true) => 'หัวข้อย่อย',
+            $inLink || in_array($tag, ['a', 'button'], true) => 'ปุ่ม / ลิงก์',
+            $tag === 'label' => 'ชื่อช่องกรอก',
+            $tag === 'option' => 'ตัวเลือก',
+            $tag === 'li' => 'รายการ',
+            in_array($tag, ['th', 'td'], true) => 'ตาราง',
+            $size >= 26 => 'ตัวเลข / หัวข้อใหญ่',
+            $mono || ($size > 0 && $size <= 12) => 'ป้ายเล็ก',
+            in_array($tag, ['strong', 'b'], true) => 'ข้อความเน้น',
+            default => 'ข้อความ',
+        };
+    }
+
+    return $kinds;
+}
+
+/**
  * Clean a submitted scope list: keep only known scopes, drop what a wider scope already covers.
  *
  * @param list<mixed> $scopes

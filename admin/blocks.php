@@ -143,6 +143,9 @@ $missingEn = count(array_filter($blocks, static fn($b) => $b['en'] === ''));
 $sectionNames = $pages[$slug]['sections'];
 $enOnly = array_filter(array_keys($bySection + ($hasSeo ? ['seo' => 1] : [])), static fn($sec) => !$canTh((string) $sec));
 
+$kinds = admin_block_kinds($slug);
+$siteUrl = 'www.lyindustries.com' . ($pages[$slug]['url'] === 'index.php' ? '' : ' › ' . preg_replace('/\.php.*$/', '', $pages[$slug]['url']));
+
 admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.php');
 ?>
 <h1>ข้อความหน้าเว็บ & SEO</h1>
@@ -155,57 +158,81 @@ admin_page_start('ข้อความหน้าเว็บ & SEO', 'blocks.
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง</div><?php endif; ?>
 <?php if ($enOnly !== []): ?><div class="flash flash-info"><?= count($enOnly) === count($bySection) + ($hasSeo ? 1 : 0) ? 'คุณมีสิทธิ์แปลภาษาอังกฤษเท่านั้น' : 'บางส่วนคุณมีสิทธิ์แปลภาษาอังกฤษเท่านั้น' ?> — ช่องภาษาไทยสีเทาแก้ไม่ได้</div><?php endif; ?>
 
-<form method="post" class="form" id="blocks-form">
+<form method="post" class="form" id="blocks-form" data-blocks-form data-page="<?= e($slug) ?>">
   <?= csrf_field() ?>
   <input type="hidden" name="page" value="<?= e($slug) ?>">
 
-  <div class="toolbar">
-    <nav class="subnav" aria-label="ส่วนของหน้า" data-subnav data-page="<?= e($slug) ?>">
-      <button type="button" class="on" data-sec="all" aria-pressed="true">ทั้งหมด</button>
+  <div class="blocks-split" data-split>
+    <!-- the real page: click a text to edit it (shown on wide screens in the "เห็นหน้าเว็บ" view) -->
+    <div class="preview-pane" data-preview-pane>
+      <div class="preview-bar">
+        <b>หน้าเว็บจริง</b><span class="muted small">ชี้แล้วคลิกข้อความที่ต้องการแก้ — กรอบสีส้ม = ข้อความที่กำลังแก้ · พิมพ์แล้วเห็นผลทันที (ยังไม่บันทึกจนกว่าจะกดบันทึก)</span>
+        <a class="btn btn-sm btn-ghost" href="../<?= e($pages[$slug]['url']) ?>" target="_blank" rel="noopener">เปิดแท็บใหม่ ↗</a>
+      </div>
+      <div class="preview-box" data-preview-box><iframe data-preview title="ตัวอย่างหน้าเว็บ" data-src="preview.php?page=<?= e($slug) ?>"></iframe></div>
+      <div class="preview-note" data-preview-note hidden></div>
+    </div>
+
+    <div class="edit-pane" data-edit-pane>
+      <div class="toolbar">
+        <div class="view-switch" role="group" aria-label="รูปแบบการแก้ไข" data-view-switch>
+          <button type="button" data-view="visual">เห็นหน้าเว็บ</button>
+          <button type="button" data-view="list">รายการ</button>
+        </div>
+        <nav class="subnav" aria-label="ส่วนของหน้า" data-subnav data-page="<?= e($slug) ?>">
+          <button type="button" class="on" data-sec="all" aria-pressed="true">ทั้งหมด</button>
 <?php if ($hasSeo): ?>
-      <button type="button" data-sec="seo" aria-pressed="false">SEO</button>
+          <button type="button" data-sec="seo" aria-pressed="false">บน Google (SEO)</button>
 <?php endif; ?>
 <?php foreach ($bySection as $section => $items): ?>
-      <button type="button" data-sec="<?= e($section) ?>" aria-pressed="false"><?= e($sectionNames[$section] ?? $section) ?><small><?= count($items) ?></small></button>
+          <button type="button" data-sec="<?= e($section) ?>" aria-pressed="false"><?= e($sectionNames[$section] ?? $section) ?><small><?= count($items) ?></small></button>
 <?php endforeach; ?>
-    </nav>
-    <input type="search" class="filter" placeholder="ค้นหาข้อความ…" data-filter>
-    <label class="check"><input type="checkbox" data-only-missing> แสดงเฉพาะที่ยังไม่แปล (<?= $missingEn ?>)</label>
-    <a class="btn btn-ghost" href="../<?= e($pages[$slug]['url']) ?>" target="_blank" rel="noopener">ดูหน้านี้ ↗</a>
-    <button class="btn btn-primary" type="submit">บันทึก</button>
-  </div>
+        </nav>
+        <input type="search" class="filter" placeholder="ค้นหาข้อความ…" data-filter>
+        <label class="check"><input type="checkbox" data-only-missing> ยังไม่แปล (<?= $missingEn ?>)</label>
+        <a class="btn btn-ghost list-only" href="../<?= e($pages[$slug]['url']) ?>" target="_blank" rel="noopener">ดูหน้านี้ ↗</a>
+        <button class="btn btn-primary" type="submit">บันทึก</button>
+      </div>
 
 <?php if ($hasSeo): ?>
-  <fieldset class="card" data-section-key="seo">
-    <legend>SEO — ชื่อหน้า (title) และคำอธิบาย (meta description)</legend>
-    <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
-<?php foreach (['title' => ['ชื่อหน้า', 200, 'แสดงบนแท็บเบราว์เซอร์และหัวข้อผลการค้นหา Google — แนะนำ 50–60 ตัวอักษร'], 'meta_desc' => ['คำอธิบาย', 400, 'ข้อความใต้หัวข้อในผลการค้นหา — แนะนำ 120–160 ตัวอักษร']] as $f => [$label, $max, $help]): ?>
-    <div class="row<?= isset($errors["seo.{$f}_th"]) || isset($errors["seo.{$f}_en"]) ? ' has-error' : '' ?>">
-      <span class="key"><?= e($label) ?><small class="muted"><?= e($help) ?></small></span>
-      <textarea name="seo[<?= $f ?>_th]" maxlength="<?= $max ?>" rows="<?= $f === 'title' ? 2 : 4 ?>" data-count<?= $canTh('seo') ? '' : ' readonly' ?>><?= e((string) ($seo[$f . '_th'] ?? '')) ?></textarea>
-      <textarea name="seo[<?= $f ?>_en]" maxlength="<?= $max ?>" rows="<?= $f === 'title' ? 2 : 4 ?>" data-count placeholder="(ว่าง = ใช้ภาษาไทย)"><?= e((string) ($seo[$f . '_en'] ?? '')) ?></textarea>
+      <fieldset class="card" data-section-key="seo">
+        <legend>หน้านี้บน Google (SEO)</legend>
+        <p class="muted small" style="margin-top:0">ชื่อหน้าและคำอธิบายที่คนเห็นเมื่อค้นหาเจอเว็บใน Google — ไม่แสดงบนหน้าเว็บ (ชื่อหน้าแสดงบนแท็บเบราว์เซอร์ด้วย)</p>
+        <div class="serp" data-serp aria-label="ตัวอย่างผลการค้นหา Google">
+          <span class="serp-site"><img src="../assets/img/brand/logo-lyi.svg" alt="" width="18" height="18"><span>L.Y. Industries<small><?= e($siteUrl) ?></small></span></span>
+          <span class="serp-title" data-serp-title></span>
+          <span class="serp-desc" data-serp-desc></span>
+        </div>
+        <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
+<?php foreach (['title' => ['ชื่อหน้า', 200, 'หัวข้อสีน้ำเงินในผลค้นหา — แนะนำ 50–60 ตัวอักษร'], 'meta_desc' => ['คำอธิบาย', 400, 'ข้อความสีเทาใต้หัวข้อ — แนะนำ 120–160 ตัวอักษร']] as $f => [$label, $max, $help]): ?>
+        <div class="row<?= isset($errors["seo.{$f}_th"]) || isset($errors["seo.{$f}_en"]) ? ' has-error' : '' ?>">
+          <span class="key"><b><?= e($label) ?></b><small class="muted"><?= e($help) ?></small></span>
+          <textarea name="seo[<?= $f ?>_th]" maxlength="<?= $max ?>" rows="<?= $f === 'title' ? 2 : 4 ?>" data-count data-serp-src="<?= $f ?>" aria-label="<?= e($label) ?> ภาษาไทย"<?= $canTh('seo') ? '' : ' readonly' ?>><?= e((string) ($seo[$f . '_th'] ?? '')) ?></textarea>
+          <textarea name="seo[<?= $f ?>_en]" maxlength="<?= $max ?>" rows="<?= $f === 'title' ? 2 : 4 ?>" data-count aria-label="<?= e($label) ?> English" placeholder="English (ว่าง = ใช้ภาษาไทย)"><?= e((string) ($seo[$f . '_en'] ?? '')) ?></textarea>
 <?php foreach (['th', 'en'] as $l): if (isset($errors["seo.{$f}_$l"])): ?><small class="err"><?= e($errors["seo.{$f}_$l"]) ?></small><?php endif; endforeach; ?>
-    </div>
+        </div>
 <?php endforeach; ?>
-  </fieldset>
+      </fieldset>
 <?php endif; ?>
 
 <?php foreach ($bySection as $section => $items): ?>
-  <fieldset class="card" data-section data-section-key="<?= e($section) ?>">
-    <legend><?= e($sectionNames[$section] ?? $section) ?> <small class="muted"><?= e($slug . '.' . $section) ?></small></legend>
-    <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
+      <fieldset class="card" data-section data-section-key="<?= e($section) ?>">
+        <legend><?= e($sectionNames[$section] ?? $section) ?></legend>
+        <div class="row head"><span></span><span>ภาษาไทย</span><span>English</span></div>
 <?php foreach ($items as $key => $b): $rows = max(1, min(6, (int) ceil(mb_strlen($b['th']) / 60))); ?>
-    <div class="row<?= isset($errors[$key]) ? ' has-error' : '' ?>" data-row data-missing="<?= $b['en'] === '' ? '1' : '0' ?>">
-      <span class="key"><?= e(substr($key, strlen($section) + 1)) ?></span>
-      <textarea name="th[<?= e($key) ?>]" rows="<?= $rows ?>"<?= $canTh($section) ? '' : ' readonly' ?>><?= e($b['th']) ?></textarea>
-      <textarea name="en[<?= e($key) ?>]" rows="<?= $rows ?>" placeholder="(ว่าง = ใช้ภาษาไทย)"><?= e($b['en']) ?></textarea>
+        <div class="row<?= isset($errors[$key]) ? ' has-error' : '' ?>" data-row data-key="<?= e("$slug.$key") ?>" data-missing="<?= $b['en'] === '' ? '1' : '0' ?>">
+          <span class="key"><b><?= e($kinds[$key] ?? 'ข้อความ') ?></b><small><?= e(substr($key, strlen($section) + 1)) ?></small></span>
+          <textarea name="th[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="ภาษาไทย" data-th<?= $canTh($section) ? '' : ' readonly' ?>><?= e($b['th']) ?></textarea>
+          <textarea name="en[<?= e($key) ?>]" rows="<?= $rows ?>" aria-label="English" placeholder="English (ว่าง = ใช้ภาษาไทย)"><?= e($b['en']) ?></textarea>
 <?php if (isset($errors[$key])): ?><small class="err"><?= e($errors[$key]) ?></small><?php endif; ?>
-    </div>
+        </div>
 <?php endforeach; ?>
-  </fieldset>
+      </fieldset>
 <?php endforeach; ?>
 
-  <div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div>
+      <div class="actions sticky"><button class="btn btn-primary" type="submit">บันทึก</button></div>
+    </div>
+  </div>
 </form>
 <?php
 admin_page_end();
