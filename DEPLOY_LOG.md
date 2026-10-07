@@ -14,6 +14,22 @@
 
 ---
 
+## v1.10.1 — 2026-10-07 · dev
+
+- **Commit:** `0ad32f9` · **Tag:** `v1.10.1`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:** แก้บั๊กหน้าเว็บ (front-end)
+  - มือถือ: "SCROLL TO EXPLORE" ไม่ทับปุ่มส่วนบนสุดหน้าแรกแล้ว
+  - header หน้าย่อยไม่ตัดบรรทัด (ชื่อบริษัท/ปุ่มขอใบเสนอราคาบนมือถือ, เมนูอังกฤษที่ 1024px)
+  - ปุ่ม EN บนหน้า catalog มองเห็นแล้ว (สีตามธีม)
+- **DB:** ไม่มี
+- **Files:** เพิ่ม 0 · แก้ 5 · ลบ 0 (`about.php`, `catalog.php`, `contact.php`, `assets/css/home.css`, `includes/lib/i18n.php`)
+- **Backup:** 5 ไฟล์ที่ถูกทับ เก็บใน scratchpad ของ session
+- **Verify:** ✅ 8 หน้า (ไทย+อังกฤษ) 200 · robots/sitemap 200 · admin → 302 · `en/about.html` → 301 · `includes/…`, `connectgrp.php` → 404 · CSS ใหม่อยู่บน server (header breakpoints, `.scroll-cue`) · HTML จาก server ตรงกับ local (ต่างเฉพาะรูปโรงย้อมที่อัปโหลดเฉพาะ local) · URL สาธารณะ 200
+- **Note:** รอ Pack — รูป prod-05 มีโลโก้ LAKERS (แบรนด์ลูกค้า), หน้าย่อยบนมือถือ/แท็บเล็ตยังไม่มีเมนู ☰
+
+---
+
 ## v1.10.0 — 2026-10-07 · dev
 
 - **Commit:** `1fdefd3` · **Tag:** `v1.10.0`
