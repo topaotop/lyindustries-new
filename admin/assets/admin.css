@@ -193,7 +193,6 @@ fieldset[disabled] { opacity: .75; }
 .picker-group:first-child { border-top: 0; }
 .picker-group small { font: 500 11px var(--mono); background: #fff; border-radius: 99px; padding: 0 7px; }
 .picker-opt { display: flex; align-items: baseline; gap: 10px; padding: 7px 14px 7px 26px; color: var(--text); text-decoration: none; font-size: 14.5px; }
-.picker-opt small { color: var(--muted); font: 12px var(--mono); }
 .picker-opt em { margin-left: auto; font-style: normal; font-size: 12px; color: var(--ok); background: #ecf8f1; border-radius: 99px; padding: 1px 8px; }
 .picker-opt:hover, .picker-opt.on { background: #fff1ea; }
 .picker-empty { padding: 12px 14px; color: var(--muted); }

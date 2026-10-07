@@ -128,7 +128,7 @@ admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 <form method="get" class="card search-user" data-user-picker>
   <div class="field picker" style="margin:0">
     <label for="pick-q">เลือกผู้ใช้เพื่อกำหนดสิทธิ์</label>
-    <input type="search" id="pick-q" name="q" value="<?= e($q) ?>" placeholder="พิมพ์ชื่อ ชื่อผู้ใช้ หรือแผนก — หรือคลิกเพื่อดูทั้งหมด" autocomplete="off"
+    <input type="search" id="pick-q" name="q" value="<?= e($q) ?>" placeholder="พิมพ์ชื่อหรือแผนก — หรือคลิกเพื่อดูทั้งหมด" autocomplete="off"
            role="combobox" aria-expanded="false" aria-controls="pick-list" aria-autocomplete="list">
     <div class="picker-list" id="pick-list" role="listbox" hidden></div>
     <script type="application/json" data-user-list><?= json_encode($pickList, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?></script>

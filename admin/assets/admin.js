@@ -146,7 +146,7 @@
           html += `<div class="picker-group" role="presentation">${esc(dept)}<small>${hits.filter(h => h.dept === dept).length}</small></div>`;
         }
         html += `<a class="picker-opt" id="pick-${u.id}" role="option" href="?id=${u.id}"><span>${esc(u.name)}</span>`
-              + `<small>${esc(u.user)}</small>${u.ok ? '<em>login ได้</em>' : ''}</a>`;
+              + `${u.ok ? '<em>login ได้</em>' : ''}</a>`;
       });
       list.innerHTML = html || '<div class="picker-empty">ไม่พบผู้ใช้</div>';
       options = [...list.querySelectorAll('.picker-opt')];
