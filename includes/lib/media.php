@@ -34,8 +34,10 @@ function media_upload_error(int $code): ?string
  * @return array{id: int, path: string}
  * @throws RuntimeException with a Thai message for the admin
  */
-function media_store_upload(array $file, int $userId, string $altTh = ''): array
+function media_store_upload(array $file, int $userId, string $altTh = '', array $opts = []): array
 {
+    $cover = $opts['cover'] ?? null;          // [w, h] → crop to exactly this size (centre)
+    $asJpeg = ($opts['format'] ?? '') === 'jpg';
     if (($err = media_upload_error((int) $file['error'])) !== null) {
         throw new RuntimeException($err);
     }
@@ -62,7 +64,31 @@ function media_store_upload(array $file, int $userId, string $altTh = ''): array
     }
     $name = bin2hex(random_bytes(10));
 
-    if (function_exists('imagewebp')) {
+    if ($cover !== null || $asJpeg) {
+        $src = match ($type) {
+            IMAGETYPE_JPEG => @imagecreatefromjpeg($file['tmp_name']),
+            IMAGETYPE_PNG  => @imagecreatefrompng($file['tmp_name']),
+            IMAGETYPE_WEBP => function_exists('imagecreatefromwebp') ? @imagecreatefromwebp($file['tmp_name']) : false,
+        };
+        if ($src === false) {
+            throw new RuntimeException('อ่านไฟล์รูปไม่ได้ — ไฟล์อาจเสีย');
+        }
+        [$nw, $nh] = $cover ?? [min($w, MEDIA_MAX_SIDE), (int) round($h * min($w, MEDIA_MAX_SIDE) / $w)];
+        $scale = max($nw / $w, $nh / $h);
+        $cw = (int) round($nw / $scale);
+        $ch = (int) round($nh / $scale);
+        $dst = imagecreatetruecolor($nw, $nh);
+        imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+        imagecopyresampled($dst, $src, 0, 0, (int) (($w - $cw) / 2), (int) (($h - $ch) / 2), $nw, $nh, $cw, $ch);
+        $relPath = "$relDir/$name.jpg";
+        $ok = imagejpeg($dst, APP_ROOT . '/' . $relPath, 86);
+        imagedestroy($src);
+        imagedestroy($dst);
+        if (!$ok) {
+            throw new RuntimeException('บันทึกรูปไม่สำเร็จ');
+        }
+        [$w, $h, $mime] = [$nw, $nh, 'image/jpeg'];
+    } elseif (function_exists('imagewebp')) {
         $src = match ($type) {
             IMAGETYPE_JPEG => @imagecreatefromjpeg($file['tmp_name']),
             IMAGETYPE_PNG  => @imagecreatefrompng($file['tmp_name']),

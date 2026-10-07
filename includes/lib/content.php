@@ -33,7 +33,7 @@ function content_cache_clear(): void
 }
 
 /** Bump when the cached structure changes so old cache files are ignored. */
-const CONTENT_CACHE_VERSION = 5;
+const CONTENT_CACHE_VERSION = 6;
 
 /**
  * Everything public pages need from the DB in one round trip, or null when neither DB nor cache
@@ -75,7 +75,8 @@ function content_raw(): ?array
               ORDER BY i.list_key, i.sort_order, i.id'
         );
         $settingRows = db_rows('SELECT setting_key, value FROM dbo.lyiweb_settings');
-        $pageRows = db_rows('SELECT slug, title_th, title_en, meta_desc_th, meta_desc_en FROM dbo.lyiweb_pages');
+        $pageRows = db_rows('SELECT p.slug, p.title_th, p.title_en, p.meta_desc_th, p.meta_desc_en, m.file_path AS og_image
+                               FROM dbo.lyiweb_pages p LEFT JOIN dbo.lyiweb_media m ON m.id = p.og_image_id');
         $blockRows = db_rows('SELECT page_slug, block_key, value_th, value_en FROM dbo.lyiweb_blocks');
     } catch (Throwable $e) {
         error_log('[lyiweb] content DB unavailable: ' . $e->getMessage());
@@ -248,7 +249,7 @@ function page_meta(string $slug, string $lang = 'th'): array
         return $defaults[$slug][$field . '_th'] ?? '';
     };
 
-    return ['title' => $pick('title'), 'meta_desc' => $pick('meta_desc')];
+    return ['title' => $pick('title'), 'meta_desc' => $pick('meta_desc'), 'og_image' => (string) ($row['og_image'] ?? '')];
 }
 
 /* ---- Formats derived from the settings (one value in the admin → every place on the site) ---- */

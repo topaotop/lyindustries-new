@@ -28,6 +28,21 @@ return [
         'hours_sat_close'        => '12:00',
         'trimrite_url'           => 'https://www.trimrite.com/',
         'inspiration_url'        => 'https://www.lyindustries.com/lyinspirationhub/', // spelling confirmed 5 Oct 2026
+        // SEO & AEO (admin/seo.php): link-preview picture + business data in the structured data for Google
+        'og_image'               => 'assets/img/brand/og-image.jpg',
+        'org_alt_names'          => 'LY Industries, L.Y. Industries, LYI',   // comma separated
+        'org_founding'           => '1978',
+        'addr_locality'          => 'Khlong Sam Wa',
+        'addr_region'            => 'Bangkok',
+        'addr_postal'            => '10510',
+        'addr_country'           => 'TH',
+        'geo_lat'                => '',
+        'geo_lng'                => '',
+        'social_facebook'        => '',
+        'social_instagram'       => '',
+        'social_linkedin'        => '',
+        'social_youtube'         => '',
+        'social_tiktok'          => '',
     ],
     'pages' => [
         'home' => [

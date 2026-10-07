@@ -23,6 +23,54 @@ function seo_init(): void
     }
 }
 
+/** Business names for structured data: the company name first, then the alternate names from the settings. */
+function org_alternate_names(): array
+{
+    return array_values(array_filter(array_map('trim', explode(',', site('org_alt_names')))));
+}
+
+/** Postal address for structured data (English street from ข้อมูลติดต่อ, the rest from SEO & AEO). */
+function org_postal_address(): array
+{
+    return [
+        '@type' => 'PostalAddress',
+        'streetAddress' => site('address1_en'),
+        'addressLocality' => site('addr_locality'),
+        'addressRegion' => site('addr_region'),
+        'postalCode' => site('addr_postal'),
+        'addressCountry' => site('addr_country'),
+    ];
+}
+
+/** Profiles of the business elsewhere (LINE + social pages set in SEO & AEO) — schema "sameAs". */
+function org_same_as(): array
+{
+    $urls = [site('line_url')];
+    foreach (['facebook', 'instagram', 'linkedin', 'youtube', 'tiktok'] as $k) {
+        $urls[] = site('social_' . $k);
+    }
+
+    return array_values(array_unique(array_filter($urls)));
+}
+
+/** JSON fragment (no braces) for an object member, e.g. json_member('address', [...]) → "address":{...} */
+function json_member(string $name, mixed $value): string
+{
+    return json_encode($name) . ':' . json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
+}
+
+/** Link-preview picture of a page: its own (SEO & AEO) → the site picture → the built-in one. */
+function og_image_path(array $meta): string
+{
+    foreach ([(string) ($meta['og_image'] ?? ''), site('og_image'), SITE_OG_IMAGE] as $path) {
+        if ($path !== '' && content_local_image($path) !== '') {
+            return $path;
+        }
+    }
+
+    return SITE_OG_IMAGE;
+}
+
 /** Absolute URL of a site file (image …) on this host. */
 function site_abs_url(string $path): string
 {
@@ -52,7 +100,7 @@ function seo_head_tags(string $slug, array $meta): string
         '<meta property="og:title" content="' . e($meta['title']) . '">',
         $meta['meta_desc'] !== '' ? '<meta property="og:description" content="' . e($meta['meta_desc']) . '">' : '',
         '<meta property="og:url" content="' . e($url) . '">',
-        '<meta property="og:image" content="' . e(site_abs_url(SITE_OG_IMAGE)) . '">',
+        '<meta property="og:image" content="' . e(site_abs_url(og_image_path($meta))) . '">',
         '<meta property="og:image:width" content="1200">',
         '<meta property="og:image:height" content="630">',
         '<meta property="og:locale" content="' . $locale . '">',
@@ -81,23 +129,19 @@ function home_schema_json(array $faq): string
         '@type' => ['Organization', 'LocalBusiness'],
         '@id' => SITE_PROD_ORIGIN . '/#organization',
         'name' => company_name(),
-        'alternateName' => ['L.Y. Industries', 'LY Industries', 'LYI'],
+        'alternateName' => org_alternate_names(),
         'url' => schema_site_url(),
         'logo' => SITE_PROD_ORIGIN . '/assets/img/brand/apple-touch-icon.png',
         'image' => SITE_PROD_ORIGIN . '/' . SITE_OG_IMAGE,
-        'foundingDate' => '1978',
+        'foundingDate' => site('org_founding'),
         'email' => site('email'),
         'telephone' => phone_schema(site('phone')),
-        'address' => [
-            '@type' => 'PostalAddress',
-            'streetAddress' => '124 Soi Ram Inthra 109, Phraya Suren Road, Bang Chan',
-            'addressLocality' => 'Khlong Sam Wa',
-            'addressRegion' => 'Bangkok',
-            'postalCode' => '10510',
-            'addressCountry' => 'TH',
-        ],
-        'sameAs' => array_values(array_filter([site('line_url')])),
+        'address' => org_postal_address(),
+        'sameAs' => org_same_as(),
     ];
+    if (site('geo_lat') !== '' && site('geo_lng') !== '') {
+        $org['geo'] = ['@type' => 'GeoCoordinates', 'latitude' => (float) site('geo_lat'), 'longitude' => (float) site('geo_lng')];
+    }
     $graph = [
         $org,
         ['@type' => 'WebSite', '@id' => SITE_PROD_ORIGIN . '/#website', 'url' => schema_site_url(), 'name' => 'L.Y. Industries',

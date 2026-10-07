@@ -439,17 +439,6 @@
     if (paneTop !== null && root.classList.contains('blocks-visual')) pane.scrollTop = parseInt(paneTop, 10) || 0;
     store(paneKey);
 
-    // Google result preview for the SEO fields
-    const serpT = bform.querySelector('[data-serp-title]');
-    const serpD = bform.querySelector('[data-serp-desc]');
-    const serp = () => {
-      const t = bform.querySelector('[data-serp-src="title"]');
-      const d = bform.querySelector('[data-serp-src="meta_desc"]');
-      if (serpT && t) serpT.textContent = t.value.trim() || '(ยังไม่มีชื่อหน้า)';
-      if (serpD && d) serpD.textContent = d.value.trim() || '(ยังไม่มีคำอธิบาย — Google จะเลือกข้อความจากหน้าเว็บมาแสดงเอง)';
-    };
-    bform.addEventListener('input', e => { if (e.target.matches('[data-serp-src]')) serp(); });
-    serp();
   }
 
   // lists.php "เห็นหน้าเว็บ" view: the real page on the left, click an item → its card on the right
@@ -540,7 +529,7 @@
         pickItem(d.ref, d.field, true);
       } else if (d.type === 'pick') {
         const page = String(d.key).split('.')[0];
-        say(`นี่คือข้อความหน้าเว็บ — <a href="blocks.php?page=${encodeURIComponent(page)}&focus=${encodeURIComponent(d.key)}">แก้ที่ ข้อความหน้าเว็บ & SEO →</a>`);
+        say(`นี่คือข้อความหน้าเว็บ — <a href="blocks.php?page=${encodeURIComponent(page)}&focus=${encodeURIComponent(d.key)}">แก้ที่ ข้อความหน้าเว็บ →</a>`);
       } else if (d.type === 'miss') {
         say('ตรงนี้ไม่ใช่รายการ — เบอร์โทร อีเมล ที่อยู่ แก้ที่ <a href="settings.php">ข้อมูลติดต่อ & ลิงก์</a> · รูปภาพประกอบส่วนต่างๆ และเมนูด้านบนยังแก้ไม่ได้');
       }
@@ -571,6 +560,39 @@
     store(paneKey);
     if (focusId) pickItem(`${list}#${focusId}`, null, false);   // link from the text editor (works in both views)
   }
+
+  // SEO & AEO page: live Google result preview per language box, length hint on the counters
+  document.querySelectorAll('[data-serp-group]').forEach(group => {
+    const t = group.querySelector('[data-serp-title-src]');
+    const d = group.querySelector('[data-serp-desc-src]');
+    const fallback = sel => {   // an empty English field shows the Thai text on the site
+      if (!group.closest('.seo-langs')) return '';
+      const th = group.closest('.seo-langs').querySelector('[data-serp-group]');
+      return th && th !== group ? th.querySelector(sel).value.trim() : '';
+    };
+    const draw = () => {
+      group.querySelector('[data-serp-title]').textContent = t.value.trim() || fallback('[data-serp-title-src]') || '(ยังไม่มีชื่อหน้า)';
+      group.querySelector('[data-serp-desc]').textContent = d.value.trim() || fallback('[data-serp-desc-src]') || '(ยังไม่มีคำอธิบาย — Google จะเลือกข้อความจากหน้าเว็บมาแสดงเอง)';
+    };
+    group.closest('form')?.addEventListener('input', draw);
+    draw();
+  });
+  document.querySelectorAll('textarea[data-range]').forEach(t => {
+    const [lo, hi] = t.dataset.range.split('-').map(Number);
+    const out = t.parentElement.querySelector('.count');
+    const tint = () => {
+      const n = t.value.trim().length;
+      if (out) out.dataset.state = n === 0 ? 'empty' : n < lo || n > hi ? 'warn' : 'ok';
+    };
+    t.addEventListener('input', tint);
+    tint();
+  });
+  // share picture: preview the chosen file before saving
+  document.querySelectorAll('[data-og-input]').forEach(input => input.addEventListener('change', () => {
+    const f = input.files && input.files[0];
+    const img = input.closest('.og-row')?.querySelector('[data-og-preview]');
+    if (f && img) img.src = URL.createObjectURL(f);
+  }));
 
   // destructive buttons ask first
   document.querySelectorAll('[data-confirm]').forEach(btn => btn.addEventListener('click', e => {

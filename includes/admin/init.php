@@ -29,8 +29,9 @@ function admin_menu(): array
             ['index.php', 'แดชบอร์ด', 'home', null],
         ],
         'เนื้อหาเว็บไซต์' => [
-            ['blocks.php', 'ข้อความหน้าเว็บ & SEO', 'text', 'content.translate'],
+            ['blocks.php', 'ข้อความหน้าเว็บ', 'text', 'content.translate'],
             ['lists.php', 'รายการ & รูปภาพ', 'list', 'content.translate'],
+            ['seo.php', 'SEO & AEO', 'search', 'seo'],
         ],
         'ลูกค้า' => [
             ['contacts.php', 'คำขอจากลูกค้า', 'inbox', 'contact.view'],
@@ -54,6 +55,7 @@ function admin_icon(string $key): string
         'text'     => '<path d="M4 5h12M4 9.5h12M4 14h7"/>',
         'phone'    => '<path d="M5.5 3.5h2l1.2 3-1.6 1.1a8 8 0 0 0 4.3 4.3l1.1-1.6 3 1.2v2a1.5 1.5 0 0 1-1.6 1.5A12.5 12.5 0 0 1 4 5.1 1.5 1.5 0 0 1 5.5 3.5z"/>',
         'external' => '<path d="M11 4h5v5M16 4l-7 7M14 11.5V15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h3.5"/>',
+        'search'   => '<circle cx="8.5" cy="8.5" r="5"/><path d="m12.3 12.3 4.2 4.2"/><path d="M6.5 8.5h4M8.5 6.5v4"/>',
         'inbox'    => '<path d="M3.5 11.5 5.6 5a1.5 1.5 0 0 1 1.4-1h6a1.5 1.5 0 0 1 1.4 1l2.1 6.5V15a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 3.5 15z"/><path d="M3.5 11.5h3.6l1 2h3.8l1-2h3.6"/>',
         'chart'    => '<path d="M3.5 16.5h13"/><path d="M6 13.5v-3M10 13.5v-7M14 13.5v-5"/>',
         'list'     => '<rect x="3.5" y="4" width="4" height="4" rx="1"/><rect x="3.5" y="12" width="4" height="4" rx="1"/><path d="M10.5 6h6M10.5 14h6"/>',
@@ -76,6 +78,9 @@ function admin_icon(string $key): string
 /** May the current user see this menu entry? (content.edit implies content.translate) */
 function admin_can_see(?string $perm): bool
 {
+    if ($perm === 'seo') {   // SEO & AEO: anyone who may edit some page's SEO, or the site settings
+        return can('settings.edit') || can('content.edit') || can('content.translate');
+    }
     return $perm === null || can($perm) || ($perm === 'content.translate' && can('content.edit'));
 }
 

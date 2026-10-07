@@ -47,6 +47,34 @@ IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'trimrite_
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'trimrite_url', N'https://www.trimrite.com/');
 IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'inspiration_url')
     INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'inspiration_url', N'https://www.lyindustries.com/lyinspirationhub/');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'og_image')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'og_image', N'assets/img/brand/og-image.jpg');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'org_alt_names')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'org_alt_names', N'LY Industries, L.Y. Industries, LYI');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'org_founding')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'org_founding', N'1978');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'addr_locality')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'addr_locality', N'Khlong Sam Wa');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'addr_region')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'addr_region', N'Bangkok');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'addr_postal')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'addr_postal', N'10510');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'addr_country')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'addr_country', N'TH');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'geo_lat')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'geo_lat', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'geo_lng')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'geo_lng', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_facebook')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_facebook', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_instagram')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_instagram', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_linkedin')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_linkedin', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_youtube')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_youtube', N'');
+IF NOT EXISTS (SELECT 1 FROM dbo.lyiweb_settings WHERE setting_key = N'social_tiktok')
+    INSERT dbo.lyiweb_settings (setting_key, value) VALUES (N'social_tiktok', N'');
 
 /* pages (rows were created by 001_lyiweb_schema.sql) */
 UPDATE dbo.lyiweb_pages SET title_th = N'L.Y. Industries (Hybrid) — Narrow Fabrics & Trims ครบวงจร มาตรฐานระดับโลก', updated_at = GETDATE() WHERE slug = N'home' AND title_th IS NULL;

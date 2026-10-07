@@ -68,7 +68,7 @@ admin_page_start('แดชบอร์ด', 'index.php');
 </div>
 
 <?php if ((int) $stats['pages_no_desc'] > 0): ?>
-<div class="flash flash-warn">มี <?= (int) $stats['pages_no_desc'] ?> หน้าที่ยังไม่มี meta description (สำคัญต่อ SEO) — แก้ได้ที่ "ข้อความหน้าเว็บ & SEO"</div>
+<div class="flash flash-warn">มี <?= (int) $stats['pages_no_desc'] ?> หน้าที่ยังไม่มี meta description (สำคัญต่อ SEO) — แก้ได้ที่เมนู <a href="seo.php?tab=meta">SEO &amp; AEO</a></div>
 <?php endif; ?>
 
 <div class="grid2">

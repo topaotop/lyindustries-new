@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 admin_page_start('ข้อมูลติดต่อ & ลิงก์', 'settings.php');
 ?>
 <h1>ข้อมูลติดต่อ & ลิงก์</h1>
-<p class="muted">แก้ที่นี่ที่เดียว เปลี่ยนทุกหน้าเว็บ รวมข้อมูล schema สำหรับ Google · ⚠️ meta description ของหน้า "ติดต่อ" มีเบอร์/อีเมลอยู่ในประโยค — ถ้าเปลี่ยนเบอร์ ให้แก้ที่ "ข้อความหน้าเว็บ & SEO" ด้วย</p>
+<p class="muted">แก้ที่นี่ที่เดียว เปลี่ยนทุกหน้าเว็บ รวมข้อมูล schema สำหรับ Google · ⚠️ meta description ของหน้า "ติดต่อ" มีเบอร์/อีเมลอยู่ในประโยค — ถ้าเปลี่ยนเบอร์ ให้แก้ที่เมนู <a href="seo.php?tab=meta">SEO &amp; AEO</a> ด้วย</p>
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง</div><?php endif; ?>
 <form method="post" class="form">
   <?= csrf_field() ?>
