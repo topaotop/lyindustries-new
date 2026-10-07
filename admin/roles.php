@@ -6,6 +6,7 @@ require __DIR__ . '/../includes/admin/init.php';
 admin_require('users.manage');
 
 $labels = admin_permission_labels();
+admin_revoke_locked_users();   // member counts never include people who have left
 $pages = admin_content_pages();
 $roles = admin_roles();
 $contentPerms = ['content.edit', 'content.translate'];

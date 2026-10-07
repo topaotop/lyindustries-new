@@ -6,6 +6,7 @@ require __DIR__ . '/../includes/admin/init.php';
 $me = admin_require('users.manage');
 
 $labels = admin_permission_labels();
+$cleaned = admin_revoke_locked_users();
 $roles = admin_roles();
 $minLevel = auth_admin_min_level();
 $contentPerms = ['content.edit', 'content.translate'];
@@ -126,7 +127,8 @@ $admins = $minLevel > 0 ? db_rows(
 admin_page_start('ผู้ใช้ & สิทธิ์', 'users.php');
 ?>
 <h1>ผู้ใช้ & สิทธิ์</h1>
-<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — <b>login หลังบ้านได้เฉพาะคนที่ได้ role</b> · เลือกคนจากรายการแล้วติ๊ก role · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a></p>
+<p class="muted">ผู้ใช้มาจากระบบบริษัท (sysmnuser) — <b>login หลังบ้านได้เฉพาะคนที่ได้ role</b> · เลือกคนจากรายการแล้วติ๊ก role · ชุดสิทธิ์แก้ได้ที่ <a href="roles.php">บทบาท (Role)</a> · คนที่ลาออก (IT ล็อกบัญชี) จะถูกถอนสิทธิ์และหายจากรายการเอง</p>
+<?php if ($cleaned > 0): ?><div class="flash flash-info">ถอนสิทธิ์อัตโนมัติ <?= $cleaned ?> คน — บัญชีถูกล็อกในระบบบริษัท</div><?php endif; ?>
 
 <form method="get" class="card search-user" data-user-picker>
   <div class="field picker" style="margin:0">

@@ -116,6 +116,31 @@ function admin_scope_summary(array $scopes): string
 }
 
 /**
+ * Housekeeping: people whose company account is locked (left the company) lose every website role,
+ * so they drop off the "who can sign in" list and do not get access back if the account is unlocked.
+ * Each removal is written to the audit log. Returns how many people were cleaned up.
+ */
+function admin_revoke_locked_users(): int
+{
+    $rows = db_rows(
+        'SELECT ur.user_id, r.name_th FROM dbo.lyiweb_user_roles ur
+           JOIN dbo.sysmnuser u ON u.id = ur.user_id
+           JOIN dbo.lyiweb_roles r ON r.id = ur.role_id
+          WHERE u.locked = 1'
+    );
+    $byUser = [];
+    foreach ($rows as $r) {
+        $byUser[(int) $r['user_id']][] = (string) $r['name_th'];
+    }
+    foreach ($byUser as $userId => $names) {
+        db_exec('DELETE FROM dbo.lyiweb_user_roles WHERE user_id = ?', [$userId]);
+        audit_log('update', 'lyiweb_user_roles', (string) $userId, $names, ['auto' => 'account locked in sysmnuser']);
+    }
+
+    return count($byUser);
+}
+
+/**
  * All roles with their permissions, scopes and member count.
  *
  * @return array<int, array{id: int, role_key: string, name_th: string, is_system: bool, perms: list<string>, scopes: list<string>, members: int}>
