@@ -23,7 +23,9 @@ if ($user !== null) {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         admin_check_post();
+        $back = 'users.php';   // saved → back to the list; refused → stay on this user
         if ($isMe) {
+            $back = 'users.php?id=' . $id;
             flash('error', 'แก้สิทธิ์ของตัวเองไม่ได้ — ให้ผู้ดูแลคนอื่นทำ');
         } else {
             $wanted = array_values(array_intersect(array_keys($roles), array_map('intval', (array) ($_POST['roles'] ?? []))));
@@ -32,6 +34,7 @@ if ($user !== null) {
             $adminRole = array_values(array_filter($roles, static fn(array $r): bool => $r['role_key'] === 'admin'))[0]['id'] ?? 0;
             if (in_array($adminRole, $remove, true) && $roles[$adminRole]['members'] <= 1) {
                 flash('error', 'ถอน role ผู้ดูแลระบบไม่ได้ — ต้องมีผู้ดูแลอย่างน้อย 1 คน (ให้ role นี้กับคนอื่นก่อน)');
+                $back = 'users.php?id=' . $id;
             } elseif ($add === [] && $remove === []) {
                 flash('info', 'ไม่มีอะไรเปลี่ยน');
             } else {
@@ -48,13 +51,13 @@ if ($user !== null) {
                 flash('ok', 'บันทึกสิทธิ์ของ ' . ($user['name'] ?: $user['username']) . ' แล้ว — มีผลทันที');
             }
         }
-        header('Location: users.php?id=' . $id);
+        header('Location: ' . $back);
         exit;
     }
 
     admin_page_start('สิทธิ์ของ ' . ($user['name'] ?: $user['username']), 'users.php');
     ?>
-<p class="small"><a href="users.php">← ผู้ใช้ทั้งหมด</a></p>
+<a class="back" href="users.php"><?= admin_icon('back') ?><span>ผู้ใช้ทั้งหมด</span></a>
 <h1><?= e($user['name'] ?: $user['username']) ?></h1>
 <p class="muted"><?= e($user['username']) ?><?= $user['department'] ? ' · ' . e($user['department']) : '' ?> · level <?= (int) $user['level'] ?></p>
 
@@ -63,7 +66,7 @@ if ($user !== null) {
 <?php if ($isMe): ?><div class="flash flash-info">นี่คือบัญชีของคุณ — แก้สิทธิ์ตัวเองไม่ได้</div><?php endif; ?>
 <?php if (!$isFull): ?><p class="muted small">ติ๊กอย่างน้อย 1 role = login หลังบ้านได้ · ไม่มี role เลย = login ไม่ได้ (ถ้ากำลังใช้งานอยู่จะหลุดทันที)</p><?php endif; ?>
 
-<form method="post" class="form">
+<form method="post" class="form" data-leave>
   <?= csrf_field() ?>
   <input type="hidden" name="id" value="<?= (int) $user['id'] ?>">
   <fieldset class="card"<?= $isMe ? ' disabled' : '' ?>>

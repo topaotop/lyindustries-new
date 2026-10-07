@@ -131,7 +131,7 @@ $title = $isNew ? 'เพิ่ม role' : $role['name_th'];
 
 admin_page_start($title, 'roles.php');
 ?>
-<p class="small"><a href="roles.php">← บทบาททั้งหมด</a></p>
+<a class="back" href="roles.php"><?= admin_icon('back') ?><span>บทบาททั้งหมด</span></a>
 <h1><?= e($title) ?></h1>
 <?php if ($locked): ?><div class="flash flash-info">role ผู้ดูแลระบบได้ทุกสิทธิ์ทุกส่วนเสมอ — แก้ไม่ได้</div><?php endif; ?>
 <?php if ($errors !== []): ?><div class="flash flash-error">ยังไม่ได้บันทึก — มีช่องที่ต้องแก้ <?= count($errors) ?> ช่อง</div><?php endif; ?>

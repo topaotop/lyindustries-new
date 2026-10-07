@@ -75,6 +75,7 @@
   const scrollKey = 'lyiweb-admin-scroll:' + location.pathname + location.search.replace(/[?&]_=\d+/, '');
   document.querySelectorAll('form.form').forEach(f => f.addEventListener('submit', () => {
     dirty = false;
+    if (f.hasAttribute('data-leave')) return;   // this form goes to another page after saving
     try { sessionStorage.setItem(scrollKey, String(window.scrollY)); } catch (err) { /* storage blocked */ }
   }));
   let saved = null;
