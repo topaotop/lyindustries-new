@@ -14,6 +14,21 @@
 
 ---
 
+## v1.6.0 — 2026-10-07 13:19 · dev
+
+- **Commit:** `795b357` · **Tag:** `v1.6.0`
+- **Target:** `\\192.168.0.70\wwwroot\lyindustries-dev` → http://192.168.0.70/lyindustries-dev/ · https://lysystems.sytes.net/lyindustries-dev/
+- **Changes:**
+  - **3c** ฟอร์มขอใบเสนอราคาบันทึกลง DB (`api/v1/contact.php`, กันสแปม, server ล่ม → เปิดอีเมลแทน) + นับคลิกอีเมล/LINE/โทร (`assets/js/track.js` → `api/v1/track.php`) · หลังบ้าน **คำขอจากลูกค้า** + **สถิติการติดต่อ**
+  - **Phase 3 เว็บภาษาอังกฤษ** `/en/…` (rewrite) · ข้อความทุกชิ้นแปลได้ (แท็บใหม่ "เมนู & คำที่ใช้ทุกหน้า", ชื่อ/ที่อยู่ภาษาอังกฤษ) · ปุ่มเปลี่ยนภาษาแบบ B · ร่างคำแปลอังกฤษครบ (รอตรวจ)
+  - **Phase 4 SEO/AEO** dev/test = noindex + robots.txt ปิด · `/robots.txt` `/sitemap.xml` อัตโนมัติ · canonical + Open Graph · schema FAQPage/Organization หน้าแรก · รูป Color Lab/R&D เป็น WebP (14.3MB → 229KB)
+  - แก้บั๊ก: กล่อง "ส่งคำขอเรียบร้อยแล้ว" โผล่ก่อนส่ง (จาก 3c, ไม่เคยขึ้น server)
+- **DB:** seed 003 / 004 / 010 รันแล้วทั้ง `test_LYI` และ `LYI` (ตรวจครบ)
+- **Files:** เพิ่ม 17 · แก้ 21 · ลบ 4 (PNG Color Lab ×3 + R&D → แทนด้วย WebP)
+- **Backup:** 26 ไฟล์ (ที่ถูกทับ + ที่ลบ) เก็บใน scratchpad ของ session
+- **Verify:** ✅ 8 หน้า (ไทย+อังกฤษ) 200 · `/en` → 301 `/en/` · admin (รวม contacts/clicks) → 302 login · `*.html`/หน้าเก่า → 301 · `includes/ tools/ docs/ connectgrp.php` → 404 · `robots.txt` text/plain (Disallow ทั้งหมด), `sitemap.xml` 8 URL, header `X-Robots-Tag: noindex` · `.webp` = image/webp, PNG เก่า → 404 · JSON-LD หน้าแรก valid (Organization+LocalBusiness, WebSite, FAQPage) · HTML จาก server ตรงกับ local (ต่างเฉพาะ `?v=` ของ asset ในการ render เทียบ) · **ส่งฟอร์มจริงผ่าน IIS → บันทึกภาษาไทยถูก** แล้วลบแถวทดสอบ · URL สาธารณะผลเหมือนกัน
+- **Note:** `/en/braiding.php` (URL ที่ไม่เคยมีจริง) IIS = 404, Apache = 301 → `/en/` — ไม่กระทบ · ตาราง contact/clicks มีข้อมูลที่ไม่ได้มาจากการทดสอบของ agent 1 + 2 แถว (ไม่แตะ)
+
 ## v1.5.0 — 2026-10-07 11:51 · dev
 
 - **Commit:** `7b3886a` · **Tag:** `v1.5.0`
